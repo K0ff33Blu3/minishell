@@ -1,35 +1,13 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
+/*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/16 11:52:47 by miricci           #+#    #+#             */
-/*   Updated: 2025/05/17 12:23:03 by miricci          ###   ########.fr       */
+/*   Created: 2025/05/18 13:24:24 by miricci           #+#    #+#             */
+/*   Updated: 2025/05/18 13:24:27 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef MINISHELL_H
-# define MINISHELL_H
-
-# define PROMPT "\033[36mMINISHELL@ \033[0m"
-
-# include "libft/libft.h"
-# include <readline/readline.h>
-# include <readline/history.h>
-
-typedef struct s_cmdline
-{
-	char	*cmd_line;
-	char	*cmd;
-	char	**cmd_args;
-}	t_cmdline;
-
-int	pwd(void);
-int	env(char **envp);
-int	echo(char *str, int n);
-t_list	**pipe_parsing(char *cmd_line);
-
-
-#endif
+#include 

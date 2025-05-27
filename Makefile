@@ -14,7 +14,7 @@ OBJS_DIR     := obj
 LIBFT_LIB    := $(LIBFT_DIR)/libft.a
 
 # Sorgenti
-SRCS         := main.c pwd.c env.c echo.c
+SRCS         := main.c pwd.c env.c echo.c parsing.c
 
 # Oggetti (con prefisso obj/)
 OBJS         := $(patsubst %.c,$(OBJS_DIR)/%.o,$(SRCS))

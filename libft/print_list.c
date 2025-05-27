@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 15:28:50 by miricci           #+#    #+#             */
-/*   Updated: 2025/04/03 15:57:07 by miricci          ###   ########.fr       */
+/*   Updated: 2025/05/17 12:27:33 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,15 @@ void	print_list(t_list **head, char *list_name)
 
 	i = 1;
 	node = *head;
-	ft_printf("\n------------%s---------------\n", list_name);
+	printf("\n------------%s---------------\n", list_name);
 	while (node)
 	{
 		value = node->content;
-		ft_printf("node %d: \n", i);
-		ft_printf("content: %d\n", *value);
-		ft_printf("next: %p\n", node->next);
+		printf("node %d: \n", i);
+		printf("content: %d\n", *value);
+		printf("next: %p\n", node->next);
 		node = node->next;
 		i++;
 	}
-	ft_printf("------------%s---------------\n\n", list_name);
+	printf("------------%s---------------\n\n", list_name);
 }
