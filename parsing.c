@@ -3,29 +3,38 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
+/*   By: emondo <emondo@student.42firenze.it>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 13:03:04 by miricci           #+#    #+#             */
-/*   Updated: 2025/05/18 12:09:24 by miricci          ###   ########.fr       */
+/*   Updated: 2025/05/27 18:04:04 by emondo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_cmdline *data_parsing(char *cmd_str)
+char	*get_cmd_str(char *cmd_str)
 {
 	char	*trimmed;
+	
+	trimmed = ft_strtrim(cmd_str, " ");
+	if (!trimmed)
+		return (NULL); 
+	return (trimmed);
+}
+
+t_cmdline *data_parsing(char *cmd_str)
+{
 	t_cmdline	*data;
 	
 	data = (t_cmdline *)malloc(sizeof(t_cmdline));
 	if (!data)
 		return (NULL);
-	trimmed = ft_strtrim(cmd_str, " ");
-	if (!trimmed)
-		return (NULL); 
-	data->cmd_line = ft_strdup(trimmed);
-	printf("%s\n", data->cmd_line);
-	free(trimmed);
+	data->token = tokenize(cmd_str);
+	//expand
+	//remove quotes
+	//handle logical operators
+	//handle redirections
+	
 	return (data);
 }
 

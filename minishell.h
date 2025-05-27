@@ -3,33 +3,56 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
+/*   By: emondo <emondo@student.42firenze.it>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:52:47 by miricci           #+#    #+#             */
-/*   Updated: 2025/05/17 12:23:03 by miricci          ###   ########.fr       */
+/*   Updated: 2025/05/27 18:01:01 by emondo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
-# define PROMPT "\033[36mMINISHELL@ \033[0m"
-
 # include "libft/libft.h"
 # include <readline/readline.h>
 # include <readline/history.h>
 
+# define PROMPT "\033[36mMINISHELL@ \033[0m"
+
 typedef struct s_cmdline
 {
-	char	*cmd_line;
+	char	**token;
 	char	*cmd;
+	char	*cmd_path;
 	char	**cmd_args;
+	int	in_fd;
+	int	out_fd;
+	
 }	t_cmdline;
 
+// build_in_cmd.c
 int	pwd(void);
 int	env(char **envp);
 int	echo(char *str, int n);
+
+// parsing.c
 t_list	**pipe_parsing(char *cmd_line);
+
+// token.c
+int	count_token(char *s);
+char	*make_word(const char *s, int *j);
+char	*make_quote(const char *s, int *j);
+char	*make_metachar(const char *s, int *j);
+char	**tokenize(char	*str);
+
+// token_utils.c
+char	**get_metachar(void);
+int	is_metachar(const char *c);
+int	skip_quote(char *s, int start);
+int	word_len(const char *s, unsigned int start);
+int	quote_len(const char *s, unsigned int start, char quote);
+
+
 
 
 #endif
