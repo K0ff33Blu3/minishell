@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 13:24:24 by miricci           #+#    #+#             */
-/*   Updated: 2025/05/28 10:01:20 by miricci          ###   ########.fr       */
+/*   Updated: 2025/05/28 12:55:52 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,7 @@ char	**re_tokenize(char **arr, int size)
 	char	**token;
 
 	joined = array_to_str(arr, " ", size);
+	// ft_free((void **)arr, -1);
 	if (!joined)
 		return (NULL);
 	token = tokenize(joined);

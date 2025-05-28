@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emondo <emondo@student.42firenze.it>       +#+  +:+       +#+        */
+/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:52:47 by miricci           #+#    #+#             */
-/*   Updated: 2025/05/28 10:01:28 by emondo           ###   ########.fr       */
+/*   Updated: 2025/05/28 12:08:49 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ char	*make_word(const char *s, int *j);
 char	*make_quote(const char *s, int *j);
 char	*make_metachar(const char *s, int *j);
 char	**tokenize(char	*str);
+char	**re_tokenize(char **arr, int size);
 
 // token_utils.c
 char	**get_metachar(void);

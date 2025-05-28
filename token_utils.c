@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:36:23 by emondo            #+#    #+#             */
-/*   Updated: 2025/05/27 22:15:49 by miricci          ###   ########.fr       */
+/*   Updated: 2025/05/28 12:45:36 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,8 @@ int	word_len(const char *s, unsigned int start)
 	int	len;
 
 	len = 0;
-	while (s[start] && !ft_isspace(s[start]) && !is_metachar(&s[start]))
+	while (s[start] && !ft_isspace(s[start]) && !is_metachar(&s[start]) 
+			 && s[start] != '\'' && s[start] != '\"')
 	{
 		len++;
 		start++;
