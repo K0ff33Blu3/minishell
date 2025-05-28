@@ -6,7 +6,7 @@
 /*   By: emondo <emondo@student.42firenze.it>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:52:47 by miricci           #+#    #+#             */
-/*   Updated: 2025/05/27 18:01:01 by emondo           ###   ########.fr       */
+/*   Updated: 2025/05/28 10:01:28 by emondo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,12 @@
 # include "libft/libft.h"
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <signal.h>
+# include <sys/ioctl.h>
 
 # define PROMPT "\033[36mMINISHELL@ \033[0m"
+
+extern int	g_last_sig;
 
 typedef struct s_cmdline
 {
@@ -52,7 +56,8 @@ int	skip_quote(char *s, int start);
 int	word_len(const char *s, unsigned int start);
 int	quote_len(const char *s, unsigned int start, char quote);
 
-
+// signal.c
+void	ft_empty_handler(int signum);
 
 
 #endif
