@@ -9,14 +9,6 @@ void	ft_empty_handler(int signum)
 		rl_on_new_line();
 		rl_redisplay();
 	}
-	else if (signum == SIGTSTP)
-	{
-		write(STDERR_FILENO, "\b\b  \b\b", 6);
-	}
-	else if (signum == SIGQUIT)
-	{
-		write(STDERR_FILENO, "\b\b  \b\b", 6);
-	}
 	g_last_sig = signum;	
 }
 
@@ -24,7 +16,11 @@ void	ft_empty_initializer(void)
 {
 	struct sigaction	waiter;
 
-	ft_bzero
-	
-	
+	ft_bzero(&waiter, sizeof(waiter));
+	waiter.sa_handler = SIG_IGN;
+	sigaction(SIGQUIT, &waiter, NULL);
+	sigaction(SIGTSTP, &waiter, NULL);
+	waiter.sa_handler = ft_empty_handler;
+	waiter.sa_flags = 0;
+	sigaction(SIGINT, &waiter, NULL);
 }
