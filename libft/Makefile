@@ -15,11 +15,11 @@ SRCS = ft_atoi.c ft_itoa.c ft_putendl_fd.c ft_strjoin.c ft_strtrim.c ft_bzero.c 
 		ft_lstadd_back.c ft_lstdelone.c ft_lstclear.c print_list.c \
 		ft_lstiter.c ft_lstmap.c \
 		gnl.c \
-		array_size.c \
+		array_size.c array_to_str.c \
 
 # File oggetto
 OBJS_DIR = obj
-OBJS         := $(patsubst %.c,$(OBJS_DIR)/%.o,$(SRCS))
+OBJS	= $(SRCS:%.c=$(OBJS_DIR)/%.o)
 
 FT_PRINTF = ft_printf/libftprintf.a
 
@@ -36,8 +36,7 @@ $(OBJS_DIR):
 	@mkdir -p $@
 
 #compilazione dei file.c in file.o
-$(OBJS_DIR)/%.o: %.c
-	@mkdir -p $(dir $@)
+$(OBJS_DIR)/%.o: %.c | $(OBJS_DIR)
 	@$(CC) $(CFLAGS) -c $< -o $@
 	@echo -e "\033[90m$< compiled\033[0m"
 

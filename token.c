@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emondo <emondo@student.42firenze.it>       +#+  +:+       +#+        */
+/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 13:24:24 by miricci           #+#    #+#             */
-/*   Updated: 2025/05/27 17:39:52 by emondo           ###   ########.fr       */
+/*   Updated: 2025/05/28 10:01:20 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,21 +123,28 @@ char	**tokenize(char	*str)
 	return (token);
 }
 
+char	**re_tokenize(char **arr, int size)
+{
+	char	*joined;
+	char	**token;
+
+	joined = array_to_str(arr, " ", size);
+	if (!joined)
+		return (NULL);
+	token = tokenize(joined);
+	free(joined);
+	return (token);
+}
+
 // int	main()
 // {
-// 	char	*test;
-// 	int	n;
-// 	char	**res;
-// 	int	i;
-
-// 	i = 0;
-// 	test = "ciao come stai";
-// 	res = tokenize(test);
+// 	char	*array[4] = {
+// 		"ciao", "$$", "\"come\" ciao", "stai$"
+// 	};
+// 	char	**res = re_tokenize(array, 4);
+// 	int	i = 0;
 // 	while (res[i])
-// 	{
-// 		printf("%s\n", res[i]);
-// 		i++;
-// 	}
+// 		printf("res: %s\n", res[i++]);
 // 	ft_free((void **)res, -1);
-// 	return 0;
+// 	return (0);
 // }
