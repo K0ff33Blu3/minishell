@@ -6,7 +6,7 @@
 /*   By: emondo <emondo@student.42firenze.it>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:52:47 by miricci           #+#    #+#             */
-/*   Updated: 2025/05/28 10:01:28 by emondo           ###   ########.fr       */
+/*   Updated: 2025/05/28 11:11:10 by emondo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ int	quote_len(const char *s, unsigned int start, char quote);
 
 // signal.c
 void	ft_empty_handler(int signum);
-
+void	ft_empty_initializer(void);
+void	ignore_sigquit(void);
+void	ignore_sigtstp(void);
 
 #endif

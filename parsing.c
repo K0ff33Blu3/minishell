@@ -3,32 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
+/*   By: emondo <emondo@student.42firenze.it>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 13:03:04 by miricci           #+#    #+#             */
-/*   Updated: 2025/05/27 20:39:07 by miricci          ###   ########.fr       */
+/*   Updated: 2025/05/28 10:42:07 by emondo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	**expand_env_var(char **token)
-{
-	int	i;
-	char	**expanded_token;
 
-	
-	i = 0;
-	
-	while (token[i])
-	{
-		if ()
-		{
-			
-		}
-		
-	}
-}
 
 t_cmdline *data_parsing(char *cmd_str)
 {

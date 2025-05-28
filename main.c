@@ -6,7 +6,7 @@
 /*   By: emondo <emondo@student.42firenze.it>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:50:27 by miricci           #+#    #+#             */
-/*   Updated: 2025/05/28 10:00:19 by emondo           ###   ########.fr       */
+/*   Updated: 2025/05/28 11:01:18 by emondo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ int	main(int argc, char **argv, char **envp)
 	(void)envp;
 	while (1)
 	{
+		ft_empty_initializer();
 		cmd_line = readline(PROMPT);
 		if (!cmd_line)
 			break ;
