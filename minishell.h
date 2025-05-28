@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:52:47 by miricci           #+#    #+#             */
-/*   Updated: 2025/05/28 14:20:08 by miricci          ###   ########.fr       */
+/*   Updated: 2025/05/28 14:24:27 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,5 @@ int	quote_len(const char *s, unsigned int start, char quote);
 // signal.c
 void	ft_empty_handler(int signum);
 void	ft_empty_initializer(void);
-void	ignore_sigquit(void);
-void	ignore_sigtstp(void);
 
 #endif
