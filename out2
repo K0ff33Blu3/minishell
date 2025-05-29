@@ -1,0 +1,23 @@
+
+TOKEN
+token[0]: cat
+token[1]: <
+token[2]: in1
+token[3]: <
+token[4]: in2
+token[5]: >
+token[6]: out1
+token[7]: >
+token[8]: out2
+IN_FD: 3
+OUT_FD: 4
+INFILE: in2
+OUTFILE: out2
+
+------------LIST---------------
+node 1: 
+content: 1554469168
+next: (nil)
+------------LIST---------------
+
+[36mMINISHELL@ [0m

@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:52:47 by miricci           #+#    #+#             */
-/*   Updated: 2025/05/28 14:24:27 by miricci          ###   ########.fr       */
+/*   Updated: 2025/05/29 13:19:03 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,11 @@ typedef struct s_cmdline
 	char	**cmd_args;
 	int	in_fd;
 	int	out_fd;
+	char	*infile;
+	char	*outfile;
+	char	*limiter;
+	int	tmp_pipe[2];
+	int	pipe[2];
 	
 }	t_cmdline;
 
@@ -41,6 +46,14 @@ int	echo(char *str, int n);
 
 // parsing.c
 t_list	**pipe_parsing(char *cmd_line);
+t_cmdline	*data_parsing(char *cmd_str);
+
+// expand.c
+char	*expand_var_in_quotes(char *quote);
+char	*expand_var(char *var);
+char	*expanded_quote(char *quote);
+char	**expand_env_var(char **token);
+char	**expand_env_var(char **token);
 
 // token.c
 int	count_token(char *s);
@@ -60,5 +73,12 @@ int	quote_len(const char *s, unsigned int start, char quote);
 // signal.c
 void	ft_empty_handler(int signum);
 void	ft_empty_initializer(void);
+
+// redirections.c
+int	handle_input_redir(t_cmdline *cmd);
+int	handle_output_redir(t_cmdline *cmd);
+
+// utils ??
+void	print_cmd_struct(t_cmdline cmd);
 
 #endif

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emondo <emondo@student.42firenze.it>       +#+  +:+       +#+        */
+/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:50:27 by miricci           #+#    #+#             */
-/*   Updated: 2025/05/28 11:01:18 by emondo           ###   ########.fr       */
+/*   Updated: 2025/05/29 13:41:34 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ int	main(int argc, char **argv, char **envp)
 			env(envp);
 		else if (!ft_strncmp(cmd_line, "pwd", 2))
 			pwd();
-		
+		rl_on_new_line();
+		rl_redisplay();
 	}
 	rl_clear_history();
 	free(cmd_line);

@@ -1,0 +1,18 @@
+
+TOKEN
+token[0]: >
+token[1]: outfi
+token[2]: chd
+token[3]: kefd
+IN_FD: 0
+OUT_FD: 3
+INFILE: (null)
+OUTFILE: outfi
+
+------------LIST---------------
+node 1: 
+content: -58761312
+next: (nil)
+------------LIST---------------
+
+[36mMINISHELL@ [0m> outfi chd kefd[?2004h[36mMINISHELL@ [0m[K[36mMINISHELL@ [0m[K[36mMINISHELL@ [0m[K[36mMINISHELL@ [0m[K[36mMINISHELL@ [0m[K[36mMINISHELL@ [0m[?2004l

@@ -6,89 +6,11 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 13:03:04 by miricci           #+#    #+#             */
-/*   Updated: 2025/05/28 14:22:43 by miricci          ###   ########.fr       */
+/*   Updated: 2025/05/29 13:42:17 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-char	*expand_var_in_quotes(char *quote)
-{
-	int		len;
-	int		start;
-	char	*pos;
-	char	*value;
-	char	*var;
-
-	pos = ft_strchr(quote, '$') + 1;
-	start = pos - quote;
-	len = word_len(quote, start);
-	var = ft_substr(quote, start, len);
-	if (!var)
-		return (NULL);
-	value = getenv(var);
-	if (value)
-		return (free(var), value);
-	return (var);
-}
-
-char	*expand_var(char *var)
-{
-	char	*name_var;
-	char	*value;
-
-	name_var = var + 1;
-	value = ft_strdup(getenv(name_var));
-	if (value)
-		return (value);
-	return (var);
-}
-
-char	*expanded_quote(char *quote)
-{
-	char	*start_str;
-	char	*partial_str;
-	char	*final_str;
-	int	start_quote;
-	char	*end_str;
-
-	start_quote = ft_strchr(quote, '$') - quote;
-	start_str = ft_substr(quote, 0, start_quote);
-	partial_str = ft_strjoin(start_str, expand_var_in_quotes(quote));
-	end_str = ft_strchr(quote, '$') + word_len(quote, start_quote);
-	final_str = ft_strjoin(partial_str, end_str);
-	free(start_str);
-	free(partial_str);
-	return (final_str);
-}
-
-char	**expand_env_var(char **token)
-{
-	int		i;
-	char	**expanded_token;
-
-	i = 0;
-	expanded_token = malloc(sizeof(char *) * (array_size((void **)token) + 1));
-	if (!expanded_token)
-		return (NULL);
-	while (token[i])
-	{
-		if (ft_strchr(token[i], '$'))
-		{
-			if (*token[i] == '\'')
-				expanded_token[i] = ft_strdup(token[i]);
-			else if (*token[i] == '\"')
-				expanded_token[i] = expanded_quote(token[i]);
-			else
-				expanded_token[i] = expand_var(token[i]);
-		}
-		else
-			expanded_token[i] = ft_strdup(token[i]);
-		i++;
-	}
-	expanded_token[i] = NULL;
-	return (ft_free((void **)token, -1), expanded_token);
-}
 
 char	**remove_quotes(char **str)
 {
@@ -112,7 +34,7 @@ char	**remove_quotes(char **str)
 		i++;
 	}
 	no_quotes[i] = NULL;
-	return (ft_free((void **)str, -1), no_quotes);	
+	return (ft_free((void **)str, -1), no_quotes);
 }
 
 char	**get_data_token(char *str)
@@ -141,56 +63,74 @@ t_cmdline	*data_parsing(char *cmd_str)
 	t_cmdline	*data;
 	
 	data = (t_cmdline *)malloc(sizeof(t_cmdline));
+	ft_memset(data, 0, sizeof(*data));
 	if (!data)
 		return (NULL);
 	data->token = get_data_token(cmd_str);
-	//handle logical operators
-	//handle redirections
-	
+	handle_input_redir(data);
+	handle_output_redir(data);
+	print_cmd_struct(*data);
 	return (data);
 }
 
-int main(void)
+void	close_pipe(t_cmdline *cmd)
 {
-	char	**result;
-	char	*str = "echo \"Ciao $USER ciao\" | grep Ciao && echo \"Fine\" > out.txt";
-	int i = 0;
-
-	result = get_data_token(str);
-	while (result[i])
-	{
-		printf("%s\n", result[i]);
-		i++;
-	}
-	ft_free((void **)result, -1);
-	return (0);	
+	close(cmd->pipe[0]);
+	close(cmd->pipe[1]);
 }
 
-// t_list	**pipe_parsing(char *cmd_line)
-// {
-// 	t_cmdline	*data;
-// 	t_list		**head;
-// 	t_list		*node;
-// 	char	**splitted_cmd_line;
-// 	int	i;
+void	ft_fork(char *cmd_line)
+{
+	pid_t	pid;
+	t_cmdline	*data;
 
-// 	i = 0;
-// 	head = malloc(sizeof(t_list));
-// 	if (!head)
-// 		return (NULL);
-// 	*head = NULL;
-// 	splitted_cmd_line = ft_split(cmd_line, '|');
-// 	if (!splitted_cmd_line)
-// 		return (NULL);
-// 	while (splitted_cmd_line[i])
-// 	{
-// 		data = data_parsing(splitted_cmd_line[i]);
-// 		node = ft_lstnew((void *)data);
-// 		if (!node)
-// 			return (NULL);
-// 		ft_lstadd_back(head, node);
-// 		i++;		
-// 	}
-// 	ft_free((void **)splitted_cmd_line, -1);
-// 	return (head);
-// }
+	if (pipe(data->pipe) == -1)
+		perror("pipe");
+	pid = fork();
+	if (pid < 0)
+		perror("fork");
+	if (pid == 0)
+	{
+		data = data_parsing(cmd_line);
+		print_cmd_struct(*data);
+		dup2(data->pipe[1], STDOUT_FILENO);
+		close_pipe(cmd);
+		if (!(data->out_fd < 0))
+			close(cmd->out_fd);
+		// exec_command(*pipex, envp);
+	}
+	else
+	{
+		close(data->pipe[1]);
+		dup2(data->pipe[0], STDIN_FILENO);
+		close(data->pipe[0]);
+	}
+}
+
+t_list	**pipe_parsing(char *cmd_line)
+{
+	t_list		**head;
+	t_list		*node;
+	char	**splitted_cmd_line;
+	int	i;
+
+	i = 0;
+	head = malloc(sizeof(t_list));
+	if (!head)
+		return (NULL);
+	*head = NULL;
+	splitted_cmd_line = ft_split(cmd_line, '|');
+	if (!splitted_cmd_line)
+		return (NULL);
+	while (splitted_cmd_line[i])
+	{
+		ft_fork(splitted_cmd_line[i]);
+		node = ft_lstnew((void *)data);
+		if (!node)
+			return (NULL);
+		ft_lstadd_back(head, node);
+		i++;
+	}
+	ft_free((void **)splitted_cmd_line, -1);
+	return (head);
+}
