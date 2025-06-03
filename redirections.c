@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 08:22:00 by miricci           #+#    #+#             */
-/*   Updated: 2025/05/29 12:14:58 by miricci          ###   ########.fr       */
+/*   Updated: 2025/05/30 11:23:29 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,6 @@ void	print_cmd_struct(t_cmdline cmd)
 	printf("INFILE: %s\n", cmd.infile);
 	printf("OUTFILE: %s\n", cmd.outfile);
 }
-
-
 
 int	get_type_of_input(t_cmdline *cmd)
 {

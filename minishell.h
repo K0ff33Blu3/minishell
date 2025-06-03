@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:52:47 by miricci           #+#    #+#             */
-/*   Updated: 2025/05/29 13:19:03 by miricci          ###   ########.fr       */
+/*   Updated: 2025/05/30 11:04:03 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,8 @@ int	env(char **envp);
 int	echo(char *str, int n);
 
 // parsing.c
-t_list	**pipe_parsing(char *cmd_line);
-t_cmdline	*data_parsing(char *cmd_str);
+void	pipe_parsing(char *cmd_line);
+void	data_parsing(char *cmd_str, t_cmdline *data);
 
 // expand.c
 char	*expand_var_in_quotes(char *quote);
