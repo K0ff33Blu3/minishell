@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:50:27 by miricci           #+#    #+#             */
-/*   Updated: 2025/05/30 12:27:24 by miricci          ###   ########.fr       */
+/*   Updated: 2025/06/03 11:21:37 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ int	main(int argc, char **argv, char **envp)
 		// 	pwd();
 		rl_on_new_line();
 		rl_redisplay();
+		
 	}
 	rl_clear_history();
 	free(cmd_line);

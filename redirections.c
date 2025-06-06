@@ -6,30 +6,43 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 08:22:00 by miricci           #+#    #+#             */
-/*   Updated: 2025/05/30 11:23:29 by miricci          ###   ########.fr       */
+/*   Updated: 2025/06/03 11:51:12 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	print_cmd_struct(t_cmdline cmd)
+void	print_cmd_struct(t_cmdline cmd, int fd)
 {
 	int	i;
 
 	i = -1;
-	printf("\nTOKEN\n");
+	ft_putendl_fd("\nTOKEN", fd);
 	while (cmd.token[++i])
-		printf("token[%d]: %s\n", i, cmd.token[i]);
+	{
+		ft_putstr_fd("token[", fd);
+		ft_putnbr_fd(i, fd);
+		ft_putstr_fd("]: ", fd);
+		ft_putendl_fd(cmd.token[i], fd);
+	}
 	// printf("CMD: %s\n", cmd.cmd);
 	// printf("CMD_PATH: %s\n", cmd.cmd_path);
 	// i = -1;
 	// printf("\nCMD_PATH\n")
 	// while (cmd.cmd_path[++i])
 	// 	printf("token[%d]: %s\n", i, cmd.cmd_path[i]);
-	printf("IN_FD: %d\n", cmd.in_fd);
-	printf("OUT_FD: %d\n", cmd.out_fd);
-	printf("INFILE: %s\n", cmd.infile);
-	printf("OUTFILE: %s\n", cmd.outfile);
+	ft_putstr_fd("IN_FD: ", fd);
+	ft_putnbr_fd(cmd.in_fd, fd);
+	ft_putstr_fd("\n", fd);
+	ft_putstr_fd("OUT_FD: ", fd);
+	ft_putnbr_fd(cmd.out_fd, fd);
+	ft_putstr_fd("\n", fd);
+	ft_putstr_fd("INFILE: ", fd);
+	ft_putstr_fd(cmd.infile, fd);
+	ft_putstr_fd("\n", fd);
+	ft_putstr_fd("OUTFILE: ", fd);
+	ft_putstr_fd(cmd.outfile, fd);
+	ft_putstr_fd("\n", fd);
 }
 
 int	get_type_of_input(t_cmdline *cmd)

@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 13:03:04 by miricci           #+#    #+#             */
-/*   Updated: 2025/05/30 12:40:04 by miricci          ###   ########.fr       */
+/*   Updated: 2025/06/03 11:43:04 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	data_parsing(char *cmd_str, t_cmdline *data)
 	data->token = get_data_token(cmd_str);
 	handle_input_redir(data);
 	handle_output_redir(data);
-	print_cmd_struct(*data);
+	// print_cmd_struct(*data, fd);
 }
 
 void	close_pipe(t_cmdline *cmd)
@@ -83,7 +83,7 @@ void	close_pipe(t_cmdline *cmd)
 	close(cmd->pipe[1]);
 }
 
-void	ft_fork(char *cmd_line)
+void	ft_fork(char *cmd_line, int fd)
 {
 	pid_t	pid;
 	t_cmdline	*data;
@@ -97,7 +97,7 @@ void	ft_fork(char *cmd_line)
 	if (pid == 0)
 	{
 		data_parsing(cmd_line, data);
-		print_cmd_struct(*data);
+		print_cmd_struct(*data, fd);
 		dup2(data->pipe[1], STDOUT_FILENO);
 		close_pipe(data);
 		// if (!(data->out_fd < 0))
@@ -118,7 +118,9 @@ void	pipe_parsing(char *cmd_line)
 	// t_list		*node;
 	char	**splitted_cmd_line;
 	int	i;
-
+	int fd = open("output_check", O_RDWR);
+	if (fd < 0)
+		return ;
 	i = 0;
 	// head = malloc(sizeof(t_list));
 	// if (!head)
@@ -129,8 +131,8 @@ void	pipe_parsing(char *cmd_line)
 		return ;
 	while (splitted_cmd_line[i])
 	{
-		ft_fork(splitted_cmd_line[i]);
-		ft_putnbr_fd(i, 2);
+		ft_fork(splitted_cmd_line[i], fd);
+		ft_putnbr_fd(i, fd);
 		// node = ft_lstnew((void *)data);
 		// if (!node)
 		// 	return (NULL);

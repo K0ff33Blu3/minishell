@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:52:47 by miricci           #+#    #+#             */
-/*   Updated: 2025/05/30 11:04:03 by miricci          ###   ########.fr       */
+/*   Updated: 2025/06/03 11:17:22 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,6 @@ int	handle_input_redir(t_cmdline *cmd);
 int	handle_output_redir(t_cmdline *cmd);
 
 // utils ??
-void	print_cmd_struct(t_cmdline cmd);
+void	print_cmd_struct(t_cmdline cmd, int fd);
 
 #endif
