@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:52:47 by miricci           #+#    #+#             */
-/*   Updated: 2025/06/03 11:17:22 by miricci          ###   ########.fr       */
+/*   Updated: 2025/06/11 11:17:47 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <signal.h>
+# include <sys/wait.h>
 # include <sys/ioctl.h>
 
 # define PROMPT "\033[36mMINISHELL@ \033[0m"
@@ -80,5 +81,6 @@ int	handle_output_redir(t_cmdline *cmd);
 
 // utils ??
 void	print_cmd_struct(t_cmdline cmd, int fd);
+int	is_emptystr(char *str);
 
 #endif

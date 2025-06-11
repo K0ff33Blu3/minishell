@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:50:27 by miricci           #+#    #+#             */
-/*   Updated: 2025/06/03 11:21:37 by miricci          ###   ########.fr       */
+/*   Updated: 2025/06/11 11:18:52 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,17 +28,18 @@ int	main(int argc, char **argv, char **envp)
 		cmd_line = readline(PROMPT);
 		if (!cmd_line)
 			break ;
-		if (*cmd_line)
+		if (*cmd_line && !is_emptystr(cmd_line))
+		{
 			add_history(cmd_line);
-		pipe_parsing(cmd_line);
+			pipe_parsing(cmd_line);
+		}
 		// print_list(prova, "LIST");
 		// if (!ft_strncmp(cmd_line, "env", 2))
 		// 	env(envp);
 		// else if (!ft_strncmp(cmd_line, "pwd", 2))
 		// 	pwd();
-		rl_on_new_line();
-		rl_redisplay();
-		
+		// rl_on_new_line();
+		// rl_redisplay();
 	}
 	rl_clear_history();
 	free(cmd_line);

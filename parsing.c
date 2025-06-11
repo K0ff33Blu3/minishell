@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 13:03:04 by miricci           #+#    #+#             */
-/*   Updated: 2025/06/03 11:43:04 by miricci          ###   ########.fr       */
+/*   Updated: 2025/06/11 12:32:33 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,6 @@ void	data_parsing(char *cmd_str, t_cmdline *data)
 	data->token = get_data_token(cmd_str);
 	handle_input_redir(data);
 	handle_output_redir(data);
-	// print_cmd_struct(*data, fd);
 }
 
 void	close_pipe(t_cmdline *cmd)
@@ -83,10 +82,12 @@ void	close_pipe(t_cmdline *cmd)
 	close(cmd->pipe[1]);
 }
 
-void	ft_fork(char *cmd_line, int fd)
+void	ft_fork(char *cmd_line, int fd, int i, int size)
 {
 	pid_t	pid;
 	t_cmdline	*data;
+	// int	status;
+	// (void)fd;
 
 	data = data_init();
 	if (pipe(data->pipe) == -1)
@@ -98,7 +99,10 @@ void	ft_fork(char *cmd_line, int fd)
 	{
 		data_parsing(cmd_line, data);
 		print_cmd_struct(*data, fd);
-		dup2(data->pipe[1], STDOUT_FILENO);
+		if (i > 0)
+			dup2(data->pipe[0], STDIN_FILENO);
+		if (i < size - 1)
+			dup2(data->pipe[1], STDOUT_FILENO);
 		close_pipe(data);
 		// if (!(data->out_fd < 0))
 		// 	close(data->out_fd);
@@ -106,9 +110,7 @@ void	ft_fork(char *cmd_line, int fd)
 	}
 	else
 	{
-		close(data->pipe[1]);
-		dup2(data->pipe[0], STDIN_FILENO);
-		close(data->pipe[0]);
+		close_pipe(data);
 	}
 }
 
@@ -118,6 +120,7 @@ void	pipe_parsing(char *cmd_line)
 	// t_list		*node;
 	char	**splitted_cmd_line;
 	int	i;
+	int	size;
 	int fd = open("output_check", O_RDWR);
 	if (fd < 0)
 		return ;
@@ -129,9 +132,10 @@ void	pipe_parsing(char *cmd_line)
 	splitted_cmd_line = ft_split(cmd_line, '|');
 	if (!splitted_cmd_line)
 		return ;
+	size = array_size((void **)splitted_cmd_line);
 	while (splitted_cmd_line[i])
 	{
-		ft_fork(splitted_cmd_line[i], fd);
+		ft_fork(splitted_cmd_line[i], fd, i, size);
 		ft_putnbr_fd(i, fd);
 		// node = ft_lstnew((void *)data);
 		// if (!node)
@@ -139,6 +143,8 @@ void	pipe_parsing(char *cmd_line)
 		// ft_lstadd_back(head, node);
 		i++;
 	}
+	while (wait(NULL) != -1)
+		;
 	ft_free((void **)splitted_cmd_line, -1);
 	// return (head);
 }

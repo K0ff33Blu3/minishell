@@ -6,44 +6,11 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 08:22:00 by miricci           #+#    #+#             */
-/*   Updated: 2025/06/03 11:51:12 by miricci          ###   ########.fr       */
+/*   Updated: 2025/06/11 11:17:26 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	print_cmd_struct(t_cmdline cmd, int fd)
-{
-	int	i;
-
-	i = -1;
-	ft_putendl_fd("\nTOKEN", fd);
-	while (cmd.token[++i])
-	{
-		ft_putstr_fd("token[", fd);
-		ft_putnbr_fd(i, fd);
-		ft_putstr_fd("]: ", fd);
-		ft_putendl_fd(cmd.token[i], fd);
-	}
-	// printf("CMD: %s\n", cmd.cmd);
-	// printf("CMD_PATH: %s\n", cmd.cmd_path);
-	// i = -1;
-	// printf("\nCMD_PATH\n")
-	// while (cmd.cmd_path[++i])
-	// 	printf("token[%d]: %s\n", i, cmd.cmd_path[i]);
-	ft_putstr_fd("IN_FD: ", fd);
-	ft_putnbr_fd(cmd.in_fd, fd);
-	ft_putstr_fd("\n", fd);
-	ft_putstr_fd("OUT_FD: ", fd);
-	ft_putnbr_fd(cmd.out_fd, fd);
-	ft_putstr_fd("\n", fd);
-	ft_putstr_fd("INFILE: ", fd);
-	ft_putstr_fd(cmd.infile, fd);
-	ft_putstr_fd("\n", fd);
-	ft_putstr_fd("OUTFILE: ", fd);
-	ft_putstr_fd(cmd.outfile, fd);
-	ft_putstr_fd("\n", fd);
-}
 
 int	get_type_of_input(t_cmdline *cmd)
 {
@@ -115,6 +82,8 @@ int	handle_input_redir(t_cmdline *cmd)
 		close(cmd->tmp_pipe[0]);
 		close(cmd->tmp_pipe[1]);
 	}
+	else if (type_of_redir == 0)
+		cmd->infile = ft_strdup("STDIN_FILENO");
 	return (type_of_redir);
 }
 
@@ -152,8 +121,11 @@ int	handle_output_redir(t_cmdline *cmd)
 		close(cmd->out_fd);
 	}
 	else
+	{
 		cmd->out_fd = STDOUT_FILENO;
-	return (free(outfile), type);
+		cmd->outfile = ft_strdup("STDOUT_FILENO");
+	}
+	return (type);
 }
 
 // int	handle_output_redir(t_cmdline *cmd)
