@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:52:47 by miricci           #+#    #+#             */
-/*   Updated: 2025/06/11 11:17:47 by miricci          ###   ########.fr       */
+/*   Updated: 2025/06/11 16:42:04 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,8 @@ int	echo(char *str, int n);
 
 // parsing.c
 void	pipe_parsing(char *cmd_line);
-void	data_parsing(char *cmd_str, t_cmdline *data);
+void	data_parsing(char *cmd_str, t_cmdline *data, int fd);
+// void	data_parsing(char *cmd_str, t_cmdline *data);
 
 // expand.c
 char	*expand_var_in_quotes(char *quote);
@@ -82,5 +83,9 @@ int	handle_output_redir(t_cmdline *cmd);
 // utils ??
 void	print_cmd_struct(t_cmdline cmd, int fd);
 int	is_emptystr(char *str);
+void	close_pipe(t_cmdline *cmd);
+
+// find_cmd_path
+void	cmd_not_found(t_cmdline *data);
 
 #endif

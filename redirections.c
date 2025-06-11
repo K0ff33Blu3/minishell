@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 08:22:00 by miricci           #+#    #+#             */
-/*   Updated: 2025/06/11 11:17:26 by miricci          ###   ########.fr       */
+/*   Updated: 2025/06/11 17:03:08 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int	get_type_of_input(t_cmdline *cmd)
 		{
 			// free(infile);
 			infile = cmd->token[i + 1];
-			type = 1;			
+			type = 1;
 		}
 		if(!ft_strncmp(cmd->token[i], "<<", 3) && cmd->token[i + 1])
 		{
