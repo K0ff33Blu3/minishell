@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 08:22:00 by miricci           #+#    #+#             */
-/*   Updated: 2025/06/12 11:42:46 by miricci          ###   ########.fr       */
+/*   Updated: 2025/06/12 13:07:33 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,24 +90,27 @@ int	handle_input_redir(t_cmdline *cmd)
 void	open_outfile(t_cmdline *cmd, int i, int *flag, char **outfile)
 {
 	free(*outfile);
-		*outfile = ft_strdup(cmd->token[i + 1]);
+	*outfile = ft_strdup(cmd->token[i + 1]);
 	if (!ft_strncmp(cmd->token[i], ">", 2))
+	{
 		cmd->out_fd = open(*outfile, O_WRONLY | O_CREAT | O_TRUNC, 0664);
+		*flag = 1;
+	}
 	else if (!ft_strncmp(cmd->token[i], ">>", 3))
+	{
 		cmd->out_fd = open(*outfile, O_WRONLY | O_CREAT | O_APPEND, 0664);
-	*flag = 1;
+		*flag = 2;	
+	}
 }
 
 int	handle_output_redir(t_cmdline *cmd)
 {
-	int	type;
 	int	i;
 	char	*outfile;
 	int	flag;
 
-	flag = 0;
-	type = 0;
 	i = -1;
+	flag = 0;
 	outfile = NULL;
 	while (cmd->token[++i])
 	{
@@ -118,14 +121,14 @@ int	handle_output_redir(t_cmdline *cmd)
 	{
 		cmd->outfile = ft_strdup(outfile);
 		dup2(cmd->out_fd, STDOUT_FILENO);
-		close(cmd->out_fd);
+		close(cmd->out_fd);	
 	}
 	else
 	{
 		cmd->out_fd = STDOUT_FILENO;
 		cmd->outfile = ft_strdup("STDOUT_FILENO");
 	}
-	return (type);
+	return (flag);
 }
 
 // int	handle_output_redir(t_cmdline *cmd)

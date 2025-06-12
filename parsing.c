@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 13:03:04 by miricci           #+#    #+#             */
-/*   Updated: 2025/06/12 11:40:48 by miricci          ###   ########.fr       */
+/*   Updated: 2025/06/12 13:10:24 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,15 +142,16 @@ void	ft_fork(char *cmd_line, int fd, int i, int size)
 	{
 		data_parsing(cmd_line, data, fd);
 		print_cmd_struct(*data, fd);
-		if (i > 0)
+		if (i > 0 && !data->infile)
 			dup2(data->pipe[0], STDIN_FILENO);
-		if (i < size - 1)
+		if (i < size - 1 && !data->outfile)
 			dup2(data->pipe[1], STDOUT_FILENO);
 		close_pipe(data);
 		// exec_command(*pipex, envp);
 	}
 	else
 	{
+		ft_putstr_fd("TEST!\n", STDOUT_FILENO);
 		// wait(NULL);		//da togliere
 		close_pipe(data);
 	}
@@ -171,8 +172,8 @@ void	pipe_parsing(char *cmd_line)
 	size = array_size((void **)splitted_cmd_line);
 	while (splitted_cmd_line[i])
 	{
-		ft_fork(splitted_cmd_line[i], fd, i, size);
-		ft_putnbr_fd(i, fd);
+		ft_fork(splitted_cmd_line[i], 1, i, size);
+		// ft_putnbr_fd(i, 1);
 		i++;
 	}
 	while (wait(NULL) != -1)

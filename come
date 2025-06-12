@@ -1,2 +1,15 @@
-[?2004h[36mMINISHELL@ [0m^C[?2004l
-[36mMINISHELL@ [0m[?2004h[?2004l
+
+nbr_redir: 1
+arg_size: 2
+TOKEN
+token[0]: ciao
+token[1]: >
+token[2]: come
+token[3]: stai
+IN_FD: 0
+OUT_FD: 6
+INFILE: STDIN_FILENO
+OUTFILE: come
+cmd_arg[0]: ciao
+cmd_arg[1]: stai
+[?2004h[36mMINISHELL@ [0m[?2004l
