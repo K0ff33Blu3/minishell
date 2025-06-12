@@ -1,33 +1,15 @@
-nbr_redir: 0
+0
+nbr_redir: 1
+arg_size: 2
 TOKEN
 token[0]: ciao
 token[1]: come
-token[2]: stai
+token[2]: >
+token[3]: stai
 IN_FD: 0
-OUT_FD: 1
+OUT_FD: 6
 INFILE: STDIN_FILENO
-OUTFILE: STDOUT_FILENO
+OUTFILE: stai
 cmd_arg[0]: ciao
 cmd_arg[1]: come
-cmd_arg[2]: stai
-0nbr_redir: 0
-TOKEN
-token[0]: diocane
-token[1]: bastardo
-IN_FD: 0
-OUT_FD: 1
-INFILE: STDIN_FILENO
-OUTFILE: STDOUT_FILENO
-cmd_arg[0]: diocane
-cmd_arg[1]: bastardo
-110nbr_redir: 0
-TOKEN
-token[0]: diocane
-to1ken[1]: bastardo
-IN_FD: 0
-OUT_FD: 1
-INFILE: STDIN_FILENO
-OUTFILE: STDOUT_FILENO
-cmd_arg[0]: diocane
-cmd_arg[1]: bastardo
-1
+0

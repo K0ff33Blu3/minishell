@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 13:03:04 by miricci           #+#    #+#             */
-/*   Updated: 2025/06/11 17:03:20 by miricci          ###   ########.fr       */
+/*   Updated: 2025/06/12 11:40:48 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,23 +91,29 @@ char	**parse_cmd_args(char **token, int fd)
 	int	j;
 	char	**arg;
 	int	nbr_redir;
+	int	arg_size;
 
 	nbr_redir = count_redir(token);
-	ft_putstr_fd("nbr_redir: ", fd);
+	ft_putstr_fd("\nnbr_redir: ", fd);
 	ft_putnbr_fd(nbr_redir, fd);
-	arg = malloc(sizeof(char * ) * (array_size((void **)token) - (nbr_redir * 2)) + 1);
+	arg_size = array_size((void **)token) - (nbr_redir * 2);
+	ft_putstr_fd("\narg_size: ", fd);
+	ft_putnbr_fd(arg_size, fd);
+	arg = malloc(sizeof(char * ) * (arg_size + 1));
 	if (!arg)
 		return (NULL);
 	i = 0;
 	j = 0;
 	while (token[i])
 	{
-		if (*token[i] != '>' || *token[i] != '<'
-			|| *token[i - 1] != '>' || *token[i - 1] != '<')
-			arg[j] = ft_strdup(token[i]);
-		i++;
-		j++;
+		if (*token[i] == '>' || *token[i] == '<')
+			i++;
+		else if (i > 0 && (*token[i - 1] == '>' || *token[i - 1] == '<'))
+			i++;
+		else
+			arg[j++] = ft_strdup(token[i++]);
 	}
+	arg[j] = NULL;
 	return (arg);
 }
 
@@ -145,7 +151,7 @@ void	ft_fork(char *cmd_line, int fd, int i, int size)
 	}
 	else
 	{
-		wait(NULL);
+		// wait(NULL);		//da togliere
 		close_pipe(data);
 	}
 }
