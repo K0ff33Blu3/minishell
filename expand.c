@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 11:40:06 by miricci           #+#    #+#             */
-/*   Updated: 2025/05/29 11:47:08 by miricci          ###   ########.fr       */
+/*   Updated: 2025/06/12 14:47:10 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ char	*expand_var_in_quotes(char *quote)
 		return (NULL);
 	value = getenv(var);
 	if (value)
-		return (free(var), value);
+		return (free(var), ft_strdup(value));
 	return (var);
 }
 
@@ -38,10 +38,10 @@ char	*expand_var(char *var)
 	char	*value;
 
 	name_var = var + 1;
-	value = ft_strdup(getenv(name_var));
+	value = getenv(name_var);
 	if (value)
-		return (value);
-	return (var);
+		return (ft_strdup(value));
+	return (ft_strdup(var));
 }
 
 char	*expanded_quote(char *quote)
@@ -50,13 +50,16 @@ char	*expanded_quote(char *quote)
 	char	*partial_str;
 	char	*final_str;
 	int	start_quote;
-	char	*end_str;
+	// char	*end_str;
+	char	*value;
 
 	start_quote = ft_strchr(quote, '$') - quote;
 	start_str = ft_substr(quote, 0, start_quote);
-	partial_str = ft_strjoin(start_str, expand_var_in_quotes(quote));
-	end_str = ft_strchr(quote, '$') + word_len(quote, start_quote);
-	final_str = ft_strjoin(partial_str, end_str);
+	value = expand_var_in_quotes(quote);
+	partial_str = ft_strjoin(start_str, value);
+	// end_str = ft_strchr(quote, '$') + word_len(quote, start_quote);
+	final_str = ft_strjoin(partial_str, (ft_strchr(quote, '$') + word_len(quote, start_quote)));
+	free(value);
 	free(start_str);
 	free(partial_str);
 	return (final_str);

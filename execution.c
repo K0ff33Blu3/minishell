@@ -1,38 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/16 11:50:27 by miricci           #+#    #+#             */
-/*   Updated: 2025/06/12 14:58:27 by miricci          ###   ########.fr       */
+/*   Created: 2025/06/12 14:51:52 by miricci           #+#    #+#             */
+/*   Updated: 2025/06/12 15:07:19 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	g_last_sig = 0;
-
-int	main(int argc, char **argv, char **envp)
+void	exec_command(t_cmdline *data, char **envp)
 {
-	char	*cmd_line;
-
-	(void)argc;
-	(void)argv;
-	while (1)
+	if (access(data->cmd_path, X_OK) != -1)
 	{
-		ft_empty_initializer();
-		cmd_line = readline(PROMPT);
-		if (!cmd_line)
-			break ;
-		if (*cmd_line && !is_emptystr(cmd_line))
+		if (execve(data->cmd_path, data->cmd_args, envp) < 0)
 		{
-			add_history(cmd_line);
-			pipe_parsing(cmd_line, envp);
+			ft_free((void **)data->cmd_args, -1);
+			free(data->cmd);
+			free(data->cmd_path);
+			ft_error("execve");
 		}
 	}
-	rl_clear_history();
-	free(cmd_line);
-	return (0);
 }

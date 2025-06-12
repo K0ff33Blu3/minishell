@@ -12,4 +12,5 @@ INFILE: STDIN_FILENO
 OUTFILE: come
 cmd_arg[0]: ciao
 cmd_arg[1]: stai
-[?2004h[36mMINISHELL@ [0m[?2004l
+[?2004h[36mMINISHELL@ [0m^C[?2004l
+[36mMINISHELL@ [0m[?2004h[?2004l

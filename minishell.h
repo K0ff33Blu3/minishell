@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:52:47 by miricci           #+#    #+#             */
-/*   Updated: 2025/06/11 16:42:04 by miricci          ###   ########.fr       */
+/*   Updated: 2025/06/12 15:17:25 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,14 @@ int	env(char **envp);
 int	echo(char *str, int n);
 
 // parsing.c
-void	pipe_parsing(char *cmd_line);
-void	data_parsing(char *cmd_str, t_cmdline *data, int fd);
-// void	data_parsing(char *cmd_str, t_cmdline *data);
+char	**remove_quotes(char **str); 
+char	**get_data_token(char *str);
+t_cmdline	*data_init(void);
+char	**parse_cmd_args(char **token);
+void	ft_fork(char *cmd_line, int fd, int i, int size, char **envp);
+void	pipe_parsing(char *cmd_line, char **envp);
+// void	data_parsing(char *cmd_str, t_cmdline *data, int fd);
+void	data_parsing(char *cmd_str, t_cmdline *data);
 
 // expand.c
 char	*expand_var_in_quotes(char *quote);
@@ -80,12 +85,18 @@ void	ft_empty_initializer(void);
 int	handle_input_redir(t_cmdline *cmd);
 int	handle_output_redir(t_cmdline *cmd);
 
-// utils ??
+// utils.c
 void	print_cmd_struct(t_cmdline cmd, int fd);
 int	is_emptystr(char *str);
 void	close_pipe(t_cmdline *cmd);
+void	ft_error(char *str);
 
 // find_cmd_path
 void	cmd_not_found(t_cmdline *data);
+char	*find_cmd_path(t_cmdline *data);
+
+// execution.c
+void	exec_command(t_cmdline *data, char **envp);
+
 
 #endif

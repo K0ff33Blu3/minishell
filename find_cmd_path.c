@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 15:15:11 by miricci           #+#    #+#             */
-/*   Updated: 2025/06/11 16:06:01 by miricci          ###   ########.fr       */
+/*   Updated: 2025/06/12 15:00:28 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ char	*find_cmd_path(t_cmdline *data)
 	env_path = getenv("PATH");
 	if (!env_path)
 		cmd_not_found(data);
-	array = ft_split(env_path + 5, ':');
+	array = ft_split(env_path, ':');
 	i = 0;
 	while (array[i])
 	{

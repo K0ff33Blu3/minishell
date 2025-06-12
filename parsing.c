@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 13:03:04 by miricci           #+#    #+#             */
-/*   Updated: 2025/06/12 13:10:24 by miricci          ###   ########.fr       */
+/*   Updated: 2025/06/12 15:22:27 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ t_cmdline	*data_init(void)
 	return (data);
 }
 
-int	count_redir(char **token)
+static int	count_redir(char **token)
 {
 	int	i;
 	int	count;
@@ -85,7 +85,7 @@ int	count_redir(char **token)
 	return (count);
 }
 
-char	**parse_cmd_args(char **token, int fd)
+char	**parse_cmd_args(char **token)
 {
 	int	i;
 	int	j;
@@ -94,11 +94,7 @@ char	**parse_cmd_args(char **token, int fd)
 	int	arg_size;
 
 	nbr_redir = count_redir(token);
-	ft_putstr_fd("\nnbr_redir: ", fd);
-	ft_putnbr_fd(nbr_redir, fd);
 	arg_size = array_size((void **)token) - (nbr_redir * 2);
-	ft_putstr_fd("\narg_size: ", fd);
-	ft_putnbr_fd(arg_size, fd);
 	arg = malloc(sizeof(char * ) * (arg_size + 1));
 	if (!arg)
 		return (NULL);
@@ -117,15 +113,19 @@ char	**parse_cmd_args(char **token, int fd)
 	return (arg);
 }
 
-void	data_parsing(char *cmd_str, t_cmdline *data, int fd)
+void	data_parsing(char *cmd_str, t_cmdline *data)
 {
 	data->token = get_data_token(cmd_str);
 	handle_input_redir(data);
 	handle_output_redir(data);
-	data->cmd_args = parse_cmd_args(data->token, fd);
+	data->cmd_args = parse_cmd_args(data->token);
+	data->cmd = ft_strdup(data->cmd_args[0]);
+	data->cmd_path = find_cmd_path(data);
+	if (!data->cmd_path)
+		cmd_not_found(data);
 }
 
-void	ft_fork(char *cmd_line, int fd, int i, int size)
+void	ft_fork(char *cmd_line, int fd, int i, int size, char **envp)
 {
 	pid_t	pid;
 	t_cmdline	*data;
@@ -140,43 +140,42 @@ void	ft_fork(char *cmd_line, int fd, int i, int size)
 		perror("fork");
 	if (pid == 0)
 	{
-		data_parsing(cmd_line, data, fd);
+		data_parsing(cmd_line, data);
 		print_cmd_struct(*data, fd);
 		if (i > 0 && !data->infile)
 			dup2(data->pipe[0], STDIN_FILENO);
 		if (i < size - 1 && !data->outfile)
 			dup2(data->pipe[1], STDOUT_FILENO);
 		close_pipe(data);
-		// exec_command(*pipex, envp);
+		exec_command(data, envp);
 	}
 	else
 	{
-		ft_putstr_fd("TEST!\n", STDOUT_FILENO);
 		// wait(NULL);		//da togliere
 		close_pipe(data);
 	}
 }
 
-void	pipe_parsing(char *cmd_line)
+void	pipe_parsing(char *cmd_line, char **envp)
 {
-	char	**splitted_cmd_line;
+	char	**split_cmd_line;
 	int	i;
 	int	size;
 	int fd = open("output_check", O_RDWR);
 	if (fd < 0)
 		return ;
 	i = 0;
-	splitted_cmd_line = ft_split(cmd_line, '|');
-	if (!splitted_cmd_line)
+	split_cmd_line = ft_split(cmd_line, '|');
+	if (!split_cmd_line)
 		return ;
-	size = array_size((void **)splitted_cmd_line);
-	while (splitted_cmd_line[i])
+	size = array_size((void **)split_cmd_line);
+	while (split_cmd_line[i])
 	{
-		ft_fork(splitted_cmd_line[i], 1, i, size);
+		ft_fork(split_cmd_line[i], 1, i, size, envp);
 		// ft_putnbr_fd(i, 1);
 		i++;
 	}
 	while (wait(NULL) != -1)
 		;
-	ft_free((void **)splitted_cmd_line, -1);
+	ft_free((void **)split_cmd_line, -1);
 }

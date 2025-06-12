@@ -1,0 +1,18 @@
+
+TOKEN
+token[0]: echo
+token[1]: >
+token[2]: new_file
+token[3]: ciao
+cmd: echo
+cmd_path: /usr/bin/echo
+
+CMD_ARG
+cmd_arg[0]: echo
+cmd_arg[1]: ciao
+in_fd: 0
+out_fd: 7
+infile: STDIN_FILENO
+outfile: new_file
+
+ciao
