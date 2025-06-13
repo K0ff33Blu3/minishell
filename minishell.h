@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
+/*   By: emondo <emondo@student.42firenze.it>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:52:47 by miricci           #+#    #+#             */
-/*   Updated: 2025/06/12 16:29:41 by miricci          ###   ########.fr       */
+/*   Updated: 2025/06/13 11:27:37 by emondo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,9 @@
 # include <sys/ioctl.h>
 
 # define PROMPT "\033[36mMINISHELL@ \033[0m"
+
+// MACRO
+# define CMD_NOT_FOUND 127
 
 extern int	g_last_sig;
 
@@ -41,6 +44,10 @@ typedef struct s_cmdline
 	int	pipe[2];
 	
 }	t_cmdline;
+//execute_builtin
+int	execute_builtin(t_cmdline *data);
+//echo_build.c
+int	echo_builtin(t_cmdline *data);
 
 // build_in_cmd.c
 int	pwd(void);
