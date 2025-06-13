@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 08:22:00 by miricci           #+#    #+#             */
-/*   Updated: 2025/06/12 13:07:33 by miricci          ###   ########.fr       */
+/*   Updated: 2025/06/12 16:31:58 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,7 @@ int	handle_output_redir(t_cmdline *cmd)
 	else
 	{
 		cmd->out_fd = STDOUT_FILENO;
-		cmd->outfile = ft_strdup("STDOUT_FILENO");
+		cmd->outfile = ft_strdup("STDIN_FILENO");
 	}
 	return (flag);
 }

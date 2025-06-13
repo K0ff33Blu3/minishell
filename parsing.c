@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 13:03:04 by miricci           #+#    #+#             */
-/*   Updated: 2025/06/12 15:22:27 by miricci          ###   ########.fr       */
+/*   Updated: 2025/06/12 16:30:24 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,8 +116,8 @@ char	**parse_cmd_args(char **token)
 void	data_parsing(char *cmd_str, t_cmdline *data)
 {
 	data->token = get_data_token(cmd_str);
-	handle_input_redir(data);
-	handle_output_redir(data);
+	data->has_infile = handle_input_redir(data);
+	data->has_outfile = handle_output_redir(data);
 	data->cmd_args = parse_cmd_args(data->token);
 	data->cmd = ft_strdup(data->cmd_args[0]);
 	data->cmd_path = find_cmd_path(data);
@@ -125,57 +125,3 @@ void	data_parsing(char *cmd_str, t_cmdline *data)
 		cmd_not_found(data);
 }
 
-void	ft_fork(char *cmd_line, int fd, int i, int size, char **envp)
-{
-	pid_t	pid;
-	t_cmdline	*data;
-	// int	status;
-	// (void)fd;
-
-	data = data_init();
-	if (pipe(data->pipe) == -1)
-		perror("pipe");
-	pid = fork();
-	if (pid < 0)
-		perror("fork");
-	if (pid == 0)
-	{
-		data_parsing(cmd_line, data);
-		print_cmd_struct(*data, fd);
-		if (i > 0 && !data->infile)
-			dup2(data->pipe[0], STDIN_FILENO);
-		if (i < size - 1 && !data->outfile)
-			dup2(data->pipe[1], STDOUT_FILENO);
-		close_pipe(data);
-		exec_command(data, envp);
-	}
-	else
-	{
-		// wait(NULL);		//da togliere
-		close_pipe(data);
-	}
-}
-
-void	pipe_parsing(char *cmd_line, char **envp)
-{
-	char	**split_cmd_line;
-	int	i;
-	int	size;
-	int fd = open("output_check", O_RDWR);
-	if (fd < 0)
-		return ;
-	i = 0;
-	split_cmd_line = ft_split(cmd_line, '|');
-	if (!split_cmd_line)
-		return ;
-	size = array_size((void **)split_cmd_line);
-	while (split_cmd_line[i])
-	{
-		ft_fork(split_cmd_line[i], 1, i, size, envp);
-		// ft_putnbr_fd(i, 1);
-		i++;
-	}
-	while (wait(NULL) != -1)
-		;
-	ft_free((void **)split_cmd_line, -1);
-}

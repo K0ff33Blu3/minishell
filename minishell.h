@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:52:47 by miricci           #+#    #+#             */
-/*   Updated: 2025/06/12 15:17:25 by miricci          ###   ########.fr       */
+/*   Updated: 2025/06/12 16:29:41 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ typedef struct s_cmdline
 	char	*infile;
 	char	*outfile;
 	char	*limiter;
+	int	has_infile;
+	int	has_outfile;
 	int	tmp_pipe[2];
 	int	pipe[2];
 	
@@ -50,9 +52,6 @@ char	**remove_quotes(char **str);
 char	**get_data_token(char *str);
 t_cmdline	*data_init(void);
 char	**parse_cmd_args(char **token);
-void	ft_fork(char *cmd_line, int fd, int i, int size, char **envp);
-void	pipe_parsing(char *cmd_line, char **envp);
-// void	data_parsing(char *cmd_str, t_cmdline *data, int fd);
 void	data_parsing(char *cmd_str, t_cmdline *data);
 
 // expand.c
@@ -97,6 +96,10 @@ char	*find_cmd_path(t_cmdline *data);
 
 // execution.c
 void	exec_command(t_cmdline *data, char **envp);
+void	one_cmd(char *cmd_line, int fd, char **envp);
 
+// pipe.c
+void	piping(char **cmd_line, int size, char **envp);
+void	create_pipe(char *cmd_line, int i, int size, char **envp, int (*pip)[2]);
 
 #endif
