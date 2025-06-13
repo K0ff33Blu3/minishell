@@ -1,0 +1,16 @@
+
+nbr_redir: 1
+arg_size: 1
+TOKEN
+token[0]: midd
+token[1]: >
+token[2]: ddd
+IN_FD: 0
+OUT_FD: 6
+INFILE: STDIN_FILENO
+OUTFILE: ddd
+cmd_arg[0]: midd
+[?2004h[36mMINISHELL@ [0m^C[?2004l
+[36mMINISHELL@ [0m[?2004h^C[?2004l
+
+[?2004h[?2004l

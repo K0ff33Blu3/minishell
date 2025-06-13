@@ -1,0 +1,48 @@
+
+TOKEN
+token[0]: mMINISHELL@
+token[1]: mmMINISHELL@
+token[2]: mmMINISHELL@
+token[3]: mciao
+token[4]: >
+token[5]: sisis2IN_FD: 0
+OUT_FD: 6
+INFILE: (null)
+OUTFILE: stoken
+TOKEN
+token[0]: mMINISHELL@
+token[1]: mmMINISHELL@
+token[2]: mmMINISHELL@
+token[3]: mciao
+token[4]: >
+token[5]: sisis
+IN_FD: 0
+OUT_FD: 6
+INFILE: (null)
+OUTFILE: sisis
+D: 0
+OUT_FD: 7
+INFILE: (null)
+OUTFILE: sisis
+
+TOKEN
+token[0]: mMINISHELL@
+token[1]: mmMINISHELL@
+token[2]: mmMINISHELL@
+token[3]: mciao
+token[4]: >
+token[5]: sisis2004hmMINISHELL@
+token[6]: mciao
+token[7]: >
+token[8]: sisismMINISHELL@
+token[9]: mmMINISHELL@
+token[10]: mmMINISHELL@
+token[11]: mmMINISHELL@
+token[12]: mmMINISHELL@
+token[13]: mciao
+token[14]: >
+token[15]: sisis
+IN_FD: 0
+OUT_FD: 7
+INFILE: (null)
+OUTFILE: sisis

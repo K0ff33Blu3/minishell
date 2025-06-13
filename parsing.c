@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
+/*   By: emondo <emondo@student.42firenze.it>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 13:03:04 by miricci           #+#    #+#             */
-/*   Updated: 2025/06/12 16:30:24 by miricci          ###   ########.fr       */
+/*   Updated: 2025/06/13 12:59:23 by emondo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,7 @@ void	data_parsing(char *cmd_str, t_cmdline *data)
 	data->has_outfile = handle_output_redir(data);
 	data->cmd_args = parse_cmd_args(data->token);
 	data->cmd = ft_strdup(data->cmd_args[0]);
+	execute_builtin(data);
 	data->cmd_path = find_cmd_path(data);
 	if (!data->cmd_path)
 		cmd_not_found(data);
