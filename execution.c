@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 14:51:52 by miricci           #+#    #+#             */
-/*   Updated: 2025/06/14 13:01:16 by miricci          ###   ########.fr       */
+/*   Updated: 2025/06/14 13:33:33 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	one_cmd(t_cmdline *data, int fd, char **envp)
 	if (pid == 0)
 	{
 		data_parsing(data->all_cmd_lines[0], data);
-		print_cmd_struct(*data, 1);
+		// print_cmd_struct(*data, 1);
 		exec_command(data, envp);
 	}
 }

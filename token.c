@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 13:24:24 by miricci           #+#    #+#             */
-/*   Updated: 2025/05/28 12:55:52 by miricci          ###   ########.fr       */
+/*   Updated: 2025/06/14 13:27:53 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,10 +139,11 @@ char	**re_tokenize(char **arr, int size)
 
 // int	main()
 // {
-// 	char	*array[4] = {
-// 		"ciao", "$$", "\"come\" ciao", "stai$"
-// 	};
-// 	char	**res = re_tokenize(array, 4);
+// 	// char	*array[4] = {
+// 	// 	"ciao", "$$", "\"come\" ciao", "stai$"
+// 	// };
+// 	char *test = "ls -l";
+// 	char	**res = tokenize(test);
 // 	int	i = 0;
 // 	while (res[i])
 // 		printf("res: %s\n", res[i++]);
