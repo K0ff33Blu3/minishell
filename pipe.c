@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 15:52:14 by miricci           #+#    #+#             */
-/*   Updated: 2025/06/13 12:37:54 by miricci          ###   ########.fr       */
+/*   Updated: 2025/06/13 14:18:26 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	piping(char **cmd_line, int size, char **envp)
 	i = -1;
 	while (++i < size)
 	{
-		if (i < size -1 && pipe(pip[i % 2]) == -1)
+		if (i < size - 1 && pipe(pip[i % 2]) == -1)
 			ft_error("pipe");
 		create_pipe(cmd_line[i], i, size, envp, pip);
 	}

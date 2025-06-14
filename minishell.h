@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emondo <emondo@student.42firenze.it>       +#+  +:+       +#+        */
+/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:52:47 by miricci           #+#    #+#             */
-/*   Updated: 2025/06/13 11:27:37 by emondo           ###   ########.fr       */
+/*   Updated: 2025/06/14 11:16:38 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,7 @@ typedef struct s_cmdline
 	int	pipe[2];
 	
 }	t_cmdline;
-//execute_builtin
-int	execute_builtin(t_cmdline *data);
+
 //echo_build.c
 int	echo_builtin(t_cmdline *data);
 
@@ -94,7 +93,7 @@ int	handle_output_redir(t_cmdline *cmd);
 // utils.c
 void	print_cmd_struct(t_cmdline cmd, int fd);
 int	is_emptystr(char *str);
-void	close_pipe(t_cmdline *cmd);
+void	close_pipe(int pip[2][2]);
 void	ft_error(char *str);
 
 // find_cmd_path
@@ -103,10 +102,11 @@ char	*find_cmd_path(t_cmdline *data);
 
 // execution.c
 void	exec_command(t_cmdline *data, char **envp);
+int	execute_builtin(t_cmdline *data);
 void	one_cmd(char *cmd_line, int fd, char **envp);
 
 // pipe.c
 void	piping(char **cmd_line, int size, char **envp);
-void	create_pipe(char *cmd_line, int i, int size, char **envp, int (*pip)[2]);
+void	create_pipe(char *cmd_line, int i, int size, char **envp, int [2][2]);
 
 #endif

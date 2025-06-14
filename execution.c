@@ -3,14 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emondo <emondo@student.42firenze.it>       +#+  +:+       +#+        */
+/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 14:51:52 by miricci           #+#    #+#             */
-/*   Updated: 2025/06/13 14:02:26 by emondo           ###   ########.fr       */
+/*   Updated: 2025/06/13 14:15:46 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	execute_builtin(t_cmdline *data)
+{
+	if (ft_strncmp(data->cmd, "echo", 5) == 0)
+		echo_builtin(data);
+	return (0);
+}
 
 void	one_cmd(char *cmd_line, int fd, char **envp)
 {

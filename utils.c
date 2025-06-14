@@ -6,17 +6,17 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 11:16:05 by miricci           #+#    #+#             */
-/*   Updated: 2025/06/12 15:14:09 by miricci          ###   ########.fr       */
+/*   Updated: 2025/06/14 11:17:00 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	close_pipe(t_cmdline *cmd)
-{
-	close(cmd->pipe[0]);
-	close(cmd->pipe[1]);
-}
+// void	close_pipe(t_cmdline *cmd)
+// {
+// 	close(cmd->pipe[0]);
+// 	close(cmd->pipe[1]);
+// }
 
 void	ft_error(char *str)
 {
