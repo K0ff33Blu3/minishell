@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 14:51:52 by miricci           #+#    #+#             */
-/*   Updated: 2025/06/13 14:15:46 by miricci          ###   ########.fr       */
+/*   Updated: 2025/06/14 13:01:16 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,21 +19,19 @@ int	execute_builtin(t_cmdline *data)
 	return (0);
 }
 
-void	one_cmd(char *cmd_line, int fd, char **envp)
+void	one_cmd(t_cmdline *data, int fd, char **envp)
 {
 	pid_t	pid;
-	t_cmdline	*data;
 	// int	status;
 	(void)fd;
 
-	data = data_init();
 	pid = fork();
 	if (pid < 0)
 		perror("fork");
 	if (pid == 0)
 	{
-		data_parsing(cmd_line, data);
-		// print_cmd_struct(*data, fd);
+		data_parsing(data->all_cmd_lines[0], data);
+		print_cmd_struct(*data, 1);
 		exec_command(data, envp);
 	}
 }

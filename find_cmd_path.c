@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 15:15:11 by miricci           #+#    #+#             */
-/*   Updated: 2025/06/12 15:00:28 by miricci          ###   ########.fr       */
+/*   Updated: 2025/06/14 11:40:32 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@ void	cmd_not_found(t_cmdline *data)
 	ft_putstr_fd(": command not found\n", STDERR_FILENO);
 	ft_free((void **)data->cmd_args, -1);
 	close(data->out_fd);
-	close_pipe(data);
+	close_pipe(data->pip);
 	free(data->cmd_path);
 	free(data->cmd);
-	exit(127);
+	exit(CMD_NOT_FOUND);
 }
 
 static char	*make_path(char *str, char *cmd)

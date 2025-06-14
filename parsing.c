@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emondo <emondo@student.42firenze.it>       +#+  +:+       +#+        */
+/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 13:03:04 by miricci           #+#    #+#             */
-/*   Updated: 2025/06/13 12:59:23 by emondo           ###   ########.fr       */
+/*   Updated: 2025/06/14 11:39:37 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,4 +125,3 @@ void	data_parsing(char *cmd_str, t_cmdline *data)
 	if (!data->cmd_path)
 		cmd_not_found(data);
 }
-

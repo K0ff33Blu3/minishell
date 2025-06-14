@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:52:47 by miricci           #+#    #+#             */
-/*   Updated: 2025/06/14 11:16:38 by miricci          ###   ########.fr       */
+/*   Updated: 2025/06/14 12:07:45 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ extern int	g_last_sig;
 
 typedef struct s_cmdline
 {
+	char	**all_cmd_lines;
 	char	**token;
 	char	*cmd;
 	char	*cmd_path;
@@ -41,8 +42,7 @@ typedef struct s_cmdline
 	int	has_infile;
 	int	has_outfile;
 	int	tmp_pipe[2];
-	int	pipe[2];
-	
+	int	pip[2][2];
 }	t_cmdline;
 
 //echo_build.c
@@ -103,10 +103,10 @@ char	*find_cmd_path(t_cmdline *data);
 // execution.c
 void	exec_command(t_cmdline *data, char **envp);
 int	execute_builtin(t_cmdline *data);
-void	one_cmd(char *cmd_line, int fd, char **envp);
+void	one_cmd(t_cmdline *data, int fd, char **envp);
 
 // pipe.c
-void	piping(char **cmd_line, int size, char **envp);
-void	create_pipe(char *cmd_line, int i, int size, char **envp, int [2][2]);
+void	piping(t_cmdline *data, int size, char **envp);
+void	create_pipe(t_cmdline *data, int i, int size, char **envp);
 
 #endif
