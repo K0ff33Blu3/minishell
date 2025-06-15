@@ -6,7 +6,7 @@
 /*   By: emondo <emondo@student.42firenze.it>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 13:03:04 by miricci           #+#    #+#             */
-/*   Updated: 2025/06/15 20:18:44 by emondo           ###   ########.fr       */
+/*   Updated: 2025/06/15 20:34:04 by emondo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,10 +119,24 @@ void	data_parsing(char *cmd_str, t_cmdline *data)
 	data->has_infile = handle_input_redir(data);
 	data->has_outfile = handle_output_redir(data);
 	data->cmd_args = parse_cmd_args(data->token);
+
+	if (!data->cmd_args || !data->cmd_args[0])
+	{
+		data->cmd = NULL;
+		data->cmd_path = NULL;
+		return;
+	}
+
 	data->cmd = ft_strdup(data->cmd_args[0]);
-	data->cmd_path = find_cmd_path(data);
-	if (!data->cmd_path)
-		cmd_not_found(data);
+
+	if (is_builtin(data->cmd))
+		data->cmd_path = NULL;
+	else
+	{
+		data->cmd_path = find_cmd_path(data);
+		if (!data->cmd_path)
+			cmd_not_found(data);
+	}
 }
 int	is_builtin(char *cmd)
 {

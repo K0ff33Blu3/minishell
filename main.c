@@ -6,7 +6,7 @@
 /*   By: emondo <emondo@student.42firenze.it>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:50:27 by miricci           #+#    #+#             */
-/*   Updated: 2025/06/15 20:17:56 by emondo           ###   ########.fr       */
+/*   Updated: 2025/06/15 20:37:54 by emondo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,12 @@ int	main(int argc, char **argv, char **envp)
 		if (*cmd_line && !is_emptystr(cmd_line))
 		{
 			add_history(cmd_line);
-			if (ft_strncmp(cmd_line, "exit", 5) == 0)
-				break ;
+			if (ft_strncmp(cmd_line, "exit", 4) == 0 && (cmd_line[4] == '\0' || cmd_line[4] == ' '))
+			{
+				t_cmdline	*data = data_init();  // solo per passare a exit_cmd
+				data->cmd_args = str_split(cmd_line, ' ');
+				exit_cmd(data);
+			}
 			process(cmd_line, envp);
 		}
 	}
