@@ -6,7 +6,7 @@
 /*   By: emondo <emondo@student.42firenze.it>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 13:03:04 by miricci           #+#    #+#             */
-/*   Updated: 2025/06/15 20:34:04 by emondo           ###   ########.fr       */
+/*   Updated: 2025/06/15 21:04:39 by emondo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,11 +138,11 @@ void	data_parsing(char *cmd_str, t_cmdline *data)
 			cmd_not_found(data);
 	}
 }
-int	is_builtin(char *cmd)
+int is_builtin(char *cmd)
 {
-	return (
-		ft_strncmp(cmd, "exit", 5) == 0 ||
-		ft_strncmp(cmd, "echo", 5) == 0
-		// aggiungi altri built-in qui
-	);
+    return (
+        ft_strncmp(cmd, "echo", 5) == 0 ||
+        ft_strncmp(cmd, "cd",   3) == 0 ||   // ← aggiungi questa
+        ft_strncmp(cmd, "exit", 5) == 0
+    );
 }

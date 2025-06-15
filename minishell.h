@@ -6,7 +6,7 @@
 /*   By: emondo <emondo@student.42firenze.it>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:52:47 by miricci           #+#    #+#             */
-/*   Updated: 2025/06/15 19:06:23 by emondo           ###   ########.fr       */
+/*   Updated: 2025/06/15 21:34:37 by emondo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ void	echo(t_cmdline *data);
 
 // build_in_cmd_2.c
 void	exit_cmd(t_cmdline *data);
+int	ft_cd(t_cmdline *data);
 
 // parsing.c
 int	is_builtin(char *cmd);
@@ -86,8 +87,9 @@ int	word_len(const char *s, unsigned int start);
 int	quote_len(const char *s, unsigned int start, char quote);
 
 // signal.c
-void	ft_empty_handler(int signum);
-void	ft_empty_initializer(void);
+void	handle_sigint_prompt(int signum);
+void	setup_shell_signals(void);
+void	reset_signals_default(void);
 
 // redirections.c
 int	handle_input_redir(t_cmdline *cmd);

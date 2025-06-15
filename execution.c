@@ -6,7 +6,7 @@
 /*   By: emondo <emondo@student.42firenze.it>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 14:51:52 by miricci           #+#    #+#             */
-/*   Updated: 2025/06/15 20:22:43 by emondo           ###   ########.fr       */
+/*   Updated: 2025/06/15 21:30:04 by emondo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,25 +26,30 @@ int	execute_builtin(t_cmdline *data)
 		exit_cmd(data); // chiama exit(), quindi il return non serve in teoria
 		return (1);
 	}
+	else if (ft_strncmp(data->cmd, "cd", 3) == 0)
+	{
+		ft_cd(data);
+		return (1);
+	}
 	return (0); // non era un built-in
 }
 
-void	one_cmd(t_cmdline *data, int fd, char **envp)
+void one_cmd(t_cmdline *data, int fd, char **envp)
 {
-	pid_t	pid;
-	// int	status;
-	(void)fd;
+    pid_t pid;
+    (void)fd;
 
-	pid = fork();
-	if (pid < 0)
-		perror("fork");
-	if (pid == 0)
-	{
-		data_parsing(data->all_cmd_lines[0], data);
-		execute_builtin(data);
-		// print_cmd_struct(*data, 1);
-		exec_command(data, envp);
-	}
+    pid = fork();
+    if (pid < 0)
+        perror("fork");
+    if (pid == 0)
+    {
+        reset_signals_default();
+	data_parsing(data->all_cmd_lines[0], data);
+        if (data->cmd && execute_builtin(data))
+            exit(EXIT_SUCCESS);
+        exec_command(data, envp);
+    }
 }
 
 void	exec_command(t_cmdline *data, char **envp)

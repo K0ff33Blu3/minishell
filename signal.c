@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void	ft_empty_handler(int signum)
+void	handle_sigint_prompt(int signum)
 {
 	if (signum == SIGINT)
 	{
@@ -12,15 +12,30 @@ void	ft_empty_handler(int signum)
 	g_last_sig = signum;	
 }
 
-void	ft_empty_initializer(void)
+void	setup_shell_signals(void)
 {
-	struct sigaction	waiter;
+	struct sigaction	sa;
 
-	ft_bzero(&waiter, sizeof(waiter));
-	waiter.sa_handler = SIG_IGN;
-	sigaction(SIGQUIT, &waiter, NULL);
-	sigaction(SIGTSTP, &waiter, NULL);
-	waiter.sa_handler = ft_empty_handler;
-	waiter.sa_flags = 0;
-	sigaction(SIGINT, &waiter, NULL);
+	ft_bzero(&sa, sizeof(sa));
+	sa.sa_handler = SIG_IGN;
+	sa.sa_flags   = SA_RESTART;
+	sigaction(SIGQUIT, &sa, NULL);
+	sigaction(SIGTSTP, &sa, NULL);
+	sa.sa_handler = handle_sigint_prompt;
+	sa.sa_flags   = SA_RESTART;
+	sigaction(SIGINT,  &sa, NULL);
 }
+void	reset_signals_default(void)
+{
+	struct sigaction sa;
+
+	/* handler di default */
+	memset(&sa, 0, sizeof(sa));
+	sa.sa_handler = SIG_DFL;
+
+	/* applica a SIGINT, SIGQUIT e SIGTSTP */
+	sigaction(SIGINT,  &sa, NULL);
+	sigaction(SIGQUIT, &sa, NULL);
+	sigaction(SIGTSTP, &sa, NULL);
+}
+

@@ -6,7 +6,7 @@
 /*   By: emondo <emondo@student.42firenze.it>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:50:27 by miricci           #+#    #+#             */
-/*   Updated: 2025/06/15 20:37:54 by emondo           ###   ########.fr       */
+/*   Updated: 2025/06/15 21:35:31 by emondo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,33 @@
 
 int	g_last_sig = 0;
 
-void	process(char *cmd_line, char **envp)
+void process(char *cmd_line, char **envp)
 {
-	t_cmdline *data;
-	int	size;
+    t_cmdline *data = data_init();
+    data->all_cmd_lines = str_split(cmd_line, '|');
+    if (!data->all_cmd_lines)
+        return ;
+    int size = array_size((void **)data->all_cmd_lines);
+    if (size == 1)
+    {
+        data_parsing(data->all_cmd_lines[0], data);
+        if (data->cmd && ft_strncmp(data->cmd, "cd", 3) == 0)
+        {
+            execute_builtin(data);
+            free_cmdline(data);
+            free(cmd_line);
+            return;
+        }
+    }
+    if (size == 1)
+        one_cmd(data, 1, envp);
+    else
+        piping(data, size, envp);
 
-	data = data_init();
-	data->all_cmd_lines = str_split(cmd_line, '|');
-	if (!data->all_cmd_lines)
-		return ;
-	size = array_size((void **)data->all_cmd_lines);
-	if (size == 1)
-		one_cmd(data, 1, envp);
-	else if (size > 1)
-		piping(data, size, envp);
-	while (wait(NULL) != -1)
-		;
-	// free_cmdline(data);
-	free(cmd_line);
+    while (wait(NULL) != -1)
+        ;
+    free_cmdline(data);
+    free(cmd_line);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -42,7 +51,7 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 	while (1)
 	{
-		ft_empty_initializer();
+		setup_shell_signals();
 		cmd_line = readline(PROMPT);
 		if (!cmd_line)
 			break ;
