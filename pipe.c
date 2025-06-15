@@ -6,19 +6,11 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 15:52:14 by miricci           #+#    #+#             */
-/*   Updated: 2025/06/14 13:30:49 by miricci          ###   ########.fr       */
+/*   Updated: 2025/06/15 12:10:52 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	close_pipe(int pip[2][2])
-{
-	close(pip[0][0]);
-	close(pip[0][1]);
-	close(pip[1][0]);
-	close(pip[1][1]);
-}
 
 void	create_pipe(t_cmdline *data, int i, int size, char **envp)
 {
@@ -42,6 +34,7 @@ void	create_pipe(t_cmdline *data, int i, int size, char **envp)
 			close(data->pip[(i + 1) % 2][0]);
 		if (i < size -1)
 			close(data->pip[i % 2][1]);
+		execute_builtin(data);
 		exec_command(data, envp);
 	}
 	else

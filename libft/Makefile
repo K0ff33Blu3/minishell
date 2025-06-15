@@ -15,7 +15,7 @@ SRCS = ft_atoi.c ft_itoa.c ft_putendl_fd.c ft_strjoin.c ft_strtrim.c ft_bzero.c 
 		ft_lstadd_back.c ft_lstdelone.c ft_lstclear.c print_list.c \
 		ft_lstiter.c ft_lstmap.c \
 		gnl.c \
-		array_size.c array_to_str.c \
+		array_size.c array_to_str.c str_split.c str_split_utils.c \
 
 # File oggetto
 OBJS_DIR = obj

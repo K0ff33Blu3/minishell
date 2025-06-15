@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 13:03:04 by miricci           #+#    #+#             */
-/*   Updated: 2025/06/14 11:39:37 by miricci          ###   ########.fr       */
+/*   Updated: 2025/06/15 11:40:58 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,6 @@ void	data_parsing(char *cmd_str, t_cmdline *data)
 	data->has_outfile = handle_output_redir(data);
 	data->cmd_args = parse_cmd_args(data->token);
 	data->cmd = ft_strdup(data->cmd_args[0]);
-	execute_builtin(data);
 	data->cmd_path = find_cmd_path(data);
 	if (!data->cmd_path)
 		cmd_not_found(data);

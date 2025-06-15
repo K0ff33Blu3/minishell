@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:52:47 by miricci           #+#    #+#             */
-/*   Updated: 2025/06/14 12:07:45 by miricci          ###   ########.fr       */
+/*   Updated: 2025/06/15 12:49:58 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,14 @@ typedef struct s_cmdline
 }	t_cmdline;
 
 //echo_build.c
-int	echo_builtin(t_cmdline *data);
 
 // build_in_cmd.c
-int	pwd(void);
-int	env(char **envp);
-int	echo(char *str, int n);
+void	pwd(void);
+void	env(char **envp);
+void	echo(t_cmdline *data);
+
+// build_in_cmd_2.c
+void	exit_cmd(t_cmdline *data);
 
 // parsing.c
 char	**remove_quotes(char **str); 
@@ -93,8 +95,8 @@ int	handle_output_redir(t_cmdline *cmd);
 // utils.c
 void	print_cmd_struct(t_cmdline cmd, int fd);
 int	is_emptystr(char *str);
-void	close_pipe(int pip[2][2]);
 void	ft_error(char *str);
+char	**str_split(char *s, char c);
 
 // find_cmd_path
 void	cmd_not_found(t_cmdline *data);
@@ -108,5 +110,10 @@ void	one_cmd(t_cmdline *data, int fd, char **envp);
 // pipe.c
 void	piping(t_cmdline *data, int size, char **envp);
 void	create_pipe(t_cmdline *data, int i, int size, char **envp);
+
+// cleaning.c
+void	free_cmdline(t_cmdline *data);
+void	close_pipe(int pip[2][2]);
+
 
 #endif

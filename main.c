@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:50:27 by miricci           #+#    #+#             */
-/*   Updated: 2025/06/14 13:39:50 by miricci          ###   ########.fr       */
+/*   Updated: 2025/06/15 12:47:45 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ void	process(char *cmd_line, char **envp)
 		piping(data, size, envp);
 	while (wait(NULL) != -1)
 		;
+	// free_cmdline(data);
+	free(cmd_line);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -50,7 +52,8 @@ int	main(int argc, char **argv, char **envp)
 			process(cmd_line, envp);
 		}
 	}
-	rl_clear_history();
 	free(cmd_line);
+	rl_clear_history();
+	// clear_buffer();
 	return (0);
 }

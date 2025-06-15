@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 14:51:52 by miricci           #+#    #+#             */
-/*   Updated: 2025/06/14 13:33:33 by miricci          ###   ########.fr       */
+/*   Updated: 2025/06/15 12:49:10 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,9 @@
 int	execute_builtin(t_cmdline *data)
 {
 	if (ft_strncmp(data->cmd, "echo", 5) == 0)
-		echo_builtin(data);
+		echo(data);
+	else if (ft_strncmp(data->cmd, "exit", 5) == 0)
+		exit_cmd(data);
 	return (0);
 }
 
@@ -31,6 +33,7 @@ void	one_cmd(t_cmdline *data, int fd, char **envp)
 	if (pid == 0)
 	{
 		data_parsing(data->all_cmd_lines[0], data);
+		execute_builtin(data);
 		// print_cmd_struct(*data, 1);
 		exec_command(data, envp);
 	}
