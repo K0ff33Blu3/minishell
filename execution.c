@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
+/*   By: emondo <emondo@student.42firenze.it>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 14:51:52 by miricci           #+#    #+#             */
-/*   Updated: 2025/06/15 12:49:10 by miricci          ###   ########.fr       */
+/*   Updated: 2025/06/15 20:22:43 by emondo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,19 @@
 
 int	execute_builtin(t_cmdline *data)
 {
+	printf("DEBUG: comando ricevuto: '%s'\n", data->cmd);
+
 	if (ft_strncmp(data->cmd, "echo", 5) == 0)
+	{
 		echo(data);
+		return (1);
+	}
 	else if (ft_strncmp(data->cmd, "exit", 5) == 0)
-		exit_cmd(data);
-	return (0);
+	{
+		exit_cmd(data); // chiama exit(), quindi il return non serve in teoria
+		return (1);
+	}
+	return (0); // non era un built-in
 }
 
 void	one_cmd(t_cmdline *data, int fd, char **envp)

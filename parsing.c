@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
+/*   By: emondo <emondo@student.42firenze.it>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 13:03:04 by miricci           #+#    #+#             */
-/*   Updated: 2025/06/15 11:40:58 by miricci          ###   ########.fr       */
+/*   Updated: 2025/06/15 20:18:44 by emondo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,4 +123,12 @@ void	data_parsing(char *cmd_str, t_cmdline *data)
 	data->cmd_path = find_cmd_path(data);
 	if (!data->cmd_path)
 		cmd_not_found(data);
+}
+int	is_builtin(char *cmd)
+{
+	return (
+		ft_strncmp(cmd, "exit", 5) == 0 ||
+		ft_strncmp(cmd, "echo", 5) == 0
+		// aggiungi altri built-in qui
+	);
 }

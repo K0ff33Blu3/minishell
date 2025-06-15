@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
+/*   By: emondo <emondo@student.42firenze.it>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:52:47 by miricci           #+#    #+#             */
-/*   Updated: 2025/06/15 12:49:58 by miricci          ###   ########.fr       */
+/*   Updated: 2025/06/15 19:06:23 by emondo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ void	echo(t_cmdline *data);
 void	exit_cmd(t_cmdline *data);
 
 // parsing.c
+int	is_builtin(char *cmd);
 char	**remove_quotes(char **str); 
 char	**get_data_token(char *str);
 t_cmdline	*data_init(void);
