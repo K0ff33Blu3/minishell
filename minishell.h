@@ -6,7 +6,7 @@
 /*   By: emondo <emondo@student.42firenze.it>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:52:47 by miricci           #+#    #+#             */
-/*   Updated: 2025/06/15 21:34:37 by emondo           ###   ########.fr       */
+/*   Updated: 2025/06/16 10:45:25 by emondo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <signal.h>
 # include <sys/wait.h>
 # include <sys/ioctl.h>
+# include <stdlib.h>
 
 # define PROMPT "\033[36mMINISHELL@ \033[0m"
 
