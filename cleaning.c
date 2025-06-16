@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleaning.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emondo <emondo@student.42firenze.it>       +#+  +:+       +#+        */
+/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 12:02:37 by miricci           #+#    #+#             */
-/*   Updated: 2025/06/15 20:41:26 by emondo           ###   ########.fr       */
+/*   Updated: 2025/06/16 14:30:36 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	free_cmdline(t_cmdline *data)
 {
 	if (!data)
-		return;
+		return ;
 	if (data->cmd)
 		free(data->cmd);
 	if (data->cmd_path)
@@ -26,7 +26,6 @@ void	free_cmdline(t_cmdline *data)
 		ft_free((void **)data->all_cmd_lines, -1);
 	if (data->token)
 		ft_free((void **)data->token, -1);
-	// NON liberare pip se è statico
 	free(data);
 }
 // void	clear_buffer()

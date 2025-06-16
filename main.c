@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:50:27 by miricci           #+#    #+#             */
-/*   Updated: 2025/06/16 12:25:04 by miricci          ###   ########.fr       */
+/*   Updated: 2025/06/16 14:35:21 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,20 +24,6 @@ void process(char *cmd_line, char **envp)
 	if (!data->all_cmd_lines)
 		return ;
 	size = array_size((void **)data->all_cmd_lines);
-	// if (size == 1)
-	// {
-	// 	if (ft_strncmp(data->all_cmd_lines[0], "exit", 4) == 0 && (data->all_cmd_lines[0][4] == '\0' || data->all_cmd_lines[0][4] == ' '))
-	// 	{
-	// 		exit_cmd(data);
-	// 	}
-	// 	if (data->cmd && ft_strncmp(data->cmd, "cd", 3) == 0)
-	// 	{
-	// 		execute_builtin(data);
-	// 		free_cmdline(data);
-	// 		free(cmd_line);
-	// 		return ;
-	// 	}
-	// }
 	if (size == 1)
 		one_cmd(data, 1, envp);
 	else

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emondo <emondo@student.42firenze.it>       +#+  +:+       +#+        */
+/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 13:03:04 by miricci           #+#    #+#             */
-/*   Updated: 2025/06/15 21:04:39 by emondo           ###   ########.fr       */
+/*   Updated: 2025/06/16 16:24:08 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ char	**parse_cmd_args(char **token)
 {
 	int	i;
 	int	j;
-	char	**arg;
+	char		**arg;
 	int	nbr_redir;
 	int	arg_size;
 
@@ -124,7 +124,7 @@ void	data_parsing(char *cmd_str, t_cmdline *data)
 	{
 		data->cmd = NULL;
 		data->cmd_path = NULL;
-		return;
+		return ;
 	}
 
 	data->cmd = ft_strdup(data->cmd_args[0]);
@@ -141,8 +141,8 @@ void	data_parsing(char *cmd_str, t_cmdline *data)
 int is_builtin(char *cmd)
 {
     return (
-        ft_strncmp(cmd, "echo", 5) == 0 ||
-        ft_strncmp(cmd, "cd",   3) == 0 ||   // ← aggiungi questa
-        ft_strncmp(cmd, "exit", 5) == 0
+		ft_strncmp(cmd, "echo", 5) == 0 ||
+		ft_strncmp(cmd, "cd",   3) == 0 ||   // ← aggiungi questa
+		ft_strncmp(cmd, "exit", 5) == 0
     );
 }
