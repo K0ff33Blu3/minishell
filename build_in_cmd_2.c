@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   build_in_cmd_2.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emondo <emondo@student.42firenze.it>       +#+  +:+       +#+        */
+/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 12:07:54 by miricci           #+#    #+#             */
-/*   Updated: 2025/06/15 21:42:17 by emondo           ###   ########.fr       */
+/*   Updated: 2025/06/16 11:26:00 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,17 @@
 
 void	exit_cmd(t_cmdline *data)
 {
-	int	code = 0;
-
+	int	code;
+	
+	code = 0;
 	if (data && data->cmd_args && data->cmd_args[1])
 		code = ft_atoi(data->cmd_args[1]);
 
 	if (data)
-		free_cmdline(data); 
-
+		free_cmdline(data);
 	exit(code);
 }
+
 int	ft_cd(t_cmdline *data)
 {
 	char	*oldpwd;

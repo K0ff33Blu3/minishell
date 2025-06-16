@@ -3,25 +3,31 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emondo <emondo@student.42firenze.it>       +#+  +:+       +#+        */
+/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 14:51:52 by miricci           #+#    #+#             */
-/*   Updated: 2025/06/15 21:30:04 by emondo           ###   ########.fr       */
+/*   Updated: 2025/06/16 12:24:19 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	execute_builtin(t_cmdline *data)
+int	exec_simple_builtin(t_cmdline *data, char **envp)
 {
-	printf("DEBUG: comando ricevuto: '%s'\n", data->cmd);
+	// printf("DEBUG: comando ricevuto: '%s'\n", data->cmd);
 
 	if (ft_strncmp(data->cmd, "echo", 5) == 0)
-	{
 		echo(data);
-		return (1);
-	}
-	else if (ft_strncmp(data->cmd, "exit", 5) == 0)
+	else if (ft_strncmp(data->cmd, "env", 4) == 0)
+		env(envp);
+	else if (ft_strncmp(data->cmd, "pwd", 4) == 0)
+		pwd();
+	return (0); // non era un built-in
+}
+
+int	exec_status_changing_builtin(t_cmdline *data)
+{
+	if (ft_strncmp(data->cmd, "exit", 5) == 0)
 	{
 		exit_cmd(data); // chiama exit(), quindi il return non serve in teoria
 		return (1);
@@ -29,27 +35,28 @@ int	execute_builtin(t_cmdline *data)
 	else if (ft_strncmp(data->cmd, "cd", 3) == 0)
 	{
 		ft_cd(data);
-		return (1);
+		return (1);	
 	}
-	return (0); // non era un built-in
+	return (0);
 }
 
-void one_cmd(t_cmdline *data, int fd, char **envp)
+void	one_cmd(t_cmdline *data, int fd, char **envp)
 {
-    pid_t pid;
-    (void)fd;
+	pid_t pid;
+	(void)fd;
 
-    pid = fork();
-    if (pid < 0)
-        perror("fork");
-    if (pid == 0)
-    {
-        reset_signals_default();
 	data_parsing(data->all_cmd_lines[0], data);
-        if (data->cmd && execute_builtin(data))
-            exit(EXIT_SUCCESS);
-        exec_command(data, envp);
-    }
+	if (exec_status_changing_builtin(data))
+		return ;
+	pid = fork();
+	if (pid < 0)
+		perror("fork");
+	if (pid == 0)
+	{
+		reset_signals_default();
+		exec_simple_builtin(data, envp);
+		exec_command(data, envp);
+	}
 }
 
 void	exec_command(t_cmdline *data, char **envp)

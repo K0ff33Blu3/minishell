@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emondo <emondo@student.42firenze.it>       +#+  +:+       +#+        */
+/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 15:52:14 by miricci           #+#    #+#             */
-/*   Updated: 2025/06/15 21:30:23 by emondo           ###   ########.fr       */
+/*   Updated: 2025/06/16 12:31:09 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,12 @@ void create_pipe(t_cmdline *data, int i, int size, char **envp)
             close(data->pip[(i + 1) % 2][0]);
         if (i < size - 1)
             close(data->pip[i % 2][1]);
-        if (data->cmd && execute_builtin(data))
-            exit(EXIT_SUCCESS);
+	if (exec_status_changing_builtin(data))
+	{
+		free_cmdline(data);
+		exit(EXIT_SUCCESS);
+	}
+        exec_simple_builtin(data, envp);
         exec_command(data, envp);
     }
     else
@@ -53,10 +57,4 @@ void	piping(t_cmdline *data, int size, char **envp)
 			ft_error("pipe");
 		create_pipe(data, i, size, envp);
 	}
-	// i = -1;
-// 	while (++i < size)
-// 	{
-// 		close(pip[i][0]);
-// 		close(pip[i][1]);
-// 	}
 }

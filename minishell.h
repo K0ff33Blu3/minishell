@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emondo <emondo@student.42firenze.it>       +#+  +:+       +#+        */
+/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:52:47 by miricci           #+#    #+#             */
-/*   Updated: 2025/06/16 10:45:25 by emondo           ###   ########.fr       */
+/*   Updated: 2025/06/16 12:13:43 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,6 @@ typedef struct s_cmdline
 	int	tmp_pipe[2];
 	int	pip[2][2];
 }	t_cmdline;
-
-//echo_build.c
 
 // build_in_cmd.c
 void	pwd(void);
@@ -108,7 +106,8 @@ char	*find_cmd_path(t_cmdline *data);
 
 // execution.c
 void	exec_command(t_cmdline *data, char **envp);
-int	execute_builtin(t_cmdline *data);
+int	exec_simple_builtin(t_cmdline *data, char **envp);
+int	exec_status_changing_builtin(t_cmdline *data);
 void	one_cmd(t_cmdline *data, int fd, char **envp);
 
 // pipe.c
