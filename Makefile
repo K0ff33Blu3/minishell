@@ -1,40 +1,45 @@
 # Nome degli eseguibili
-NAME         = minishell
-# BONUS_NAME   = pipex_bonus
+NAME		:= minishell
 
-# Compilatore e flags
-CC           := cc
-CFLAGS       := -Wall -Wextra -Werror -g
+# Directories
+SRC_DIR 	:= src
+OBJ_DIR		:= obj
+INC_DIR		:= include
 
-# Directory
-LIBFT_DIR    := libft
-OBJS_DIR     := obj
 
 # Libreria
-LIBFT_LIB    := $(LIBFT_DIR)/libft.a
+LIBFT_DIR	:= libft
+LIBFT_LIB	:= $(LIBFT_DIR)/libft.a
+CFLAGS   += -I$(LIB_INC)
+LDFLAGS  += -L$(LIBFT_DIR)
+LDLIBS   += -lft -lreadline
+
+# Compilatore e flags
+CC		:= cc
+CFLAGS		:= -Wall -Wextra -Werror -g -I$(INC_DIR) -I$(LIBFT_DIR)
 
 # Sorgenti
-SRCS         := main.c build_in_cmd.c build_in_cmd_2.c cleaning.c parsing.c signal.c token.c token_utils.c expand.c redirections.c utils.c find_cmd_path.c execution.c pipe.c
+SRCS		:= $(shell find $(SRC_DIR) -name "*.c")
 
 # Oggetti (con prefisso obj/)
-OBJS         := $(patsubst %.c,$(OBJS_DIR)/%.o,$(SRCS))
+OBJS		:= $(SRCS:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
 # Regola di default
 all: $(NAME)
 
 # --- 1) Creazione dell’executable base ---
 # Assicuriamoci che obj/ esista, poi linkiamo
-$(NAME): $(OBJS) $(LIBFT_LIB) | $(OBJS_DIR)
-	@$(CC) $(CFLAGS) $^ -o $(NAME) -L$(LIBFT_DIR) -lreadline -lft
+$(NAME): $(OBJS) $(LIBFT_LIB)
+	$(CC) $(CFLAGS) $(OBJS) $(LDFLAGS) $(LDLIBS) -o $@
 	@echo -e "\033[32m$(NAME) created!\033[0m"
 
 # --- 3) Rule per creare la cartella obj/
-$(OBJS_DIR):
+$(OBJ_DIR):
 	@mkdir -p $@
 
 # --- 4) Regola pattern per compilare ogni .c in obj/*.o
 #     $< = file .c di input, $@ = obj/foo.o
-$(OBJS_DIR)/%.o: %.c
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(dir $@)
 	@$(CC) $(CFLAGS) -c $< -o $@
 	@echo -e "\033[90m$< compiled\033[0m"
@@ -52,10 +57,10 @@ clean:
 # --- 7) Pulizia completa (oggetti + binari) ---
 fclean: clean
 	@make -C $(LIBFT_DIR) fclean
-	@rm -f $(NAME) $(BONUS_NAME)
+	@rm -f $(NAME)
 	@echo -e "\033[31mBinaries wiped\033[0m"
 
 # --- 8) Rebuild ---
 re: fclean all
 
-.PHONY: all bonus clean fclean re
+.PHONY: all clean fclean re
