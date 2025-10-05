@@ -1,31 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   lst_to_array.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/16 20:27:52 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/05 20:31:51 by miricci          ###   ########.fr       */
+/*   Created: 2025/10/05 13:16:55 by miricci           #+#    #+#             */
+/*   Updated: 2025/10/05 20:15:35 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-void	env(t_list **env_list)
+char	**lst_to_array(t_list **head)
 {
-	t_list		*node;
-	int		i;
-	
-	node = *env_list;
+	t_list	*node;
+	char	**array;
+	int	i;
+
 	i = 0;
+	node = *head;
+	array = (char **)malloc(sizeof(char *) * (ft_lstsize(node) + 1));
+	if (!array)
+		return (NULL);
 	while (node)
 	{
-		i += printf("%s\n", (char *)node->content);
+		array[i] = (char *)malloc(sizeof(char) * ft_strlen(node->content));
+		if (!array[i])
+			return (NULL);
+		ft_memcpy(array[i], node->content, ft_strlen(node->content));
 		node = node->next;
+		i++;
 	}
-	if (i > 0)
-		exit(EXIT_SUCCESS);
-	else
-		exit(EXIT_FAILURE);
+	array[i] = NULL;
+	return (array);
 }

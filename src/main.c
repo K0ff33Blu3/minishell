@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:50:27 by miricci           #+#    #+#             */
-/*   Updated: 2025/09/18 11:22:09 by miricci          ###   ########.fr       */
+/*   Updated: 2025/10/05 19:53:50 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,18 @@ void	process(char *cmd_line, char **envp)
 {
 	t_cmdline	*data;
 	int	size;
+	t_list	**env_list;
 	
 	data = data_init();
+	env_list = env_init(envp);
 	data->all_cmd_lines = str_split(cmd_line, '|');
 	if (!data->all_cmd_lines)
 		return ;
 	size = array_size((void **)data->all_cmd_lines);
 	if (size == 1)
-		one_cmd(data, 1, envp);
+		one_cmd(data, 1, env_list);
 	else
-		piping(data, size, envp);
+		piping(data, size, env_list);
 	while (wait(NULL) != -1)
 		;
 	free_cmdline(data);

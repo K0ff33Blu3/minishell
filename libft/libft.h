@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emondo <emondo@student.42firenze.it>       +#+  +:+       +#+        */
+/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 18:55:16 by miricci           #+#    #+#             */
-/*   Updated: 2025/06/15 16:12:38 by emondo           ###   ########.fr       */
+/*   Updated: 2025/10/05 20:14:22 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,5 +83,6 @@ void	ft_free(void **s, int i);
 char	**fill_str_split(char **dest, const char *s, char c, int words);
 char	**str_split(char *s, char c);
 int	is_number(char *str);
+char	**lst_to_array(t_list **head);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 11:16:05 by miricci           #+#    #+#             */
-/*   Updated: 2025/09/18 11:22:38 by miricci          ###   ########.fr       */
+/*   Updated: 2025/10/05 20:50:17 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,20 +79,21 @@ void	print_cmd_struct(t_cmdline cmd, int fd)
 	ft_putstr_fd("\n", fd);
 }
 
-// int	is_builtin(char *cmd)
-// {
-// 	if (ft_strncmp(cmd, "cd", 3))
-// 		return (1);
-// 	else if (ft_strncmp(cmd, "pwd", 4))
-// 		return (1);
-// 	else if (ft_strncmp(cmd, "env", 4))
-// 		return (1);
-// 	else if (ft_strncmp(cmd, "echo", 5))
-// 		return (1);
-// 	else if (ft_strncmp(cmd, "exit", 5))
-// 		return (1);
-// 	else if (ft_strncmp(cmd, "unset", 6))
-// 		return (1);
-// 	else
-// 		return (0);
-// }
+t_list	**env_init(char **envp)
+{
+	t_list	**env_list;
+	t_list	*node;
+
+	env_list = (t_list **) malloc (sizeof(t_list *));
+	if (!env_list)
+		return (NULL);
+	*env_list = ft_lstnew(*envp);
+	envp++;
+	while (*envp)
+	{
+		node = ft_lstnew(*envp);
+		ft_lstadd_back(env_list, node);
+		envp++;
+	}
+	return (env_list);
+}

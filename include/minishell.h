@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:52:47 by miricci           #+#    #+#             */
-/*   Updated: 2025/09/18 11:20:36 by miricci          ###   ########.fr       */
+/*   Updated: 2025/10/05 21:11:09 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,11 @@ typedef struct s_cmdline
 
 // /command
 void	pwd(void);
-int	env(char **envp);
+void	env(t_list **env_list);
 void	echo(t_cmdline *data);
 void	exit_cmd(t_cmdline *data);
 int	ft_cd(t_cmdline *data);
+void	unset(t_list **env_list, char **var);
 
 // parsing.c
 int	is_builtin(char *cmd);
@@ -96,20 +97,21 @@ void	print_cmd_struct(t_cmdline cmd, int fd);
 int	is_emptystr(char *str);
 void	ft_error(char *str);
 char	**str_split(char *s, char c);
+t_list	**env_init(char **envp);
 
 // find_cmd_path
 void	cmd_not_found(t_cmdline *data);
 char	*find_cmd_path(t_cmdline *data);
 
 // execution.c
-void	exec_command(t_cmdline *data, char **envp);
-int	exec_simple_builtin(t_cmdline *data, char **envp);
-int	exec_status_changing_builtin(t_cmdline *data);
-void	one_cmd(t_cmdline *data, int fd, char **envp);
+void	exec_command(t_cmdline *data, t_list **env_list);
+int	exec_simple_builtin(t_cmdline *data, t_list **env_list);
+int	exec_status_changing_builtin(t_cmdline *data, t_list **env_list);
+void	one_cmd(t_cmdline *data, int fd, t_list **env_list);
 
 // pipe.c
-void	piping(t_cmdline *data, int size, char **envp);
-void	create_pipe(t_cmdline *data, int i, int size, char **envp);
+void	piping(t_cmdline *data, int size, t_list **env_list);
+void	create_pipe(t_cmdline *data, int i, int size, t_list **env_list);
 
 // cleaning.c
 void	free_cmdline(t_cmdline *data);

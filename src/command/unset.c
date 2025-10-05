@@ -1,31 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   unset.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/16 20:27:52 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/05 20:31:51 by miricci          ###   ########.fr       */
+/*   Created: 2025/10/05 12:26:24 by miricci           #+#    #+#             */
+/*   Updated: 2025/10/05 21:17:46 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	env(t_list **env_list)
+void	unset(t_list **env_list, char **var)
 {
-	t_list		*node;
-	int		i;
+	int	len;
+	t_list	*node;
+	int	i;
 	
-	node = *env_list;
-	i = 0;
-	while (node)
+
+	i = 1;
+	while (var[i])
 	{
-		i += printf("%s\n", (char *)node->content);
-		node = node->next;
+		printf("%s\n", var[i]);
+		len = ft_strlen(var[i]);
+		node = *env_list;
+		while (node)
+		{
+			if (!ft_strncmp(var[i], node->next->content, len))
+			{
+				node->next =
+				free(node);
+				break ;
+			}
+			node = node->next;
+		}
+		i++;
 	}
-	if (i > 0)
-		exit(EXIT_SUCCESS);
-	else
-		exit(EXIT_FAILURE);
 }
