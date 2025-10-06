@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emondo <emondo@student.42firenze.it>       +#+  +:+       +#+        */
+/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:50:27 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/06 11:29:56 by emondo           ###   ########.fr       */
+/*   Updated: 2025/10/06 17:42:28 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,8 @@ void	process(char *cmd_line, char **envp)
 {
 	t_cmdline	*data;
 	int	size;
-	t_list	**env_list;
-	
+	static t_list		**env_list;
+
 	data = data_init();
 	env_list = env_init(envp);
 	data->all_cmd_lines = str_split(cmd_line, '|');
@@ -49,7 +49,7 @@ int	main(int argc, char **argv, char **envp)
 		if (!cmd_line)
 		{
 			printf("exit\n");
-			break;
+			break ;
 		}
 		if (*cmd_line && !is_emptystr(cmd_line))
 		{
