@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
+/*   By: emondo <emondo@student.42firenze.it>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:50:27 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/05 19:53:50 by miricci          ###   ########.fr       */
+/*   Updated: 2025/10/06 11:29:56 by emondo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,15 @@ int	main(int argc, char **argv, char **envp)
 
 	(void)argc;
 	(void)argv;
+	setup_shell_signals();
 	while (1)
 	{
-		setup_shell_signals();
 		cmd_line = readline(PROMPT);
 		if (!cmd_line)
-			break ;
+		{
+			printf("exit\n");
+			break;
+		}
 		if (*cmd_line && !is_emptystr(cmd_line))
 		{
 			add_history(cmd_line);
@@ -56,6 +59,5 @@ int	main(int argc, char **argv, char **envp)
 	}
 	free(cmd_line);
 	rl_clear_history();
-	// clear_buffer();
-	return (0);
+	return (g_last_sig);
 }

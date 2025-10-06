@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
+/*   By: emondo <emondo@student.42firenze.it>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 11:11:36 by miricci           #+#    #+#             */
-/*   Updated: 2025/09/18 11:22:28 by miricci          ###   ########.fr       */
+/*   Updated: 2025/10/06 11:21:51 by emondo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	handle_sigint_prompt(int signum)
 		rl_on_new_line();
 		rl_redisplay();
 	}
-	g_last_sig = signum;	
+	g_last_sig = 128 + signum;	
 }
 
 void	setup_shell_signals(void)
