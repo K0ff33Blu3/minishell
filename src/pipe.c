@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
+/*   By: elmondo <elmondo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 15:52:14 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/05 20:00:49 by miricci          ###   ########.fr       */
+/*   Updated: 2025/10/09 16:21:17 by elmondo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ void create_pipe(t_cmdline *data, int i, int size, t_list **env_list)
             close(data->pip[(i + 1) % 2][0]);
         if (i < size - 1)
             close(data->pip[i % 2][1]);
-	if (exec_status_changing_builtin(data))
+	if (exec_status_changing_builtin(data, env_list))
 	{
 		free_cmdline(data);
 		exit(EXIT_SUCCESS);

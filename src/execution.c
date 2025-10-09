@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
+/*   By: elmondo <elmondo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 14:51:52 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/06 17:43:17 by miricci          ###   ########.fr       */
+/*   Updated: 2025/10/09 16:02:44 by elmondo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,15 @@ void	one_cmd(t_cmdline *data, int fd, t_list **env_list)
 	if (exec_status_changing_builtin(data, env_list))
 		return ;
 	pid = fork();
+	if (pid > 0)
+	{
+		int status;
+    	waitpid(pid, &status, 0);
+		if (WIFEXITED(status))
+			g_exit_status = WEXITSTATUS(status);
+    	else if (WIFSIGNALED(status))
+    		g_exit_status = 128 + WTERMSIG(status);
+	}
 	if (pid < 0)
 		perror("fork");
 	if (pid == 0)

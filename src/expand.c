@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
+/*   By: elmondo <elmondo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 11:40:06 by miricci           #+#    #+#             */
-/*   Updated: 2025/09/18 11:22:00 by miricci          ###   ########.fr       */
+/*   Updated: 2025/10/09 16:07:09 by elmondo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ char	*expand_var_in_quotes(char *quote)
 	start = pos - quote;
 	len = word_len(quote, start);
 	var = ft_substr(quote, start, len);
+	if (ft_strncmp(var, "?", 2) == 0)
+		return (ft_itoa(g_exit_status));
 	if (!var)
 		return (NULL);
 	value = getenv(var);
@@ -37,6 +39,8 @@ char	*expand_var(char *var)
 	char	*name_var;
 	char	*value;
 
+	if (ft_strncmp(var, "$?", 3) == 0)
+		return (ft_itoa(g_exit_status));
 	name_var = var + 1;
 	value = getenv(name_var);
 	if (value)

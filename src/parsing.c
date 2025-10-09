@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
+/*   By: elmondo <elmondo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 13:03:04 by miricci           #+#    #+#             */
-/*   Updated: 2025/09/18 11:22:15 by miricci          ###   ########.fr       */
+/*   Updated: 2025/10/09 16:40:32 by elmondo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,7 @@ void	data_parsing(char *cmd_str, t_cmdline *data)
 	data->has_infile = handle_input_redir(data);
 	data->has_outfile = handle_output_redir(data);
 	data->cmd_args = parse_cmd_args(data->token);
+	data->cmd_args = expand_env_var(data->cmd_args);
 	if (!data->cmd_args || !data->cmd_args[0])
 	{
 		data->cmd = NULL;
@@ -140,7 +141,7 @@ int is_builtin(char *cmd)
 {
     return (
 		!ft_strncmp(cmd, "echo", 5) ||
-		!ft_strncmp(cmd, "cd",   3) ||   // ← aggiungi questa
+		!ft_strncmp(cmd, "cd",   3) ||
 		!ft_strncmp(cmd, "exit", 5) ||
 		!ft_strncmp(cmd, "pwd", 4) ||
 		!ft_strncmp(cmd, "env", 4) ||
