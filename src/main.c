@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:50:27 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/10 14:29:41 by miricci          ###   ########.fr       */
+/*   Updated: 2025/10/10 16:26:48 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,7 @@ void	process(char *cmd_line, t_list **env_list)
 int	main(int argc, char **argv, char **envp)
 {
 	char	*cmd_line;
+	// int	exit_status;
 	static t_list		**env_list;
 
 	(void)argc;

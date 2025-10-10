@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 14:51:52 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/10 16:10:13 by miricci          ###   ########.fr       */
+/*   Updated: 2025/10/10 17:01:03 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,7 @@ int	exec_status_changing_builtin(t_cmdline *data, t_list **env_list)
 	}
 	else if (ft_strncmp(data->cmd, "export", 7) == 0)
 	{
-		printf("WTF?");
-		export(data->cmd_args[1], env_list);
+		export(env_list, data->cmd_args[1]);
 		return (1);
 	}
 	return (0);

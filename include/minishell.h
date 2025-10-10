@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:52:47 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/10 16:05:56 by miricci          ###   ########.fr       */
+/*   Updated: 2025/10/10 16:37:12 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	echo(t_cmdline *data);
 void	exit_cmd(t_cmdline *data);
 int	ft_cd(t_cmdline *data);
 void	unset(t_list **env_list, char **var);
-void	export(char *string, t_list **env_list);
+void	export(t_list **env_list, char *str);
 
 // parsing.c
 int	is_builtin(char *cmd);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elmondo <elmondo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 13:03:04 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/09 16:40:32 by elmondo          ###   ########.fr       */
+/*   Updated: 2025/10/10 16:28:47 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -145,6 +145,7 @@ int is_builtin(char *cmd)
 		!ft_strncmp(cmd, "exit", 5) ||
 		!ft_strncmp(cmd, "pwd", 4) ||
 		!ft_strncmp(cmd, "env", 4) ||
-		!ft_strncmp(cmd, "unset", 6)
+		!ft_strncmp(cmd, "unset", 6) ||
+		!ft_strncmp(cmd, "export", 7)
     );
 }
