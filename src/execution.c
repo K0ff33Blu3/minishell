@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elmondo <elmondo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 14:51:52 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/09 16:02:44 by elmondo          ###   ########.fr       */
+/*   Updated: 2025/10/10 16:10:13 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,12 @@ int	exec_status_changing_builtin(t_cmdline *data, t_list **env_list)
 	else if (ft_strncmp(data->cmd, "unset", 6) == 0)
 	{
 		unset(env_list, data->cmd_args);
+		return (1);
+	}
+	else if (ft_strncmp(data->cmd, "export", 7) == 0)
+	{
+		printf("WTF?");
+		export(data->cmd_args[1], env_list);
 		return (1);
 	}
 	return (0);

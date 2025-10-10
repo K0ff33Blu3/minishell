@@ -9,8 +9,7 @@ INC_DIR		:= include
 
 # Libreria
 LIBFT_DIR	:= libft
-LIBFT_LIB	:= $(LIBFT_DIR)/libft.a
-CFLAGS   += -I$(LIB_INC)
+LIBFT_LIB	:= $(LIBFT_DIR)/libft
 LDFLAGS  += -L$(LIBFT_DIR)
 LDLIBS   += -lft -lreadline
 

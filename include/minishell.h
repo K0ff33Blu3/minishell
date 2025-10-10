@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:52:47 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/05 21:11:09 by miricci          ###   ########.fr       */
+/*   Updated: 2025/10/10 16:05:56 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 # define CMD_NOT_FOUND 127
 
 extern int	g_last_sig;
+extern int	g_exit_status;
 
 typedef struct s_cmdline
 {
@@ -53,6 +54,7 @@ void	echo(t_cmdline *data);
 void	exit_cmd(t_cmdline *data);
 int	ft_cd(t_cmdline *data);
 void	unset(t_list **env_list, char **var);
+void	export(char *string, t_list **env_list);
 
 // parsing.c
 int	is_builtin(char *cmd);
@@ -96,7 +98,6 @@ int	handle_output_redir(t_cmdline *cmd);
 void	print_cmd_struct(t_cmdline cmd, int fd);
 int	is_emptystr(char *str);
 void	ft_error(char *str);
-char	**str_split(char *s, char c);
 t_list	**env_init(char **envp);
 
 // find_cmd_path

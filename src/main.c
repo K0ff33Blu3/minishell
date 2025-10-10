@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elmondo <elmondo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:50:27 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/09 16:02:54 by elmondo          ###   ########.fr       */
+/*   Updated: 2025/10/10 14:29:41 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,12 @@
 int	g_last_sig = 0;
 int	g_exit_status = 0;
 
-void	process(char *cmd_line, char **envp)
+void	process(char *cmd_line, t_list **env_list)
 {
 	t_cmdline	*data;
 	int	size;
-	static t_list		**env_list;
 
 	data = data_init();
-	env_list = env_init(envp);
 	data->all_cmd_lines = str_split(cmd_line, '|');
 	if (!data->all_cmd_lines)
 		return ;
@@ -40,10 +38,12 @@ void	process(char *cmd_line, char **envp)
 int	main(int argc, char **argv, char **envp)
 {
 	char	*cmd_line;
+	static t_list		**env_list;
 
 	(void)argc;
 	(void)argv;
 	setup_shell_signals();
+	env_list = env_init(envp);
 	while (1)
 	{
 		cmd_line = readline(PROMPT);
@@ -55,7 +55,7 @@ int	main(int argc, char **argv, char **envp)
 		if (*cmd_line && !is_emptystr(cmd_line))
 		{
 			add_history(cmd_line);
-			process(cmd_line, envp);
+			process(cmd_line, env_list);
 		}
 	}
 	free(cmd_line);
