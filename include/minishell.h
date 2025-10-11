@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
+/*   By: emondo <emondo@student.42firenze.it>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:52:47 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/10 16:37:12 by miricci          ###   ########.fr       */
+/*   Updated: 2025/10/11 16:17:54 by emondo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@
 # define CMD_NOT_FOUND 127
 
 extern int	g_last_sig;
-extern int	g_exit_status;
 
 typedef struct s_cmdline
 {
@@ -59,16 +58,16 @@ void	export(t_list **env_list, char *str);
 // parsing.c
 int	is_builtin(char *cmd);
 char	**remove_quotes(char **str);
-char	**get_data_token(char *str);
+char	**get_data_token(char *str, int exit_code);
 t_cmdline	*data_init(void);
 char	**parse_cmd_args(char **token);
-void	data_parsing(char *cmd_str, t_cmdline *data);
+void	data_parsing(char *cmd_str, t_cmdline *data, int exit_status);
 
 // expand.c
-char	*expand_var_in_quotes(char *quote);
-char	*expand_var(char *var);
-char	*expanded_quote(char *quote);
-char	**expand_env_var(char **token);
+char	*expand_var_in_quotes(char *quote, int exit_status);
+char	*expand_var(char *var, int exit_status);
+char	*expanded_quote(char *quote, int exit_status);
+char	**expand_env_var(char **token, int exit_status);
 
 // token.c
 int	count_token(char *s);
@@ -108,11 +107,11 @@ char	*find_cmd_path(t_cmdline *data);
 void	exec_command(t_cmdline *data, t_list **env_list);
 int	exec_simple_builtin(t_cmdline *data, t_list **env_list);
 int	exec_status_changing_builtin(t_cmdline *data, t_list **env_list);
-void	one_cmd(t_cmdline *data, int fd, t_list **env_list);
+int	one_cmd(t_cmdline *data, int *exit_status, t_list **env_list);
 
 // pipe.c
-void	piping(t_cmdline *data, int size, t_list **env_list);
-void	create_pipe(t_cmdline *data, int i, int size, t_list **env_list);
+int	piping(t_cmdline *data,int *exit_status, int size, t_list **env_list);
+pid_t	create_pipe(t_cmdline *data, int i, int size, t_list **env_list, int exit_status);
 
 // cleaning.c
 void	free_cmdline(t_cmdline *data);

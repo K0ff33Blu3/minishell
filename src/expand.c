@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
+/*   By: emondo <emondo@student.42firenze.it>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 11:40:06 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/10 13:33:56 by miricci          ###   ########.fr       */
+/*   Updated: 2025/10/11 15:54:34 by emondo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*expand_var_in_quotes(char *quote)
+char	*expand_var_in_quotes(char *quote, int exit_status)
 {
 	int		len;
 	int		start;
@@ -25,7 +25,7 @@ char	*expand_var_in_quotes(char *quote)
 	len = word_len(quote, start);
 	var = ft_substr(quote, start, len);
 	if (ft_strncmp(var, "?", 2) == 0)
-		return (ft_itoa(g_exit_status));
+		return (ft_itoa(exit_status));
 	if (!var)
 		return (NULL);
 	value = getenv(var);
@@ -34,13 +34,13 @@ char	*expand_var_in_quotes(char *quote)
 	return (var);
 }
 
-char	*expand_var(char *var)
+char	*expand_var(char *var, int exit_status)
 {
 	char	*name_var;
 	char	*value;
 
 	if (ft_strncmp(var, "$?", 3) == 0)
-		return (ft_itoa(g_exit_status));
+		return (ft_itoa(exit_status));
 	name_var = var + 1;
 	value = getenv(name_var);
 	if (value)
@@ -48,7 +48,7 @@ char	*expand_var(char *var)
 	return (ft_strdup(var));
 }
 
-char	*expanded_quote(char *quote)
+char	*expanded_quote(char *quote, int exit_status)
 {
 	char	*start_str;
 	char	*partial_str;
@@ -59,7 +59,7 @@ char	*expanded_quote(char *quote)
 
 	start_quote = ft_strchr(quote, '$') - quote;
 	start_str = ft_substr(quote, 0, start_quote);
-	value = expand_var_in_quotes(quote);
+	value = expand_var_in_quotes(quote, exit_status);
 	partial_str = ft_strjoin(start_str, value);
 	// end_str = ft_strchr(quote, '$') + word_len(quote, start_quote);
 	final_str = ft_strjoin(partial_str, (ft_strchr(quote, '$') + word_len(quote, start_quote)));
@@ -69,7 +69,7 @@ char	*expanded_quote(char *quote)
 	return (final_str);
 }
 
-char	**expand_env_var(char **token)
+char	**expand_env_var(char **token, int exit_status)
 {
 	int		i;
 	char	**expanded_token;
@@ -85,9 +85,9 @@ char	**expand_env_var(char **token)
 			if (*token[i] == '\'')
 				expanded_token[i] = ft_strdup(token[i]);
 			else if (*token[i] == '\"')
-				expanded_token[i] = expanded_quote(token[i]);
+				expanded_token[i] = expanded_quote(token[i], exit_status);
 			else
-				expanded_token[i] = expand_var(token[i]);
+				expanded_token[i] = expand_var(token[i], exit_status);
 		}
 		else
 			expanded_token[i] = ft_strdup(token[i]);

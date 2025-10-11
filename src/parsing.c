@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
+/*   By: emondo <emondo@student.42firenze.it>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 13:03:04 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/10 16:28:47 by miricci          ###   ########.fr       */
+/*   Updated: 2025/10/11 16:02:04 by emondo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ char	**remove_quotes(char **str)
 	return (ft_free((void **)str, -1), no_quotes);
 }
 
-char	**get_data_token(char *str)
+char	**get_data_token(char *str, int exit_code)
 {
 	char	**partial_token;
 	char	**exp_token;
@@ -47,7 +47,7 @@ char	**get_data_token(char *str)
 	partial_token = tokenize(str);
 	if (!partial_token)
 		return (NULL);
-	exp_token = expand_env_var(partial_token);
+	exp_token = expand_env_var(partial_token, exit_code);
 	if (!exp_token)
 		return (NULL);
 	re_token = re_tokenize(exp_token, array_size((void **)exp_token));
@@ -113,13 +113,13 @@ char	**parse_cmd_args(char **token)
 	return (arg);
 }
 
-void	data_parsing(char *cmd_str, t_cmdline *data)
+void	data_parsing(char *cmd_str, t_cmdline *data, int exit_status)
 {
-	data->token = get_data_token(cmd_str);
+	data->token = get_data_token(cmd_str, exit_status);
 	data->has_infile = handle_input_redir(data);
 	data->has_outfile = handle_output_redir(data);
 	data->cmd_args = parse_cmd_args(data->token);
-	data->cmd_args = expand_env_var(data->cmd_args);
+	data->cmd_args = expand_env_var(data->cmd_args, exit_status);
 	if (!data->cmd_args || !data->cmd_args[0])
 	{
 		data->cmd = NULL;

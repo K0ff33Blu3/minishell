@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
+/*   By: emondo <emondo@student.42firenze.it>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 08:22:00 by miricci           #+#    #+#             */
-/*   Updated: 2025/09/18 11:22:24 by miricci          ###   ########.fr       */
+/*   Updated: 2025/10/11 17:28:05 by emondo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ int	get_type_of_input(t_cmdline *cmd)
 	{
 		if(!ft_strncmp(cmd->token[i], "<", 2) && cmd->token[i + 1])
 		{
-			// free(infile);
 			infile = cmd->token[i + 1];
 			type = 1;
 		}
@@ -40,7 +39,7 @@ int	get_type_of_input(t_cmdline *cmd)
 	}
 	if (type == 1)
 		cmd->infile = ft_strdup(infile);
-	if (type == 2)
+	else if (type == 2)
 		cmd->limiter = ft_strdup(limiter);
 	return (free(limiter), type);
 }
@@ -60,8 +59,6 @@ int	handle_input_redir(t_cmdline *cmd)
 			cmd->in_fd = open("/dev/null", O_RDONLY);
 			perror(cmd->infile);
 		}
-		dup2(cmd->in_fd, STDIN_FILENO);
-		close(cmd->in_fd);
 	}
 	else if (type_of_redir == 2)
 	{
@@ -118,11 +115,7 @@ int	handle_output_redir(t_cmdline *cmd)
 			open_outfile(cmd, i, &flag, &outfile);
 	}
 	if (flag)
-	{
 		cmd->outfile = ft_strdup(outfile);
-		dup2(cmd->out_fd, STDOUT_FILENO);
-		close(cmd->out_fd);	
-	}
 	else
 	{
 		cmd->out_fd = STDOUT_FILENO;

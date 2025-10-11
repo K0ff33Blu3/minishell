@@ -9,7 +9,7 @@ INC_DIR		:= include
 
 # Libreria
 LIBFT_DIR	:= libft
-LIBFT_LIB	:= $(LIBFT_DIR)/libft
+LIBFT_LIB	:= $(LIBFT_DIR)/libft.a
 LDFLAGS  += -L$(LIBFT_DIR)
 LDLIBS   += -lft -lreadline
 
@@ -50,7 +50,7 @@ $(LIBFT_LIB):
 # --- 6) Pulizia oggetti ---
 clean:
 	@make -C $(LIBFT_DIR) clean
-	@rm -rf $(OBJS_DIR)
+	@rm -rf $(OBJ_DIR)
 	@echo -e "\033[33mObjects removed.\033[0m"
 
 # --- 7) Pulizia completa (oggetti + binari) ---
