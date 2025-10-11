@@ -29,7 +29,7 @@ all: $(NAME)
 # --- 1) Creazione dell’executable base ---
 # Assicuriamoci che obj/ esista, poi linkiamo
 $(NAME): $(OBJS) $(LIBFT_LIB)
-	$(CC) $(CFLAGS) $(OBJS) $(LDFLAGS) $(LDLIBS) -o $@
+	@$(CC) $(CFLAGS) $(OBJS) $(LDFLAGS) $(LDLIBS) -o $@
 	@echo -e "\033[32m$(NAME) created!\033[0m"
 
 # --- 3) Rule per creare la cartella obj/
