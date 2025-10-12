@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/10 13:36:15 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/10 17:47:38 by miricci          ###   ########.fr       */
+/*   Updated: 2025/10/12 11:59:23 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	export(t_list **env_list, char *str)
 	int	name_len;
 	t_list	*node;
 	
-	ft_putendl_fd(str, 1);
+	// ft_putendl_fd(str, 1);
 	value = ft_strchr(str, '=');
 	if (value)
 	{
@@ -29,7 +29,7 @@ void	export(t_list **env_list, char *str)
 	else
 		name = str;
 	name_len = ft_strlen(name);
-	ft_putendl_fd(name, 1);
+	// ft_putendl_fd(name, 1);
 	node = *env_list;
 	while (node)
 	{
@@ -43,9 +43,18 @@ void	export(t_list **env_list, char *str)
 	}
 	if (value)
 	{
-		ft_putendl_fd(str, 1);
-		ft_putendl_fd(name, 1);
+		// ft_putendl_fd(str, 1);
+		// ft_putendl_fd(name, 1);
 		t_list *new_var = ft_lstnew(str);
 		new_var->next = *env_list;
+		// printf("%s\n", (char *)new_var->content);
+		// printf("%p\n", new_var->next);
+		*env_list = new_var;
+	}
+	node = *env_list;
+	while (node)
+	{
+		printf("%s\n%p\n", (char *)node->content, node->next);
+		node=node->next;
 	}
 }
