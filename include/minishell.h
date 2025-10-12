@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emondo <emondo@student.42firenze.it>       +#+  +:+       +#+        */
+/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:52:47 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/11 16:17:54 by emondo           ###   ########.fr       */
+/*   Updated: 2025/10/12 15:02:29 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	echo(t_cmdline *data);
 void	exit_cmd(t_cmdline *data);
 int	ft_cd(t_cmdline *data);
 void	unset(t_list **env_list, char **var);
-void	export(t_list **env_list, char *str);
+void	export(t_list **env_list, char **str);
 
 // parsing.c
 int	is_builtin(char *cmd);
@@ -71,18 +71,18 @@ char	**expand_env_var(char **token, int exit_status);
 
 // token.c
 int	count_token(char *s);
-char	*make_word(const char *s, int *j);
-char	*make_quote(const char *s, int *j);
-char	*make_metachar(const char *s, int *j);
+char	*make_word(char *s, int *j);
+void	make_quote(char **word, char *s, int *j, int *i);
+char	*make_metachar(char *s, int *j);
 char	**tokenize(char	*str);
 char	**re_tokenize(char **arr, int size);
 
 // token_utils.c
 char	**get_metachar(void);
-int	is_metachar(const char *c);
+int	is_metachar(char *c);
 int	skip_quote(char *s, int start);
-int	word_len(const char *s, unsigned int start);
-int	quote_len(const char *s, unsigned int start, char quote);
+int	word_len(char *s, unsigned int start);
+int	quote_len(char *s, unsigned int start, char quote);
 
 // signal.c
 void	handle_sigint_prompt(int signum);

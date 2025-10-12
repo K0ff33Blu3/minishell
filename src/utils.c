@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 11:16:05 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/05 20:50:17 by miricci          ###   ########.fr       */
+/*   Updated: 2025/10/12 12:37:47 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,11 +87,11 @@ t_list	**env_init(char **envp)
 	env_list = (t_list **) malloc (sizeof(t_list *));
 	if (!env_list)
 		return (NULL);
-	*env_list = ft_lstnew(*envp);
+	*env_list = ft_lstnew(ft_strdup(*envp));
 	envp++;
 	while (*envp)
 	{
-		node = ft_lstnew(*envp);
+		node = ft_lstnew(ft_strdup(*envp));
 		ft_lstadd_back(env_list, node);
 		envp++;
 	}

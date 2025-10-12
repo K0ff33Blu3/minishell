@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emondo <emondo@student.42firenze.it>       +#+  +:+       +#+        */
+/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 14:51:52 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/11 17:30:00 by emondo           ###   ########.fr       */
+/*   Updated: 2025/10/12 13:16:18 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ int	exec_status_changing_builtin(t_cmdline *data, t_list **env_list)
 	}
 	else if (ft_strncmp(data->cmd, "export", 7) == 0)
 	{
-		export(env_list, data->cmd_args[1]);
+		export(env_list, data->cmd_args);
 		return (1);
 	}
 	return (0);

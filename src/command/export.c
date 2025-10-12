@@ -6,20 +6,45 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/10 13:36:15 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/12 11:59:23 by miricci          ###   ########.fr       */
+/*   Updated: 2025/10/12 14:43:34 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	export(t_list **env_list, char *str)
+static void	change_or_create(t_list **env_list, char *name, char *value, char *str)
 {
-	char	*name;
-	char	*value;
-	int	name_len;
 	t_list	*node;
+	int	name_len;
 	
-	// ft_putendl_fd(str, 1);
+	name_len = ft_strlen(name);
+	node = *env_list;
+	while (node)
+	{
+		if (!ft_strncmp(name, (char *)node->content, name_len) && !ft_strncmp((char *)node->content + name_len, "=", 1))
+		{
+			if (value)
+			{
+				free(node->content);	
+				node->content = ft_strdup(str);
+			}
+			return ;
+		}
+		node = node->next;
+	}
+	if (value)
+	{
+		t_list *new_var = ft_lstnew(ft_strdup(str));
+		new_var->next = *env_list;
+		*env_list = new_var;
+	}
+}
+
+static void	export_one(t_list **env_list, char *str)
+{
+	char	*value;
+	char	*name;
+	
 	value = ft_strchr(str, '=');
 	if (value)
 	{
@@ -28,33 +53,17 @@ void	export(t_list **env_list, char *str)
 	}
 	else
 		name = str;
-	name_len = ft_strlen(name);
-	// ft_putendl_fd(name, 1);
-	node = *env_list;
-	while (node)
+	change_or_create(env_list, name, value, str);
+}
+
+void	export(t_list **env_list, char **str)
+{
+	int	i;
+
+	i = 0;
+	while (str[++i])
 	{
-		if (!ft_strncmp(name, (char *)node->content, name_len) && !ft_strncmp((char *)node->content + name_len, "=", 1))
-		{
-			if (value)
-				ft_memcpy(node->content, str, ft_strlen(node->content));
-			return ;
-		}
-		node = node->next;
-	}
-	if (value)
-	{
-		// ft_putendl_fd(str, 1);
-		// ft_putendl_fd(name, 1);
-		t_list *new_var = ft_lstnew(str);
-		new_var->next = *env_list;
-		// printf("%s\n", (char *)new_var->content);
-		// printf("%p\n", new_var->next);
-		*env_list = new_var;
-	}
-	node = *env_list;
-	while (node)
-	{
-		printf("%s\n%p\n", (char *)node->content, node->next);
-		node=node->next;
+		printf("%s\n", str[i]);
+		export_one(env_list, str[i]);
 	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elmondo <elmondo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:36:23 by emondo            #+#    #+#             */
-/*   Updated: 2025/10/09 16:39:37 by elmondo          ###   ########.fr       */
+/*   Updated: 2025/10/12 14:44:30 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ char	**get_metachar(void)
 	return (metachar);
 }
 
-int	is_metachar(const char *c)
+int	is_metachar(char *c)
 {
 	unsigned int	i;
 	char			**metachar;
@@ -69,21 +69,23 @@ int	skip_quote(char *s, int start)
 	return (i);
 }
 
-int	word_len(const char *s, unsigned int start)
+int	word_len(char *s, unsigned int start)
 {
 	int	len;
 
 	len = 0;
-	while (s[start] && !ft_isspace(s[start]) && !is_metachar(&s[start]) 
-			 && s[start] != '\'' && s[start] != '\"')
+	while (s[start] && !ft_isspace(s[start]) && !is_metachar(&s[start]))
 	{
-		len++;
+		if (s[start] == '\'' || s[start] == '\"')
+			len = skip_quote(s, start);
+		else
+			len++;
 		start++;
 	}
 	return (len);
 }
 
-int	quote_len(const char *s, unsigned int start, char quote)
+int	quote_len(char *s, unsigned int start, char quote)
 {
 	int	len;
 

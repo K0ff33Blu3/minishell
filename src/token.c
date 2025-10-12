@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 13:24:24 by miricci           #+#    #+#             */
-/*   Updated: 2025/09/18 11:22:34 by miricci          ###   ########.fr       */
+/*   Updated: 2025/10/12 15:09:37 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,17 +31,19 @@ int	count_token(char *s)
 		else
 		{
 			count++;
-			if (s[i] == '\'' || s[i] == '\"')
-				i = skip_quote(s, i);
-			else
-				while (s[i] && !ft_isspace(s[i]) && !is_metachar(&s[i]))
+			while (s[i] && !ft_isspace(s[i]) && !is_metachar(&s[i]))
+			{
+				if (s[i] == '\'' || s[i] == '\"')
+					i = skip_quote(s, i);
+				else
 					i++;
+			}	
 		}
 	}
 	return (count);
 }
 
-char	*make_word(const char *s, int *j)
+char	*make_word(char *s, int *j)
 {
 	char	*word;
 	int		i;
@@ -51,33 +53,31 @@ char	*make_word(const char *s, int *j)
 		return (NULL);
 	i = 0;
 	while (s[*j] && !ft_isspace(s[*j]) && !is_metachar(&s[*j]))
-		word[i++] = s[(*j)++];
+	{
+		if (s[*j] == '\'' || s[*j] == '\"')
+			make_quote(&word, s, j, &i);
+		else
+			word[i++] = s[(*j)++];
+	}
 	word[i] = 0;
 	return (word);
 }
 
-char	*make_quote(const char *s, int *j)
+void	make_quote(char **word, char *s, int *j, int *i)
 {
 	char	quote;
-	char	*word;
-	int		i;
 
 	quote = s[*j];
-	word = (char *)malloc(sizeof(char) * (quote_len(s, *j, quote) + 1));
-	if (!word)
-		return (NULL);
-	word[0] = s[*j];
+	(*word)[*i] = quote;
 	(*j)++;
-	i = 1;
+	(*i)++;
 	while (s[*j] && s[*j] != quote)
-		word[i++] = s[(*j)++];
+		(*word)[(*i)++] = s[(*j)++];
 	if (s[*j] == quote)
-		word[i++] = s[(*j)++];
-	word[i] = 0;
-	return (word);
+		(*word)[(*i)++] = s[(*j)++];
 }
 
-char	*make_metachar(const char *s, int *j)
+char	*make_metachar(char *s, int *j)
 {
 	int		len;
 	int		i;
@@ -109,9 +109,7 @@ char	**tokenize(char	*str)
 	{
 		while (ft_isspace(str[j]))
 			j++;
-		if (str[j] == '\'' || str[j] == '\"')
-			token[i] = make_quote(str, &j);
-		else if (is_metachar(&str[j]))
+		if (is_metachar(&str[j]))
 			token[i] = make_metachar(str, &j);
 		else
 			token[i] = make_word(str, &j);
