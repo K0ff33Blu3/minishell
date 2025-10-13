@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 11:16:05 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/12 12:37:47 by miricci          ###   ########.fr       */
+/*   Updated: 2025/10/13 22:43:30 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,4 +96,23 @@ t_list	**env_init(char **envp)
 		envp++;
 	}
 	return (env_list);
+}
+
+char	*ft_getenv(t_list **env_list, char *name)
+{
+	t_list	*node;
+	int	name_len;
+
+	node = *env_list;
+	name_len = ft_strlen(name);
+	while (node)
+	{
+		if (!ft_strncmp(name, (char *)node->content, name_len) && *((char *)node->content + name_len) == '=')
+		{
+			// printf("KK");
+			return (ft_strdup((char *)node->content + name_len + 1));
+		}
+		node = node->next;
+	}
+	return (NULL);
 }

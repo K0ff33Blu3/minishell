@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 14:51:52 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/12 13:16:18 by miricci          ###   ########.fr       */
+/*   Updated: 2025/10/13 22:31:15 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	exec_status_changing_builtin(t_cmdline *data, t_list **env_list)
 	}
 	else if (ft_strncmp(data->cmd, "cd", 3) == 0)
 	{
-		ft_cd(data);
+		ft_cd(env_list, data);
 		return (1);
 	}
 	else if (ft_strncmp(data->cmd, "unset", 6) == 0)
@@ -63,7 +63,7 @@ int	one_cmd(t_cmdline *data, int *exit_status, t_list **env_list)
 	pid_t pid;
 	int status;
 
-	data_parsing(data->all_cmd_lines[0], data, *exit_status);
+	data_parsing(env_list, data->all_cmd_lines[0], data, *exit_status);
 	if (exec_status_changing_builtin(data, env_list))
 		return (0);
 	pid = fork();

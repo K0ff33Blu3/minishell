@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/10 13:36:15 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/12 14:43:34 by miricci          ###   ########.fr       */
+/*   Updated: 2025/10/13 22:12:59 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,19 @@ static void	export_one(t_list **env_list, char *str)
 	else
 		name = str;
 	change_or_create(env_list, name, value, str);
+}
+
+void	export_no_args(t_list **env_list)
+{
+	t_list	*node;
+	
+	node = *env_list;
+	while (node)
+	{
+		printf("declare -x ");
+		printf("%s\n", (char *)node->content);
+		node = node->content;
+	}
 }
 
 void	export(t_list **env_list, char **str)

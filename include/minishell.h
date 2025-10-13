@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:52:47 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/12 15:02:29 by miricci          ###   ########.fr       */
+/*   Updated: 2025/10/13 22:28:37 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,23 +51,25 @@ void	pwd(void);
 void	env(t_list **env_list);
 void	echo(t_cmdline *data);
 void	exit_cmd(t_cmdline *data);
-int	ft_cd(t_cmdline *data);
+int	ft_cd(t_list **env_list, t_cmdline *data);
 void	unset(t_list **env_list, char **var);
 void	export(t_list **env_list, char **str);
 
 // parsing.c
 int	is_builtin(char *cmd);
+char	*rm_quotes(char *str);
 char	**remove_quotes(char **str);
-char	**get_data_token(char *str, int exit_code);
+char	**get_data_token(t_list **env_list, char *str, int exit_code);
 t_cmdline	*data_init(void);
 char	**parse_cmd_args(char **token);
-void	data_parsing(char *cmd_str, t_cmdline *data, int exit_status);
+void	data_parsing(t_list **env_list, char *cmd_str, t_cmdline *data, int exit_status);
 
 // expand.c
-char	*expand_var_in_quotes(char *quote, int exit_status);
-char	*expand_var(char *var, int exit_status);
-char	*expanded_quote(char *quote, int exit_status);
-char	**expand_env_var(char **token, int exit_status);
+// char	*expand_var_in_quotes(char *quote, int exit_status);
+char	get_kind_of_quote(char *str);
+char	*expand_var(t_list **env_var, char *var, int exit_status);
+char	*expanded_str(t_list **env_list, char *str, int exit_status);
+char	**expand_env_var(t_list **env_list, char **token, int exit_status);
 
 // token.c
 int	count_token(char *s);
@@ -98,6 +100,7 @@ void	print_cmd_struct(t_cmdline cmd, int fd);
 int	is_emptystr(char *str);
 void	ft_error(char *str);
 t_list	**env_init(char **envp);
+char	*ft_getenv(t_list **env_list, char *name);
 
 // find_cmd_path
 void	cmd_not_found(t_cmdline *data);
