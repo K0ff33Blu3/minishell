@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 11:40:06 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/13 23:24:36 by miricci          ###   ########.fr       */
+/*   Updated: 2025/10/14 17:52:13 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,13 @@
 
 char	*expand_var(t_list **env_list, char *var, int exit_status)
 {
-	char	*name_var;
 	char	*value;
 
-	if (ft_strncmp(var, "$?", 3) == 0)
+	if (ft_strncmp(var, "?", 3) == 0)
 		return (ft_itoa(exit_status));
-	name_var = var + 1;
-	value = ft_getenv(env_list, name_var);
+	printf("var: %s\n", var);
+	value = ft_getenv(env_list, var);
+	printf("value: %s\n", value);
 	if (value)
 		return (ft_strdup(value));
 	return (ft_strdup(var));
@@ -62,34 +62,42 @@ int	chr_repeat(char *s, int c)
 	return (res);
 }
 
-char	*expanded_str(t_list **env_list, char *str, int exit_status)
+char	*expanded_str(t_list **env_list, char *in_str, int exit_status)
 {
-	char	*start_str;
-	char	*partial_str;
-	char	*final_str;
-	int	start_index;
-	// char	*end_str;
-	char	*value;
-	// int	exp_nbr;
-	// int	i;
+	char	*fix;
+	char	*exp_var;
+	int	i;
+	int	var_len;
+	char	*var;
+	char	*part_str;
+	char	*result;
+	char	*tmp;
 
-	// i = 0;
-	// exp_nbr = chr_repeat(str, '$');
-	// while (str[i])
-	// {
-		
-	// }
-	start_index = ft_strchr(str, '$') - str;
-	start_str = ft_substr(str, 0, start_index);
-	value = expand_var(env_list, ft_strchr(str, '$'), exit_status);
-	partial_str = ft_strjoin(start_str, value);
-	// end_str = ft_strchr(quote, '$') + word_len(quote, start_quote);
-	final_str = ft_strjoin(partial_str, (ft_strchr(str, '$') + word_len(str, start_index)));
-	// printf("%s\n", final_str);
-	free(value);
-	free(start_str);
-	free(partial_str);
-	return (final_str);
+	i = 0;
+	while (in_str[i] && in_str[i] != '$')
+		i++;
+	fix = ft_substr(in_str, 0, i);
+	if (in_str[i] == '$')
+	{
+		var = name_var(in_str + i + 1);
+		exp_var =  expand_var(env_list, var, exit_status);
+		var_len = ft_strlen(var);
+		part_str = ft_strjoin(fix, exp_var);
+		result = ft_strjoin(part_str, in_str + i + 1 + var_len);
+		free(var);
+		free(exp_var);
+		free(part_str);
+	}
+	else
+		result = ft_strdup(fix);
+	free(fix);
+	if (ft_strchr(result, '$'))
+	{
+		tmp = expanded_str(env_list, result, exit_status);
+		free(result);
+		result = tmp;
+	}
+	return (result);
 }
 
 char	get_kind_of_quote(char *str)
@@ -101,6 +109,21 @@ char	get_kind_of_quote(char *str)
 		str++;
 	}
 	return (0);	
+}
+
+char	*name_var(char *str)
+{
+	char	*name;
+	int	name_len;
+
+	name_len = 0;
+	while (ft_isalnum(str[name_len]))
+		name_len++;
+	name = (char *)malloc(sizeof(char) * (name_len + 1));
+	if (!name)
+		return (NULL);
+	ft_strlcpy(name, str, name_len + 1);
+	return (name);
 }
 
 char	**expand_env_var(t_list **env_list, char **token, int exit_status)
@@ -118,15 +141,14 @@ char	**expand_env_var(t_list **env_list, char **token, int exit_status)
 		if (ft_strchr(token[i], '$'))
 		{
 			quote = get_kind_of_quote(token[i]);
-			printf("%c\n", quote);
 			if (quote == '\'')
 			{
-				printf("KK\n");
 				expanded_token[i] = ft_strdup(token[i]);
-				printf("%s\n", expanded_token[i]);
 			}
 			else
+			{
 				expanded_token[i] = expanded_str(env_list, token[i], exit_status);
+			}
 			// else if (*token[i] == '\"')
 			// 	expanded_token[i] = expanded_quote(token[i], exit_status);
 			// else

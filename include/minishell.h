@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:52:47 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/13 22:28:37 by miricci          ###   ########.fr       */
+/*   Updated: 2025/10/14 17:09:17 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ void	data_parsing(t_list **env_list, char *cmd_str, t_cmdline *data, int exit_st
 
 // expand.c
 // char	*expand_var_in_quotes(char *quote, int exit_status);
+char	*name_var(char *str);
 char	get_kind_of_quote(char *str);
 char	*expand_var(t_list **env_var, char *var, int exit_status);
 char	*expanded_str(t_list **env_list, char *str, int exit_status);

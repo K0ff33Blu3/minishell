@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 13:03:04 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/13 22:30:35 by miricci          ###   ########.fr       */
+/*   Updated: 2025/10/14 17:37:35 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	*rm_quotes(char *str)
 	i = 0;
 	j = 0;
 	quote = get_kind_of_quote(str);
-	no_quote = (char *)malloc(sizeof(char) * ft_strlen(str));
+	no_quote = (char *)malloc(sizeof(char) * (ft_strlen(str) + 1));
 	if (!no_quote)
 		return (NULL);
 	while (str[i])
