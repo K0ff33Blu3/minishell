@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 13:03:04 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/14 17:37:35 by miricci          ###   ########.fr       */
+/*   Updated: 2025/10/15 21:00:30 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,18 +21,30 @@ char	*rm_quotes(char *str)
 
 	i = 0;
 	j = 0;
-	quote = get_kind_of_quote(str);
 	no_quote = (char *)malloc(sizeof(char) * (ft_strlen(str) + 1));
 	if (!no_quote)
 		return (NULL);
 	while (str[i])
 	{
-		if (str[i] != quote)
+		if (str[i] == '\'' || str[i] == '\"')
+		{
+			quote = str[i];
+			i++;
+			while (str[i] && str[i] != quote)
+			{
+				no_quote[j] = str[i];
+				j++;
+				i++;
+			}
+			if (str[i] == quote)
+				i++;
+		}
+		else
 		{
 			no_quote[j] = str[i];
 			j++;
+			i++;
 		}
-		i++;
 	}
 	no_quote[j] = 0;
 	return (no_quote);
@@ -138,7 +150,7 @@ void	data_parsing(t_list **env_list, char *cmd_str, t_cmdline *data, int exit_st
 	data->has_infile = handle_input_redir(data);
 	data->has_outfile = handle_output_redir(data);
 	data->cmd_args = parse_cmd_args(data->token);
-	data->cmd_args = expand_env_var(env_list, data->cmd_args, exit_status);
+	// data->cmd_args = expand_env_var(env_list, data->cmd_args, exit_status);
 	if (!data->cmd_args || !data->cmd_args[0])
 	{
 		data->cmd = NULL;

@@ -6,33 +6,11 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 11:40:06 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/14 17:52:13 by miricci          ###   ########.fr       */
+/*   Updated: 2025/10/15 20:55:29 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// char	*expand_var_in_quotes(char *quote, int exit_status)
-// {
-// 	int		len;
-// 	int		start;
-// 	char	*pos;
-// 	char	*value;
-// 	char	*var;
-
-// 	pos = ft_strchr(quote, '$') + 1;
-// 	start = pos - quote;
-// 	len = word_len(quote, start);
-// 	var = ft_substr(quote, start, len);
-// 	if (ft_strncmp(var, "?", 2) == 0)
-// 		return (ft_itoa(exit_status));
-// 	if (!var)
-// 		return (NULL);
-// 	value = getenv(var);
-// 	if (value)
-// 		return (free(var), ft_strdup(value));
-// 	return (var);
-// }
 
 char	*expand_var(t_list **env_list, char *var, int exit_status)
 {
@@ -40,60 +18,62 @@ char	*expand_var(t_list **env_list, char *var, int exit_status)
 
 	if (ft_strncmp(var, "?", 3) == 0)
 		return (ft_itoa(exit_status));
-	printf("var: %s\n", var);
 	value = ft_getenv(env_list, var);
-	printf("value: %s\n", value);
 	if (value)
 		return (ft_strdup(value));
 	return (ft_strdup(var));
 }
 
-int	chr_repeat(char *s, int c)
+int	find_dollar(char *str)
 {
-	int	res;
+	int	i;
 
-	res = 0;
-	while (*s)
+	i = 0;
+	while (str[i] && str[i] != '$')
 	{
-		if (*s == c)
-			res++;
-		s++;
+		if (str[i] == '\'')
+			i = skip_quote(str, i);
+		else
+			i++;
 	}
-	return (res);
+	return (i);
 }
 
-char	*expanded_str(t_list **env_list, char *in_str, int exit_status)
+char	*expand_str(t_list **env_list, char *str, int exit_status, int *i)
 {
 	char	*fix;
-	char	*exp_var;
-	int	i;
-	int	var_len;
 	char	*var;
 	char	*part_str;
 	char	*result;
-	char	*tmp;
+	char	*exp_var;
 
-	i = 0;
-	while (in_str[i] && in_str[i] != '$')
-		i++;
-	fix = ft_substr(in_str, 0, i);
-	if (in_str[i] == '$')
-	{
-		var = name_var(in_str + i + 1);
-		exp_var =  expand_var(env_list, var, exit_status);
-		var_len = ft_strlen(var);
-		part_str = ft_strjoin(fix, exp_var);
-		result = ft_strjoin(part_str, in_str + i + 1 + var_len);
-		free(var);
-		free(exp_var);
-		free(part_str);
-	}
-	else
-		result = ft_strdup(fix);
+	fix = ft_substr(str, 0, *i);
+	var = name_var(str + *i + 1);
+	exp_var =  expand_var(env_list, var, exit_status);
+	part_str = ft_strjoin(fix, exp_var);
+	result = ft_strjoin(part_str, str + *i + 1 + ft_strlen(var));
+	*i += ft_strlen(var) + 1;
+	free(var);
+	free(exp_var);
+	free(part_str);
 	free(fix);
-	if (ft_strchr(result, '$'))
+	return (result);
+}
+
+char	*expand_str_recursive(t_list **env_list, char *in_str, int exit_status)
+{
+	char	*result;
+	char	*tmp;
+	int	i;
+	
+	i = find_dollar(in_str);
+	if (in_str[i] == '$')
+		result = expand_str(env_list, in_str, exit_status, &i);
+	else
+		result = ft_strdup(in_str);
+	if (in_str[i])
 	{
-		tmp = expanded_str(env_list, result, exit_status);
+		tmp = expand_str(env_list, result, exit_status, &i);
 		free(result);
 		result = tmp;
 	}
@@ -130,7 +110,6 @@ char	**expand_env_var(t_list **env_list, char **token, int exit_status)
 {
 	int		i;
 	char	**expanded_token;
-	char	quote;
 
 	i = 0;
 	expanded_token = malloc(sizeof(char *) * (array_size((void **)token) + 1));
@@ -138,24 +117,7 @@ char	**expand_env_var(t_list **env_list, char **token, int exit_status)
 		return (NULL);
 	while (token[i])
 	{
-		if (ft_strchr(token[i], '$'))
-		{
-			quote = get_kind_of_quote(token[i]);
-			if (quote == '\'')
-			{
-				expanded_token[i] = ft_strdup(token[i]);
-			}
-			else
-			{
-				expanded_token[i] = expanded_str(env_list, token[i], exit_status);
-			}
-			// else if (*token[i] == '\"')
-			// 	expanded_token[i] = expanded_quote(token[i], exit_status);
-			// else
-			// 	expanded_token[i] = expand_var(token[i], exit_status);
-		}
-		else
-			expanded_token[i] = ft_strdup(token[i]);
+		expanded_token[i] = expand_str_recursive(env_list, token[i], exit_status);
 		i++;
 	}
 	expanded_token[i] = NULL;
