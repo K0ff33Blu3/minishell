@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
+/*   By: emondo <emondo@student.42firenze.it>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 14:51:52 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/13 22:31:15 by miricci          ###   ########.fr       */
+/*   Updated: 2025/10/16 14:11:39 by emondo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,12 +69,9 @@ int	one_cmd(t_cmdline *data, int *exit_status, t_list **env_list)
 	pid = fork();
 	if (pid > 0)
 	{
+		setup_shell_signals_father();
     		waitpid(pid, &status, 0);
-		if (WIFEXITED(status))
-			*exit_status = WEXITSTATUS(status);
-		else if (WIFSIGNALED(status))
-			*exit_status = 128 + WTERMSIG(status);
-		return (*exit_status);
+		apply_status_and_restore_prompt(status, exit_status);
 	}	
 	if (pid < 0)
 		perror("fork");

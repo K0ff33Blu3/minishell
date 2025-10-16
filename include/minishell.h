@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
+/*   By: emondo <emondo@student.42firenze.it>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:52:47 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/15 19:58:25 by miricci          ###   ########.fr       */
+/*   Updated: 2025/10/16 15:02:12 by emondo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,8 @@ int	quote_len(char *s, unsigned int start, char quote);
 void	handle_sigint_prompt(int signum);
 void	setup_shell_signals(void);
 void	reset_signals_default(void);
+void	setup_shell_signals_father(void);
+void	apply_status_and_restore_prompt(int status, int *exit_status);
 
 // redirections.c
 int	handle_input_redir(t_cmdline *cmd);
