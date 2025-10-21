@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emondo <emondo@student.42firenze.it>       +#+  +:+       +#+        */
+/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:52:47 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/16 15:02:12 by emondo           ###   ########.fr       */
+/*   Updated: 2025/10/21 15:49:14 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,8 @@
 
 extern int	g_last_sig;
 
-typedef struct s_cmdline
+typedef struct s_cmd
 {
-	char	**all_cmd_lines;
 	char	**token;
 	char	*cmd;
 	char	*cmd_path;
@@ -44,14 +43,14 @@ typedef struct s_cmdline
 	int	has_outfile;
 	int	tmp_pipe[2];
 	int	pip[2][2];
-}	t_cmdline;
+}	t_cmd;
 
 // /command
 void	pwd(void);
 void	env(t_list **env_list);
-void	echo(t_cmdline *data);
-void	exit_cmd(t_cmdline *data);
-int	ft_cd(t_list **env_list, t_cmdline *data);
+void	echo(t_cmd *data);
+void	exit_cmd(t_cmd *data);
+int	ft_cd(t_list **env_list, t_cmd *data);
 void	unset(t_list **env_list, char **var);
 void	export(t_list **env_list, char **str);
 
@@ -59,10 +58,13 @@ void	export(t_list **env_list, char **str);
 int	is_builtin(char *cmd);
 char	*rm_quotes(char *str);
 char	**remove_quotes(char **str);
-char	**get_data_token(t_list **env_list, char *str, int exit_code);
-t_cmdline	*data_init(void);
+char	**get_cmd_token(char **all_token, int start, int end);
+char	**token_parsing(t_list **env_list, char **token, int *exit_code);
+int	find_pipe(char **token, int *start);
+t_cmd	*data_init(void);
 char	**parse_cmd_args(char **token);
-void	data_parsing(t_list **env_list, char *cmd_str, t_cmdline *data, int exit_status);
+t_cmd	*data_parsing(t_list **env_list, char **part_token, int *exit_status);
+t_list	*mk_cmdlist(t_list **env_list, char *cmd_str, int *exit_status);
 
 // expand.c
 // char	*expand_var_in_quotes(char *quote, int exit_status);
@@ -96,32 +98,32 @@ void	setup_shell_signals_father(void);
 void	apply_status_and_restore_prompt(int status, int *exit_status);
 
 // redirections.c
-int	handle_input_redir(t_cmdline *cmd);
-int	handle_output_redir(t_cmdline *cmd);
+int	handle_input_redir(t_cmd *cmd);
+int	handle_output_redir(t_cmd *cmd);
 
 // utils.c
-void	print_cmd_struct(t_cmdline cmd, int fd);
+void	print_cmd_struct(t_cmd cmd, int fd);
 int	is_emptystr(char *str);
 void	ft_error(char *str);
 t_list	**env_init(char **envp);
 char	*ft_getenv(t_list **env_list, char *name);
 
 // find_cmd_path
-void	cmd_not_found(t_cmdline *data);
-char	*find_cmd_path(t_cmdline *data);
+void	cmd_not_found(t_cmd *data);
+char	*find_cmd_path(t_cmd *data);
 
 // execution.c
-void	exec_command(t_cmdline *data, t_list **env_list);
-int	exec_simple_builtin(t_cmdline *data, t_list **env_list);
-int	exec_status_changing_builtin(t_cmdline *data, t_list **env_list);
-int	one_cmd(t_cmdline *data, int *exit_status, t_list **env_list);
+void	exec_command(t_cmd *data, t_list **env_list);
+int	exec_simple_builtin(t_cmd *data, t_list **env_list);
+int	exec_status_changing_builtin(t_cmd *data, t_list **env_list);
+int	one_cmd(t_cmd *data, int *exit_status, t_list **env_list);
 
 // pipe.c
-int	piping(t_cmdline *data,int *exit_status, int size, t_list **env_list);
-pid_t	create_pipe(t_cmdline *data, int i, int size, t_list **env_list, int exit_status);
+int	piping(t_cmd *data,int *exit_status, int size, t_list **env_list);
+pid_t	create_pipe(t_cmd *data, int i, int size, t_list **env_list, int exit_status);
 
 // cleaning.c
-void	free_cmdline(t_cmdline *data);
+void	clean_data(t_cmd *data);
 void	close_pipe(int pip[2][2]);
 
 

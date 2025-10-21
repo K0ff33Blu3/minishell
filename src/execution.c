@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emondo <emondo@student.42firenze.it>       +#+  +:+       +#+        */
+/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 14:51:52 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/16 14:11:39 by emondo           ###   ########.fr       */
+/*   Updated: 2025/10/21 11:30:11 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	exec_simple_builtin(t_cmdline *data, t_list **env_list)
+int	exec_simple_builtin(t_cmd *data, t_list **env_list)
 {
 	if (data->has_outfile)
 	{
@@ -33,7 +33,7 @@ int	exec_simple_builtin(t_cmdline *data, t_list **env_list)
 	return (0);
 }
 
-int	exec_status_changing_builtin(t_cmdline *data, t_list **env_list)
+int	exec_status_changing_builtin(t_cmd *data, t_list **env_list)
 {
 	if (ft_strncmp(data->cmd, "exit", 5) == 0)
 	{
@@ -58,12 +58,11 @@ int	exec_status_changing_builtin(t_cmdline *data, t_list **env_list)
 	return (0);
 }
 
-int	one_cmd(t_cmdline *data, int *exit_status, t_list **env_list)
+int	one_cmd(t_cmd *data, int *exit_status, t_list **env_list)
 {
 	pid_t pid;
 	int status;
 
-	data_parsing(env_list, data->all_cmd_lines[0], data, *exit_status);
 	if (exec_status_changing_builtin(data, env_list))
 		return (0);
 	pid = fork();
@@ -84,7 +83,7 @@ int	one_cmd(t_cmdline *data, int *exit_status, t_list **env_list)
 	return (0);
 }
 
-void	exec_command(t_cmdline *data, t_list **env_list)
+void	exec_command(t_cmd *data, t_list **env_list)
 {
 	char	**env;
 

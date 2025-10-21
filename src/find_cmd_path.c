@@ -6,13 +6,13 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 15:15:11 by miricci           #+#    #+#             */
-/*   Updated: 2025/09/18 11:22:05 by miricci          ###   ########.fr       */
+/*   Updated: 2025/10/21 15:50:47 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	cmd_not_found(t_cmdline *data)
+void	cmd_not_found(t_cmd *data)
 {
 	ft_putstr_fd(data->cmd, STDERR_FILENO);
 	ft_putstr_fd(": command not found\n", STDERR_FILENO);
@@ -21,8 +21,8 @@ void	cmd_not_found(t_cmdline *data)
 	close_pipe(data->pip);
 	free(data->cmd_path);
 	free(data->cmd);
-	if (array_size((void **)data->all_cmd_lines) == 1)
-		return ;
+	// if (array_size((void **)data->all_cmd_lines) == 1)
+	// 	return ;
 	exit(CMD_NOT_FOUND);
 }
 
@@ -37,7 +37,7 @@ static char	*make_path(char *str, char *cmd)
 	return (path);
 }
 
-char	*find_cmd_path(t_cmdline *data)
+char	*find_cmd_path(t_cmd *data)
 {
 	char	**array;
 	char	*path;

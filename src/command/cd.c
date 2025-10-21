@@ -6,13 +6,13 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 20:29:23 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/13 22:27:56 by miricci          ###   ########.fr       */
+/*   Updated: 2025/10/21 11:19:10 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_cd(t_list **env_list, t_cmdline *data)
+int	ft_cd(t_list **env_list, t_cmd *data)
 {
 	char	*target;
 

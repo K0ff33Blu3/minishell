@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/10 13:36:15 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/15 18:45:47 by miricci          ###   ########.fr       */
+/*   Updated: 2025/10/21 17:39:06 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void	export(t_list **env_list, char **str)
 	i = 0;
 	while (str[++i])
 	{
-		printf("%s\n", str[i]);
+		// printf("%s\n", str[i]);
 		export_one(env_list, str[i]);
 	}
 }

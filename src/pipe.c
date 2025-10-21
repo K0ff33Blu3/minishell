@@ -3,20 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emondo <emondo@student.42firenze.it>       +#+  +:+       +#+        */
+/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 15:52:14 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/16 15:15:44 by emondo           ###   ########.fr       */
+/*   Updated: 2025/10/21 11:30:58 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 
-static void	child_setup_and_exec(t_cmdline *data, int i, int size, t_list **env_list, int exit_status)
+static void	child_setup_and_exec(t_cmd *data, int i, int size, t_list **env_list)
 {
 	reset_signals_default();
-	data_parsing(env_list, data->all_cmd_lines[i], data, exit_status);
 	if (i > 0 && !data->has_infile)
 		dup2(data->pip[(i + 1) % 2][0], STDIN_FILENO);
 	if (i < size - 1 && !data->has_outfile)
@@ -27,7 +26,7 @@ static void	child_setup_and_exec(t_cmdline *data, int i, int size, t_list **env_
 		close(data->pip[i % 2][1]);
 	if (exec_status_changing_builtin(data, env_list))
 	{
-		free_cmdline(data);
+		clean_data(data);
 		exit(EXIT_SUCCESS);
 	}
 	exec_simple_builtin(data, env_list);
@@ -35,13 +34,14 @@ static void	child_setup_and_exec(t_cmdline *data, int i, int size, t_list **env_
 	exit(127);
 }
 
-pid_t	create_pipe(t_cmdline *data, int i, int size, t_list **env_list, int exit_status)
+pid_t	create_pipe(t_cmd *data, int i, int size, t_list **env_list, int exit_status)
 {
+	(void)exit_status;
     pid_t pid = fork();
     if (pid < 0)
         ft_error("fork");
     if (pid == 0) 
-    	child_setup_and_exec(data, i, size,  env_list, exit_status);
+    	child_setup_and_exec(data, i, size,  env_list);
     else
     {
         if (i > 0)
@@ -52,7 +52,7 @@ pid_t	create_pipe(t_cmdline *data, int i, int size, t_list **env_list, int exit_
     return (pid);
 }
 
-int	piping(t_cmdline *data, int *exit_status, int size, t_list **env_list)
+int	piping(t_cmd *data, int *exit_status, int size, t_list **env_list)
 {
 	int	i;
 	int	status;

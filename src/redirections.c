@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emondo <emondo@student.42firenze.it>       +#+  +:+       +#+        */
+/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 08:22:00 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/11 17:28:05 by emondo           ###   ########.fr       */
+/*   Updated: 2025/10/21 11:19:10 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	get_type_of_input(t_cmdline *cmd)
+int	get_type_of_input(t_cmd *cmd)
 {
 	int	type;
 	int	i;
@@ -44,7 +44,7 @@ int	get_type_of_input(t_cmdline *cmd)
 	return (free(limiter), type);
 }
 
-int	handle_input_redir(t_cmdline *cmd)
+int	handle_input_redir(t_cmd *cmd)
 {
 	char	*line;
 	int	type_of_redir;
@@ -84,7 +84,7 @@ int	handle_input_redir(t_cmdline *cmd)
 	return (type_of_redir);
 }
 
-void	open_outfile(t_cmdline *cmd, int i, int *flag, char **outfile)
+void	open_outfile(t_cmd *cmd, int i, int *flag, char **outfile)
 {
 	free(*outfile);
 	*outfile = ft_strdup(cmd->token[i + 1]);
@@ -100,7 +100,7 @@ void	open_outfile(t_cmdline *cmd, int i, int *flag, char **outfile)
 	}
 }
 
-int	handle_output_redir(t_cmdline *cmd)
+int	handle_output_redir(t_cmd *cmd)
 {
 	int	i;
 	char	*outfile;
@@ -124,7 +124,7 @@ int	handle_output_redir(t_cmdline *cmd)
 	return (flag);
 }
 
-// int	handle_output_redir(t_cmdline *cmd)
+// int	handle_output_redir(t_cmd *cmd)
 // {
 // 	int	type_of_redir;
 
@@ -143,7 +143,7 @@ int	handle_output_redir(t_cmdline *cmd)
 
 // int main(void)
 // {
-// 	t_cmdline	*result;
+// 	t_cmd	*result;
 // 	char	*str = "cat < in1 < in2 > out1 > out2";
 // 	int i = 0;
 

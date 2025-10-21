@@ -6,26 +6,30 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 12:02:37 by miricci           #+#    #+#             */
-/*   Updated: 2025/09/18 11:21:47 by miricci          ###   ########.fr       */
+/*   Updated: 2025/10/17 11:44:44 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	free_cmdline(t_cmdline *data)
+void	clean_data(t_cmd *data)
 {
 	if (!data)
 		return ;
+	if (data->token)
+		ft_free((void **)data->token, -1);
 	if (data->cmd)
 		free(data->cmd);
 	if (data->cmd_path)
 		free(data->cmd_path);
 	if (data->cmd_args)
 		ft_free((void **)data->cmd_args, -1);
-	if (data->all_cmd_lines)
-		ft_free((void **)data->all_cmd_lines, -1);
-	if (data->token)
-		ft_free((void **)data->token, -1);
+	if (data->infile)
+		free(data->infile);
+	if (data->outfile)
+		free(data->outfile);
+	if (data->limiter)
+		free(data->limiter);
 	free(data);
 }
 // void	clear_buffer()

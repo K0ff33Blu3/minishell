@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 13:03:04 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/15 21:00:30 by miricci          ###   ########.fr       */
+/*   Updated: 2025/10/21 17:02:19 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,32 +68,11 @@ char	**remove_quotes(char **str)
 	return (ft_free((void **)str, -1), no_quotes);
 }
 
-char	**get_data_token(t_list **env_list, char *str, int exit_code)
+t_cmd	*data_init(void)
 {
-	char	**partial_token;
-	char	**exp_token;
-	char	**re_token;
-	char	**no_quotes_token;
+	t_cmd	*data;
 
-	partial_token = tokenize(str);
-	if (!partial_token)
-		return (NULL);
-	exp_token = expand_env_var(env_list, partial_token, exit_code);
-	if (!exp_token)
-		return (NULL);
-	re_token = re_tokenize(exp_token, array_size((void **)exp_token));
-	ft_free((void **)exp_token, -1);
-	no_quotes_token = remove_quotes(re_token);
-	if (!no_quotes_token)
-		return (NULL);
-	return (no_quotes_token);
-}
-
-t_cmdline	*data_init(void)
-{
-	t_cmdline	*data;
-
-	data = (t_cmdline *)malloc(sizeof(t_cmdline));
+	data = (t_cmd *)malloc(sizeof(t_cmd));
 	ft_memset(data, 0, sizeof(*data));
 	if (!data)
 		return (NULL);
@@ -144,18 +123,65 @@ char	**parse_cmd_args(char **token)
 	return (arg);
 }
 
-void	data_parsing(t_list **env_list, char *cmd_str, t_cmdline *data, int exit_status)
+char	**get_cmd_token(char **all_token, int start, int end)
 {
-	data->token = get_data_token(env_list, cmd_str, exit_status);
+	char	**result;
+	int	i;
+	
+	result = (char **)malloc(sizeof(char *) * (end - start + 1));
+	if (!result)
+		return (NULL);
+	i = 0;
+	while (start < end)
+	{
+		result[i] = ft_strdup(all_token[start]);
+		start++;
+		i++;
+	}
+	result[i] = NULL;
+	return (result);
+}
+
+int	find_pipe(char **token, int *start)
+{
+	int	end;
+	
+	if (!ft_strncmp(token[*start], "|", 2))
+		(*start)++;
+	end = *start;
+	while (token[end] && ft_strncmp(token[end], "|", 2))
+		end++;
+	return (end);
+}
+
+char	**token_parsing(t_list **env_list, char **token, int *exit_code)
+{
+	char	**exp_token;
+	char	**no_quotes_token;
+
+	exp_token = expand_env_var(env_list, token, *exit_code);
+	if (!exp_token)
+		return (NULL);
+	no_quotes_token = remove_quotes(exp_token);
+	if (!no_quotes_token)
+		return (NULL);
+	return (no_quotes_token);
+}
+
+t_cmd	*data_parsing(t_list **env_list, char **part_token, int *exit_status)
+{
+	t_cmd	*data;
+	
+	data = data_init();
+	data->token = token_parsing(env_list, part_token, exit_status);
 	data->has_infile = handle_input_redir(data);
 	data->has_outfile = handle_output_redir(data);
 	data->cmd_args = parse_cmd_args(data->token);
-	// data->cmd_args = expand_env_var(env_list, data->cmd_args, exit_status);
 	if (!data->cmd_args || !data->cmd_args[0])
 	{
 		data->cmd = NULL;
 		data->cmd_path = NULL;
-		return ;
+		return (NULL);
 	}
 	data->cmd = ft_strdup(data->cmd_args[0]);
 	if (is_builtin(data->cmd))
@@ -166,6 +192,72 @@ void	data_parsing(t_list **env_list, char *cmd_str, t_cmdline *data, int exit_st
 		if (!data->cmd_path)
 			cmd_not_found(data);
 	}
+	return (data);			
+}
+
+char	**array_cpy(char **src)
+{
+	char	**dst;
+	int	i;
+
+	dst = (char **)malloc(sizeof(char *) * (array_size((void **)src) + 1));
+	if (!dst)
+		return (NULL);
+	i = -1;
+	while (src[++i])
+	{
+		dst[i] = ft_strdup(src[i]);
+		if (!dst[i])
+			return (ft_free((void **)dst[i], i), NULL);
+	}
+	dst[i] = NULL;
+	return (dst);
+}
+t_cmd	*data_cpy(t_cmd *src)
+{
+	t_cmd	*dst;
+
+	dst = data_init();
+	dst->token = array_cpy(src->token);
+	dst->cmd = ft_strdup(src->cmd);
+	dst->cmd_path = ft_strdup(src->cmd_path);
+	dst->cmd_args = array_cpy(src->cmd_args);
+	dst->in_fd = src->in_fd;
+	dst->out_fd = src->out_fd;
+	dst->infile = ft_strdup(src->infile);
+	dst->outfile = ft_strdup(src->outfile);
+	dst->limiter = ft_strdup(src->limiter);
+	dst->has_infile = src->has_infile;
+	dst->has_outfile = dst->has_outfile;
+	dst->tmp_pipe[0] = src->tmp_pipe[0];
+	dst->tmp_pipe[1] = src->tmp_pipe[1];
+	dst->pip[0][0] = src->pip[0][0];
+	dst->pip[1][0] = src->pip[1][0];
+	dst->pip[0][1] = src->pip[0][1];
+	dst->pip[1][1] = src->pip[1][1];
+	return (dst);
+}
+t_list	*mk_cmdlist(t_list **env_list, char *cmd_str, int *exit_status)
+{
+	char	**token;
+	char	**part_token;
+	t_cmd	*data;
+	t_list	*cmd_list;
+	int	end;
+	int	i;
+
+	i = 0;
+	cmd_list = NULL;
+	token = tokenize(cmd_str);
+	while (token[i])
+	{
+		end = find_pipe(token, &i);
+		part_token = get_cmd_token(token, i, end);
+		i = end;
+		data = data_parsing(env_list, part_token, exit_status);
+		ft_lstadd_back(&cmd_list, ft_lstnew(data_cpy(data)));
+	}
+	return (cmd_list);
 }
 
 int is_builtin(char *cmd)

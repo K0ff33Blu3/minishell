@@ -6,13 +6,13 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 11:16:05 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/13 22:43:30 by miricci          ###   ########.fr       */
+/*   Updated: 2025/10/21 11:19:10 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// void	close_pipe(t_cmdline *cmd)
+// void	close_pipe(t_cmd *cmd)
 // {
 // 	close(cmd->pipe[0]);
 // 	close(cmd->pipe[1]);
@@ -35,7 +35,7 @@ int	is_emptystr(char *str)
 	return (1);
 }
 
-void	print_cmd_struct(t_cmdline cmd, int fd)
+void	print_cmd_struct(t_cmd cmd, int fd)
 {
 	int	i;
 

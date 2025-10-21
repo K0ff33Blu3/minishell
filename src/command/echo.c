@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 20:27:17 by miricci           #+#    #+#             */
-/*   Updated: 2025/09/18 11:21:13 by miricci          ###   ########.fr       */
+/*   Updated: 2025/10/21 11:19:10 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static int	check_flag(char **cmd_args)
 	return (i);
 }
 
-void	echo(t_cmdline *data)
+void	echo(t_cmd *data)
 {
 	int	i;
 	int	flag;
