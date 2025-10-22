@@ -6,12 +6,13 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 18:55:16 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/10 15:01:28 by miricci          ###   ########.fr       */
+/*   Updated: 2025/10/22 13:02:36 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
+
 # include <unistd.h>
 # include <stddef.h>
 # include <stdlib.h>
@@ -53,6 +54,7 @@ int		ft_strncmp(const char *s1, const char *s2, size_t n);
 int		ft_memcmp(const void *s1, const void *s2, size_t n);
 int		ft_atoi(const char *nptr);
 int		ft_indchr(const char *s, int c);
+int		ft_lstindex(t_list *head, t_list *target);
 long	ft_atol(const char *nptr);
 size_t	array_size(void **tab);
 size_t	ft_strlcat(char *dst, const char *src, size_t size);

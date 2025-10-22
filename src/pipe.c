@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 15:52:14 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/21 11:30:58 by miricci          ###   ########.fr       */
+/*   Updated: 2025/10/22 14:40:41 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ static void	child_setup_and_exec(t_cmd *data, int i, int size, t_list **env_list
 	}
 	exec_simple_builtin(data, env_list);
 	exec_command(data, env_list);
-	exit(127);
 }
 
 pid_t	create_pipe(t_cmd *data, int i, int size, t_list **env_list, int exit_status)
@@ -49,7 +48,11 @@ pid_t	create_pipe(t_cmd *data, int i, int size, t_list **env_list, int exit_stat
         if (i < size - 1)
             close(data->pip[i % 2][1]);
     }
-    return (pid);
+    return (pid);if (exec_status_changing_builtin(data, env_list))
+	{
+		clean_data(data);
+		exit(EXIT_SUCCESS);
+	}
 }
 
 int	piping(t_cmd *data, int *exit_status, int size, t_list **env_list)

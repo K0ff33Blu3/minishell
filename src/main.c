@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:50:27 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/21 17:57:19 by miricci          ###   ########.fr       */
+/*   Updated: 2025/10/22 17:58:34 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,55 @@
 
 int	g_last_sig = 0;
 
-pid_t	creat_children(t_cmd *data, )
+pid_t	creat_children(t_list **head, t_list *node, t_list **env_list)
 {
-	
+	pid_t	pid;
+	int	node_index;
+	t_cmd	*data;
+
+	pid = fork();
+	node_index = ft_lstindex(*head, node);
+	data = (t_cmd *)node->content;
+	if (node_index < 0)
+		return (-1);
+	if (pid < 0)
+		ft_error("fork");
+	if (pid == 0)
+	{
+		reset_signals_default();
+		if (node_index > 0 && !data->has_infile)
+			// dup
+		if (node_index < ft_lstsize(*head) - 1 && !data->has_outfile)
+			// dup 
+		if (node_index > 0)
+			// chiudi
+		if (node_index < ft_lstsize(*head) - 1)
+			// chiudi
+		if (exec_status_changing_builtin(data, env_list))
+		{
+			clean_data(data);
+			exit(EXIT_SUCCESS);
+		}
+		exec_simple_builtin(data, env_list);
+		exec_command(data, env_list);
+	}
+	else
+	{
+		if (node_index > 0)
+			// close 
+		if (node_index < ft_lstsize(*head) - 1)
+			// close 
+	}
+	return (pid);		
 }
 
 void	process(char *cmd_line, int *exit_status, t_list **env_list)
 {
 	t_list	*cmd_list;
 	t_list	*node;
+	t_list	pipe_list;
 	pid_t	pid;
-	// int	i;
+	int	status;
 
 	cmd_list = mk_cmdlist(env_list, cmd_line, exit_status);
 	if (ft_lstsize(cmd_list) == 1 && exec_status_changing_builtin((t_cmd *)cmd_list->content, env_list))
@@ -33,21 +71,18 @@ void	process(char *cmd_line, int *exit_status, t_list **env_list)
 	{
 		node = cmd_list;
 		while (node)
-			creat_children();
-	}
-		
-	// i = 0;
-	// while (node)
-	// {
-	// 	printf("\n-----------%d------------\n", i);
-	// 	print_cmd_struct(*(t_cmd *)(node->content), 1);
-	// 	printf("\n-----------%d------------\n", i);
-	// 	node = node->next;
-	// 	i++;
-	// }
-	
-	
-	
+		{
+			if (node->next && pipe(((t_cmd *)(node->content))->pip) == -1)
+				ft_error("pipe");
+			pid = creat_children(&cmd_list, node, env_list);
+			node = node->next;
+		}
+		waitpid(pid, &status, 0);
+		apply_status_and_restore_prompt(status, exit_status);
+	}	
+	while (wait(NULL) != -1)
+		;
+	free(cmd_line);
 }
 
 // void	process(char *cmd_line, int *exit_status, t_list **env_list)

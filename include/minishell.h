@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:52:47 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/21 15:49:14 by miricci          ###   ########.fr       */
+/*   Updated: 2025/10/22 13:03:30 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ typedef struct s_cmd
 	int	has_infile;
 	int	has_outfile;
 	int	tmp_pipe[2];
-	int	pip[2][2];
+	int	pip[2];
 }	t_cmd;
 
 // /command
@@ -67,7 +67,6 @@ t_cmd	*data_parsing(t_list **env_list, char **part_token, int *exit_status);
 t_list	*mk_cmdlist(t_list **env_list, char *cmd_str, int *exit_status);
 
 // expand.c
-// char	*expand_var_in_quotes(char *quote, int exit_status);
 char	*name_var(char *str);
 char	get_kind_of_quote(char *str);
 char	*expand_var(t_list **env_var, char *var, int exit_status);
