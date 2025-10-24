@@ -6,31 +6,22 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 14:51:52 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/21 11:30:11 by miricci          ###   ########.fr       */
+/*   Updated: 2025/10/24 18:16:30 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+
 #include "minishell.h"
 
-int	exec_simple_builtin(t_cmd *data, t_list **env_list)
+void	exec_simple_builtin(t_cmd *data, t_list **env_list)
 {
-	if (data->has_outfile)
-	{
-		dup2(data->out_fd, STDOUT_FILENO);
-		close(data->out_fd);
-	}
-	if (data->has_infile)
-	{
-		dup2(data->in_fd, STDIN_FILENO);
-		close(data->in_fd);
-	}
 	if (ft_strncmp(data->cmd, "echo", 5) == 0)
 		echo(data);
 	else if (ft_strncmp(data->cmd, "env", 4) == 0)
 		env(env_list);
 	else if (ft_strncmp(data->cmd, "pwd", 4) == 0)
 		pwd();
-	return (0);
+	return ;
 }
 
 int	exec_status_changing_builtin(t_cmd *data, t_list **env_list)
@@ -58,46 +49,11 @@ int	exec_status_changing_builtin(t_cmd *data, t_list **env_list)
 	return (0);
 }
 
-int	one_cmd(t_cmd *data, int *exit_status, t_list **env_list)
-{
-	pid_t pid;
-	int status;
-
-	if (exec_status_changing_builtin(data, env_list))
-		return (0);
-	pid = fork();
-	if (pid > 0)
-	{
-		setup_shell_signals_father();
-    		waitpid(pid, &status, 0);
-		apply_status_and_restore_prompt(status, exit_status);
-	}	
-	if (pid < 0)
-		perror("fork");
-	if (pid == 0)
-	{
-		reset_signals_default();
-		exec_simple_builtin(data, env_list);
-		exec_command(data, env_list);
-	}
-	return (0);
-}
-
 void	exec_command(t_cmd *data, t_list **env_list)
 {
 	char	**env;
 
 	env = lst_to_array(env_list);
-	if (data->has_outfile)
-	{
-		dup2(data->out_fd, STDOUT_FILENO);
-		close(data->out_fd);
-	}
-	if (data->has_infile)
-	{
-		dup2(data->in_fd, STDIN_FILENO);
-		close(data->in_fd);
-	}
 	if (access(data->cmd_path, X_OK) != -1)
 	{
 		if (execve(data->cmd_path, data->cmd_args, env) < 0)

@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 11:16:05 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/21 11:19:10 by miricci          ###   ########.fr       */
+/*   Updated: 2025/10/24 16:25:59 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,33 @@ void	print_cmd_struct(t_cmd cmd, int fd)
 	ft_putstr_fd("\n", fd);
 }
 
+t_env	*mk_env(char *str)
+{
+	t_env	*env;
+	int	value_len;
+	int	name_len;
+
+	env = (t_env *)malloc(sizeof(t_env));
+	if (!env)
+		return (NULL);
+	name_len = ft_indchr(str, '=');
+	if (name_len < 0)
+	{
+		env->name = ft_strdup(str);
+		env->value = NULL;
+		return (env);
+	}
+	env->name = ft_substr(str, 0 , name_len);
+	value_len = ft_strlen(str) - name_len - 1;
+	if (value_len == 0)
+	{
+		env->value = ft_strdup("");
+		return (env);
+	}
+	env->value = ft_substr(str, ft_indchr(str, '=') + 1, value_len);
+	return (env);
+}
+
 t_list	**env_init(char **envp)
 {
 	t_list	**env_list;
@@ -87,11 +114,11 @@ t_list	**env_init(char **envp)
 	env_list = (t_list **) malloc (sizeof(t_list *));
 	if (!env_list)
 		return (NULL);
-	*env_list = ft_lstnew(ft_strdup(*envp));
+	*env_list = ft_lstnew(mk_env(*envp));
 	envp++;
 	while (*envp)
 	{
-		node = ft_lstnew(ft_strdup(*envp));
+		node = ft_lstnew(mk_env(*envp));
 		ft_lstadd_back(env_list, node);
 		envp++;
 	}
@@ -101,17 +128,16 @@ t_list	**env_init(char **envp)
 char	*ft_getenv(t_list **env_list, char *name)
 {
 	t_list	*node;
+	t_env	*env;
 	int	name_len;
 
 	node = *env_list;
 	name_len = ft_strlen(name);
 	while (node)
 	{
-		if (!ft_strncmp(name, (char *)node->content, name_len) && *((char *)node->content + name_len) == '=')
-		{
-			// printf("KK");
-			return (ft_strdup((char *)node->content + name_len + 1));
-		}
+		env = (t_env *)node->content;
+		if (!ft_strncmp(name, env->name, name_len))
+			return(ft_strdup(env->value));
 		node = node->next;
 	}
 	return (NULL);

@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 11:40:06 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/21 15:35:40 by miricci          ###   ########.fr       */
+/*   Updated: 2025/10/24 16:14:02 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char	*expand_var(t_list **env_list, char *var, int exit_status)
 	value = ft_getenv(env_list, var);
 	if (value)
 		return (ft_strdup(value));
-	return (ft_strdup(var));
+	return (NULL);
 }
 
 int	find_dollar(char *str)
@@ -73,7 +73,7 @@ char	*expand_str_recursive(t_list **env_list, char *in_str, int exit_status)
 		result = ft_strdup(in_str);
 	if (in_str[i])
 	{
-		tmp = expand_str(env_list, result, exit_status, &i);
+		tmp = expand_str_recursive(env_list, result, exit_status);
 		free(result);
 		result = tmp;
 	}

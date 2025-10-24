@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:50:27 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/24 13:28:23 by miricci          ###   ########.fr       */
+/*   Updated: 2025/10/24 18:18:37 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ pid_t	creat_children(t_list **head, t_list *node, t_list **env_list)
 			close(data->pip[0]);
 		if (node->next)
 			close(data_nxt->pip[1]);
+		redirect(data);
 		if (exec_status_changing_builtin(data, env_list))
 		{
 			clean_data(data);
@@ -65,7 +66,6 @@ void	process(char *cmd_line, int *exit_status, t_list **env_list)
 {
 	t_list	*cmd_list;
 	t_list	*node;
-	// t_list	pipe_list;
 	pid_t	pid;
 	int	status;
 
@@ -94,26 +94,6 @@ void	process(char *cmd_line, int *exit_status, t_list **env_list)
 		;
 	free(cmd_line);
 }
-
-// void	process(char *cmd_line, int *exit_status, t_list **env_list)
-// {
-// 	t_cmd	*data;
-// 	int	size;
-
-// 	data = data_init();
-// 	data->all_cmd_lines = str_split(cmd_line, '|');
-// 	if (!data->all_cmd_lines)
-// 		return ;
-// 	size = array_size((void **)data->all_cmd_lines);
-// 	if (size == 1)
-// 		*exit_status = one_cmd(data, exit_status, env_list);
-// 	else
-// 		*exit_status = piping(data, exit_status, size, env_list);
-// 	while (wait(NULL) != -1)
-// 		;
-// 	clean_data(data);
-// 	free(cmd_line);
-// }
 
 int	main(int argc, char **argv, char **envp)
 {

@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:52:47 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/24 13:09:50 by miricci          ###   ########.fr       */
+/*   Updated: 2025/10/24 18:19:14 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,12 @@
 # define CMD_NOT_FOUND 127
 
 extern int	g_last_sig;
+
+typedef struct s_env
+{
+	char	*name;
+	char	*value;
+}	t_env;
 
 typedef struct s_cmd
 {
@@ -99,6 +105,7 @@ void	apply_status_and_restore_prompt(int status, int *exit_status);
 // redirections.c
 int	handle_input_redir(t_cmd *cmd);
 int	handle_output_redir(t_cmd *cmd);
+void	redirect(t_cmd *data);
 
 // utils.c
 void	print_cmd_struct(t_cmd cmd, int fd);
@@ -106,6 +113,7 @@ int	is_emptystr(char *str);
 void	ft_error(char *str);
 t_list	**env_init(char **envp);
 char	*ft_getenv(t_list **env_list, char *name);
+t_env	*mk_env(char *str);
 
 // find_cmd_path
 void	cmd_not_found(t_cmd *data);
@@ -113,9 +121,9 @@ char	*find_cmd_path(t_cmd *data);
 
 // execution.c
 void	exec_command(t_cmd *data, t_list **env_list);
-int	exec_simple_builtin(t_cmd *data, t_list **env_list);
+void	exec_simple_builtin(t_cmd *data, t_list **env_list);
 int	exec_status_changing_builtin(t_cmd *data, t_list **env_list);
-int	one_cmd(t_cmd *data, int *exit_status, t_list **env_list);
+// int	one_cmd(t_cmd *data, int *exit_status, t_list **env_list);
 
 // pipe.c
 int	piping(t_cmd *data,int *exit_status, int size, t_list **env_list);

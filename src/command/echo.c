@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 20:27:17 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/21 11:19:10 by miricci          ###   ########.fr       */
+/*   Updated: 2025/10/24 17:32:32 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,15 @@ void	echo(t_cmd *data)
 	i = flag;
 	while(data->cmd_args[i])
 	{
-		ft_putstr_fd(data->cmd_args[i], STDOUT_FILENO);
-		if (data->cmd_args[i + 1])
-			ft_putstr_fd(" ", STDOUT_FILENO);
+		if (*(data->cmd_args[i]))
+		{
+			printf("%s", data->cmd_args[i]);
+			if (data->cmd_args[i + 1])
+				printf(" ");
+		}
 		i++;
 	}
 	if (flag == 1)
-		ft_putstr_fd("\n", STDOUT_FILENO);
+		printf("\n");
 	exit(EXIT_SUCCESS);
 }
