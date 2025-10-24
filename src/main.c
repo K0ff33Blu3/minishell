@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:50:27 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/24 18:18:37 by miricci          ###   ########.fr       */
+/*   Updated: 2025/10/24 18:46:07 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,12 @@ pid_t	creat_children(t_list **head, t_list *node, t_list **env_list)
 			close(data->pip[0]);
 		if (node->next)
 			close(data_nxt->pip[1]);
-		redirect(data);
 		if (exec_status_changing_builtin(data, env_list))
 		{
 			clean_data(data);
 			exit(EXIT_SUCCESS);
 		}
+		redirect(data);
 		exec_simple_builtin(data, env_list);
 		exec_command(data, env_list);
 	}
