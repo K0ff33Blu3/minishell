@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 11:40:06 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/24 16:14:02 by miricci          ###   ########.fr       */
+/*   Updated: 2025/10/24 20:15:45 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ char	*expand_var(t_list **env_list, char *var, int exit_status)
 {
 	char	*value;
 
-	if (ft_strncmp(var, "?", 3) == 0)
+	if (ft_strncmp(var, "?", 1) == 0)
 		return (ft_itoa(exit_status));
 	value = ft_getenv(env_list, var);
 	if (value)
@@ -97,7 +97,9 @@ char	*name_var(char *str)
 	int	name_len;
 
 	name_len = 0;
-	while (ft_isalnum(str[name_len]))
+	if (str[name_len] == '?')
+		return(ft_strdup("?"));
+	while (ft_isalnum(str[name_len]) || str[name_len] == '_')
 		name_len++;
 	name = (char *)malloc(sizeof(char) * (name_len + 1));
 	if (!name)

@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:50:27 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/24 18:46:07 by miricci          ###   ########.fr       */
+/*   Updated: 2025/10/24 19:38:46 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	g_last_sig = 0;
 
-pid_t	creat_children(t_list **head, t_list *node, t_list **env_list)
+pid_t	creat_children(t_list **head, t_list *node, t_list **env_list, int *exit_status)
 {
 	pid_t	pid;
 	int	node_index;
@@ -43,10 +43,10 @@ pid_t	creat_children(t_list **head, t_list *node, t_list **env_list)
 			close(data->pip[0]);
 		if (node->next)
 			close(data_nxt->pip[1]);
-		if (exec_status_changing_builtin(data, env_list))
+		if (exec_status_changing_builtin(data, env_list, exit_status))
 		{
 			clean_data(data);
-			exit(EXIT_SUCCESS);
+			exit(*exit_status);
 		}
 		redirect(data);
 		exec_simple_builtin(data, env_list);
@@ -70,7 +70,7 @@ void	process(char *cmd_line, int *exit_status, t_list **env_list)
 	int	status;
 
 	cmd_list = mk_cmdlist(env_list, cmd_line, exit_status);
-	if (ft_lstsize(cmd_list) == 1 && exec_status_changing_builtin((t_cmd *)cmd_list->content, env_list))
+	if (ft_lstsize(cmd_list) == 1 && exec_status_changing_builtin((t_cmd *)cmd_list->content, env_list, exit_status))
 		return ;
 	else
 	{
@@ -84,12 +84,12 @@ void	process(char *cmd_line, int *exit_status, t_list **env_list)
 		node = cmd_list;
 		while (node)
 		{
-			pid = creat_children(&cmd_list, node, env_list);
+			pid = creat_children(&cmd_list, node, env_list, exit_status);
 			node = node->next;
 		}
 		waitpid(pid, &status, 0);
 		apply_status_and_restore_prompt(status, exit_status);
-	}	
+	}
 	while (wait(NULL) != -1)
 		;
 	free(cmd_line);

@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/05 12:26:24 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/10 15:51:59 by miricci          ###   ########.fr       */
+/*   Updated: 2025/10/24 19:23:30 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 // 	printf("%p\n", node->next);
 // }
 
-void	unset(t_list **env_list, char **var)
+int	unset(t_list **env_list, char **var)
 {
 	int		len;
 	int		i;
@@ -49,4 +49,5 @@ void	unset(t_list **env_list, char **var)
 		}
 		i++;
 	}
+	return (0);
 }

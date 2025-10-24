@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:52:47 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/24 19:02:23 by miricci          ###   ########.fr       */
+/*   Updated: 2025/10/24 19:52:12 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,10 @@ typedef struct s_cmd
 void	pwd(void);
 void	env(t_list **env_list);
 void	echo(t_cmd *data);
-void	exit_cmd(t_cmd *data);
+int	exit_cmd(t_cmd *data);
 int	ft_cd(t_list **env_list, t_cmd *data);
-void	unset(t_list **env_list, char **var);
-void	export(t_list **env_list, t_cmd *data);
+int	unset(t_list **env_list, char **var);
+int	export(t_list **env_list, t_cmd *data);
 
 // parsing.c
 int	is_builtin(char *cmd);
@@ -122,7 +122,7 @@ char	*find_cmd_path(t_cmd *data);
 // execution.c
 void	exec_command(t_cmd *data, t_list **env_list);
 void	exec_simple_builtin(t_cmd *data, t_list **env_list);
-int	exec_status_changing_builtin(t_cmd *data, t_list **env_list);
+int	exec_status_changing_builtin(t_cmd *data, t_list **env_list, int *exit_status);
 // int	one_cmd(t_cmd *data, int *exit_status, t_list **env_list);
 
 // pipe.c

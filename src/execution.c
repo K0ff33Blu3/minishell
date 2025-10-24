@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 14:51:52 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/24 19:00:26 by miricci          ###   ########.fr       */
+/*   Updated: 2025/10/24 19:33:07 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	exec_simple_builtin(t_cmd *data, t_list **env_list)
 	return ;
 }
 
-int	exec_status_changing_builtin(t_cmd *data, t_list **env_list)
+int	exec_status_changing_builtin(t_cmd *data, t_list **env_list, int *exit_status)
 {
 	if (ft_strncmp(data->cmd, "exit", 5) == 0)
 	{
@@ -33,17 +33,17 @@ int	exec_status_changing_builtin(t_cmd *data, t_list **env_list)
 	}
 	else if (ft_strncmp(data->cmd, "cd", 3) == 0)
 	{
-		ft_cd(env_list, data);
+		*exit_status = ft_cd(env_list, data);
 		return (1);
 	}
 	else if (ft_strncmp(data->cmd, "unset", 6) == 0)
 	{
-		unset(env_list, data->cmd_args);
+		*exit_status = unset(env_list, data->cmd_args);
 		return (1);
 	}
 	else if (ft_strncmp(data->cmd, "export", 7) == 0)
 	{
-		export(env_list, data);
+		*exit_status = export(env_list, data, exit_status);
 		return (1);
 	}
 	return (0);

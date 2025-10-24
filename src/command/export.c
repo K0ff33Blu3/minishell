@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/10 13:36:15 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/24 19:09:54 by miricci          ###   ########.fr       */
+/*   Updated: 2025/10/24 19:51:45 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	check_name(char	*name)
 		return (0);
 	while (name[i])
 	{
-		if (!ft_isalnum(name[i]))
+		if (!ft_isalnum(name[i]) && name[i] != '_')
 			return (0);
 		i++;
 	}
@@ -40,7 +40,7 @@ void	free_env(t_env *env)
 	}
 }
 
-static void	export_one(t_list **env_list, char *str)
+static int	export_one(t_list **env_list, char *str)
 {
 	t_env	*new;
 	t_list	*node;
@@ -48,10 +48,13 @@ static void	export_one(t_list **env_list, char *str)
 
 	new = (t_env *)malloc(sizeof(t_env));
 	if (!new)
-		return ;
+		ft_error("malloc");
 	new = mk_env(str);
 	if (!check_name(new->name))
+	{
 		ft_putstr_fd("errore nome variabile\n", 2);	//gestire errore
+		return (free_env(new), 1);
+	}
 	node = *env_list;
 	while (node)
 	{
@@ -61,14 +64,15 @@ static void	export_one(t_list **env_list, char *str)
 			free(env->value);
 			env->value = ft_strdup(new->value);
 			free(new);
-			return ;
+			return (0);
 		}
 		node = node->next;
 	}
 	ft_lstadd_back(env_list, ft_lstnew(new));
+	return (0);
 }
 
-void	export_no_args(t_cmd *cmd, t_list **env_list)
+int	export_no_args(t_cmd *cmd, t_list **env_list, int *status)
 {
 	t_list	*node;
 	t_env	*env;
@@ -93,16 +97,20 @@ void	export_no_args(t_cmd *cmd, t_list **env_list)
 		exit(EXIT_SUCCESS);
 	}
 	if (pid > 0)
-		wait(NULL);
+		waitpid(pid, status, 0);
+	return (*status);
 }
 
-void	export(t_list **env_list, t_cmd *data)
+int	export(t_list **env_list, t_cmd *data)
 {
 	int	i;
+	int	status;
 
+	status = 0;
 	i = 0;
 	if (array_size((void **)data->cmd_args) == 1)
-		return (export_no_args(data, env_list));	
+		return (export_no_args(data, env_list, &status));	
 	while (data->cmd_args[++i])
-		export_one(env_list, data->cmd_args[i]);
+		status = export_one(env_list, data->cmd_args[i]);
+	return (status);
 }
