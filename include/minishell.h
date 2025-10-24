@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:52:47 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/22 13:03:30 by miricci          ###   ########.fr       */
+/*   Updated: 2025/10/24 13:09:50 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ pid_t	create_pipe(t_cmd *data, int i, int size, t_list **env_list, int exit_stat
 
 // cleaning.c
 void	clean_data(t_cmd *data);
-void	close_pipe(int pip[2][2]);
+void	close_pipe(int pip[2]);
 
 
 #endif

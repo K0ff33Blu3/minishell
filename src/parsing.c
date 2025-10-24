@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 13:03:04 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/21 17:02:19 by miricci          ###   ########.fr       */
+/*   Updated: 2025/10/24 13:10:36 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,6 +213,7 @@ char	**array_cpy(char **src)
 	dst[i] = NULL;
 	return (dst);
 }
+
 t_cmd	*data_cpy(t_cmd *src)
 {
 	t_cmd	*dst;
@@ -231,12 +232,11 @@ t_cmd	*data_cpy(t_cmd *src)
 	dst->has_outfile = dst->has_outfile;
 	dst->tmp_pipe[0] = src->tmp_pipe[0];
 	dst->tmp_pipe[1] = src->tmp_pipe[1];
-	dst->pip[0][0] = src->pip[0][0];
-	dst->pip[1][0] = src->pip[1][0];
-	dst->pip[0][1] = src->pip[0][1];
-	dst->pip[1][1] = src->pip[1][1];
+	dst->pip[0] = src->pip[0];
+	dst->pip[1] = src->pip[1];
 	return (dst);
 }
+
 t_list	*mk_cmdlist(t_list **env_list, char *cmd_str, int *exit_status)
 {
 	char	**token;

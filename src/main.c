@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:50:27 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/22 17:58:34 by miricci          ###   ########.fr       */
+/*   Updated: 2025/10/24 13:28:23 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,15 @@ pid_t	creat_children(t_list **head, t_list *node, t_list **env_list)
 	pid_t	pid;
 	int	node_index;
 	t_cmd	*data;
+	t_cmd	*data_nxt;
 
 	pid = fork();
 	node_index = ft_lstindex(*head, node);
 	data = (t_cmd *)node->content;
+	if (node->next)
+		data_nxt = (t_cmd *)((node->next)->content);
+	else
+		data_nxt = NULL;
 	if (node_index < 0)
 		return (-1);
 	if (pid < 0)
@@ -31,13 +36,13 @@ pid_t	creat_children(t_list **head, t_list *node, t_list **env_list)
 	{
 		reset_signals_default();
 		if (node_index > 0 && !data->has_infile)
-			// dup
-		if (node_index < ft_lstsize(*head) - 1 && !data->has_outfile)
-			// dup 
+			dup2(data->pip[0], STDIN_FILENO);
+		if (node->next && !data->has_outfile)
+			dup2(data_nxt->pip[1], STDOUT_FILENO);
 		if (node_index > 0)
-			// chiudi
-		if (node_index < ft_lstsize(*head) - 1)
-			// chiudi
+			close(data->pip[0]);
+		if (node->next)
+			close(data_nxt->pip[1]);
 		if (exec_status_changing_builtin(data, env_list))
 		{
 			clean_data(data);
@@ -49,9 +54,9 @@ pid_t	creat_children(t_list **head, t_list *node, t_list **env_list)
 	else
 	{
 		if (node_index > 0)
-			// close 
+			close(data->pip[0]);
 		if (node_index < ft_lstsize(*head) - 1)
-			// close 
+			close(data_nxt->pip[1]);
 	}
 	return (pid);		
 }
@@ -60,7 +65,7 @@ void	process(char *cmd_line, int *exit_status, t_list **env_list)
 {
 	t_list	*cmd_list;
 	t_list	*node;
-	t_list	pipe_list;
+	// t_list	pipe_list;
 	pid_t	pid;
 	int	status;
 
@@ -72,8 +77,13 @@ void	process(char *cmd_line, int *exit_status, t_list **env_list)
 		node = cmd_list;
 		while (node)
 		{
-			if (node->next && pipe(((t_cmd *)(node->content))->pip) == -1)
+			if (node && pipe(((t_cmd *)(node->content))->pip) == -1)
 				ft_error("pipe");
+			node = node ->next;
+		}
+		node = cmd_list;
+		while (node)
+		{
 			pid = creat_children(&cmd_list, node, env_list);
 			node = node->next;
 		}

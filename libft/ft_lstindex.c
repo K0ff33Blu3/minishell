@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/22 12:34:53 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/22 13:03:14 by miricci          ###   ########.fr       */
+/*   Updated: 2025/10/24 13:13:39 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 int	ft_lstindex(t_list *head, t_list *target)
 {
 	int	index;
-	t_list	*tmp;
 
 	if (!head || !target)
 		return (-1);
