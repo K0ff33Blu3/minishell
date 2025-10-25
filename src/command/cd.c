@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 20:29:23 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/24 19:20:38 by miricci          ###   ########.fr       */
+/*   Updated: 2025/10/25 14:28:19 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,11 @@ int	ft_cd(t_list **env_list, t_cmd *data)
 	if (array_size((void **)data->cmd_args) > 2)
 		return (write(2, "minishell: cd: too many arguments\n", 34), 1);
 	if (!data->cmd_args[1])
-		target = ft_strdup(ft_getenv(env_list, "HOME"));
+		target = ft_getenv(env_list, "HOME");
 	else
-	target = ft_strdup(data->cmd_args[1]);
+		target = ft_strdup(data->cmd_args[1]);
 	if (chdir(target))
-		return (perror("minishell: cd"), 1);
+		return (free(target), perror("minishell: cd"), 1);
+	free(target);
 	return (0);
 }

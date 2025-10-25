@@ -6,25 +6,25 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 15:15:11 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/24 13:08:41 by miricci          ###   ########.fr       */
+/*   Updated: 2025/10/25 13:53:49 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	cmd_not_found(t_cmd *data)
-{
-	ft_putstr_fd(data->cmd, STDERR_FILENO);
-	ft_putstr_fd(": command not found\n", STDERR_FILENO);
-	ft_free((void **)data->cmd_args, -1);
-	close(data->out_fd);
-	close_pipe(data->pip);
-	free(data->cmd_path);
-	free(data->cmd);
-	// if (array_size((void **)data->all_cmd_lines) == 1)
-	// 	return ;
-	exit(CMD_NOT_FOUND);
-}
+// int	cmd_not_found(t_cmd *data)
+// {
+// 	ft_putstr_fd(data->cmd, STDERR_FILENO);
+// 	ft_putstr_fd(": command not found\n", STDERR_FILENO);
+// 	ft_free((void **)data->cmd_args, -1);
+// 	close(data->out_fd);
+// 	close_pipe(data->pip);
+// 	free(data->cmd_path);
+// 	free(data->cmd);
+// 	// if (array_size((void **)data->all_cmd_lines) == 1)
+// 	// 	return ;
+// 	exit(CMD_NOT_FOUND);
+// }
 
 static char	*make_path(char *str, char *cmd)
 {
@@ -37,7 +37,7 @@ static char	*make_path(char *str, char *cmd)
 	return (path);
 }
 
-char	*find_cmd_path(t_cmd *data)
+char	*find_cmd_path(t_list **env_list, t_cmd *data)
 {
 	char	**array;
 	char	*path;
@@ -47,9 +47,9 @@ char	*find_cmd_path(t_cmd *data)
 	if (!access(data->cmd, X_OK))
 		return (data->cmd);
 	i = 0;
-	env_path = getenv("PATH");
+	env_path = ft_getenv(env_list, "PATH");
 	if (!env_path)
-		cmd_not_found(data);
+		return (NULL);
 	array = ft_split(env_path, ':');
 	i = 0;
 	while (array[i])

@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 11:16:05 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/24 16:25:59 by miricci          ###   ########.fr       */
+/*   Updated: 2025/10/25 14:23:00 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,33 @@
 // 	close(cmd->pipe[1]);
 // }
 
-void	ft_error(char *str)
+char	**envlst_to_envp(t_list **head)
 {
-	perror(str);
-	exit(EXIT_FAILURE);
+	t_list	*node;
+	t_env	*env;
+	char	*tmp;
+	char	**array;
+	int	i;
+
+	i = 0;
+	node = *head;
+	array = (char **)malloc(sizeof(char *) * (ft_lstsize(node) + 1));
+	if (!array)
+		return (NULL);
+	while (node)
+	{
+		env = (t_env *)node->content;
+		if (env->value)
+		{
+			tmp = ft_strjoin(env->name, "=");
+			array[i] = ft_strjoin(tmp, env->value);
+			free(tmp);
+		}
+		node = node->next;
+		i++;
+	}
+	array[i] = NULL;
+	return (array);
 }
 
 int	is_emptystr(char *str)

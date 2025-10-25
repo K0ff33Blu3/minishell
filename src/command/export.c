@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/10 13:36:15 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/24 19:51:45 by miricci          ###   ########.fr       */
+/*   Updated: 2025/10/25 14:19:18 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,18 +26,6 @@ int	check_name(char	*name)
 		i++;
 	}
 	return (1);
-}
-
-void	free_env(t_env *env)
-{
-	if (env)
-	{
-		if (!env->name)
-			free(env->name);
-		if (!env->value)
-			free(env->value);
-		free(env);
-	}
 }
 
 static int	export_one(t_list **env_list, char *str)

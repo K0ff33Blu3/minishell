@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:50:27 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/24 19:38:46 by miricci          ###   ########.fr       */
+/*   Updated: 2025/10/25 14:21:41 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ void	process(char *cmd_line, int *exit_status, t_list **env_list)
 	}
 	while (wait(NULL) != -1)
 		;
-	free(cmd_line);
+	
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -120,6 +120,7 @@ int	main(int argc, char **argv, char **envp)
 		}
 	}
 	free(cmd_line);
+	ft_lstclear(env_list, free_env);
 	rl_clear_history();
 	return (g_last_sig);
 }

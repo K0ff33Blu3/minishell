@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 13:03:04 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/24 17:17:42 by miricci          ###   ########.fr       */
+/*   Updated: 2025/10/25 14:10:02 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -188,9 +188,9 @@ t_cmd	*data_parsing(t_list **env_list, char **part_token, int *exit_status)
 		data->cmd_path = NULL;
 	else
 	{
-		data->cmd_path = find_cmd_path(data);
+		data->cmd_path = find_cmd_path(env_list, data);
 		if (!data->cmd_path)
-			cmd_not_found(data);
+			data->cmd = ft_strdup("cmd_not_found");
 	}
 	return (data);			
 }
@@ -249,6 +249,7 @@ t_list	*mk_cmdlist(t_list **env_list, char *cmd_str, int *exit_status)
 	i = 0;
 	cmd_list = NULL;
 	token = tokenize(cmd_str);
+	free(cmd_str);
 	while (token[i])
 	{
 		end = find_pipe(token, &i);

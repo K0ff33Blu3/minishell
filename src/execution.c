@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 14:51:52 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/24 19:33:07 by miricci          ###   ########.fr       */
+/*   Updated: 2025/10/25 13:57:13 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	exec_status_changing_builtin(t_cmd *data, t_list **env_list, int *exit_statu
 	}
 	else if (ft_strncmp(data->cmd, "export", 7) == 0)
 	{
-		*exit_status = export(env_list, data, exit_status);
+		*exit_status = export(env_list, data);
 		return (1);
 	}
 	return (0);
@@ -53,9 +53,12 @@ void	exec_command(t_cmd *data, t_list **env_list)
 {
 	char	**env;
 
-	env = lst_to_array(env_list);
+	env = envlst_to_envp(env_list);
+	if (!data->cmd_path)
+		ft_error("cmd_not_found");
 	if (access(data->cmd_path, X_OK) != -1)
 	{
+		printf("YOOOOO");
 		if (execve(data->cmd_path, data->cmd_args, env) < 0)
 		{
 			ft_free((void **)data->cmd_args, -1);
