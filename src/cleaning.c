@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleaning.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
+/*   By: emondo <emondo@student.42firenze.it>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 12:02:37 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/25 14:24:14 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/09 15:09:57 by emondo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,9 @@ void	free_env(void *ptr)
 	env = (t_env *)ptr;
 	if (env)
 	{
-		if (!env->name)
+		if (env->name)
 			free(env->name);
-		if (!env->value)
+		if (env->value)
 			free(env->value);
 		free(env);
 	}

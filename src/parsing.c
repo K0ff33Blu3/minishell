@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
+/*   By: emondo <emondo@student.42firenze.it>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 13:03:04 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/25 14:10:02 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/09 15:01:59 by emondo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -257,7 +257,9 @@ t_list	*mk_cmdlist(t_list **env_list, char *cmd_str, int *exit_status)
 		i = end;
 		data = data_parsing(env_list, part_token, exit_status);
 		ft_lstadd_back(&cmd_list, ft_lstnew(data_cpy(data)));
+		clean_data(data);
 	}
+	ft_free((void **)token, -1);
 	return (cmd_list);
 }
 

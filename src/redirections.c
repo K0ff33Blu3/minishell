@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
+/*   By: emondo <emondo@student.42firenze.it>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 08:22:00 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/24 18:41:14 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/09 15:07:24 by emondo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -173,5 +173,6 @@ int	handle_output_redir(t_cmd *cmd)
 		cmd->out_fd = STDOUT_FILENO;
 		cmd->outfile = NULL;
 	}
+	free(outfile);
 	return (flag);
 }
