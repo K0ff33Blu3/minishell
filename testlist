@@ -1,0 +1,36 @@
+### BUILTINS ###
+
+#env
+env | head -5
+echo Exit Code: $?
+
+#export
+export var1 var2= var3="" var4="ciao"
+export 123asd="ciao"
+echo Exit Code: $?
+export | head -5
+echo Exit Code: $?
+
+#echo
+echo $var1 $var2 $var3 $var4
+echo concatenated: $var1$var2
+echo just            one              space here!
+echo -n -nnnnnnnnnnnnnnnnnnnnnnn -nnmn ciao
+echo -n -nnnnn n - nnn ciao
+echo Exit Code: $?
+
+#unset
+unset
+echo Exit Code: $?
+unset var1 var2 var3 var4 var5
+echo Exit Code: $?
+
+# cd
+pwd
+cd ..
+pwd
+cd -
+echo Exit Code: $?
+
+#exit
+exit 1
