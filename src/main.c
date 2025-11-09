@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
+/*   By: emondo <emondo@student.42firenze.it>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:50:27 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/25 14:21:41 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/09 15:42:09 by emondo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,11 @@ int	main(int argc, char **argv, char **envp)
 		{
 			add_history(cmd_line);
 			process(cmd_line, &exit_status, env_list);
+		}
+		if (g_last_sig != 0)
+		{
+			exit_status = g_last_sig;
+			g_last_sig = 0;
 		}
 	}
 	free(cmd_line);

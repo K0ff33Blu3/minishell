@@ -6,7 +6,7 @@
 /*   By: emondo <emondo@student.42firenze.it>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 11:11:36 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/16 15:05:13 by emondo           ###   ########.fr       */
+/*   Updated: 2025/11/09 15:46:16 by emondo           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,11 @@ void	handle_sigint_prompt(int signum)
 	if (signum == SIGINT)
 	{
 		write(STDOUT_FILENO, "\n", 1);
-		rl_replace_line("", 0);
 		rl_on_new_line();
+		rl_replace_line("", 0);
 		rl_redisplay();
+		g_last_sig = 128 + signum;
 	}
-	g_last_sig = 128 + signum;	
 }
 
 void	setup_shell_signals(void)
@@ -30,11 +30,11 @@ void	setup_shell_signals(void)
 
 	ft_bzero(&sa, sizeof(sa));
 	sa.sa_handler = SIG_IGN;
-	sa.sa_flags   = SA_RESTART;
+	sa.sa_flags   = 0;
 	sigaction(SIGQUIT, &sa, NULL);
 	sigaction(SIGTSTP, &sa, NULL);
 	sa.sa_handler = handle_sigint_prompt;
-	sa.sa_flags   = SA_RESTART;
+	sa.sa_flags   = 0;
 	sigaction(SIGINT,  &sa, NULL);
 }
 void	setup_shell_signals_father(void)
