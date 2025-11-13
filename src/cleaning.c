@@ -6,7 +6,7 @@
 /*   By: miricci <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 12:02:37 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/13 13:21:26 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/13 16:09:13 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,13 +62,24 @@ void	close_pipe(int pip[2])
 	close(pip[1]);
 }
 
-void	ft_error(char *str)
+void	ft_error(t_list **env_lst, t_list **cmd_lst, char *str, int exit_code)
 {
-	perror(str);
-	exit(EXIT_FAILURE);
+	ft_perror(str, exit_code);
+	ft_lstclear(env_lst, free_env);
+	ft_lstclear(cmd_lst, clean_data);
+	exit(exit_code);
 }
 
-void	error_msg()
+void	ft_perror(char *str, int exit_code)
 {
-	
+	if (exit_code == CMD_NOT_FOUND)
+	{
+		ft_putstr_fd(str, STDERR_FILENO);
+		ft_putendl_fd(": command not found", STDERR_FILENO);
+	}
+	if (exit_code == XPERM_DEN)
+	{
+		ft_putstr_fd(str, STDERR_FILENO);
+		ft_putendl_fd(": permission denied", STDERR_FILENO);
+	}
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
+/*   By: miricci <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/10 13:36:15 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/25 14:19:18 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/13 14:10:20 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static int	export_one(t_list **env_list, char *str)
 
 	new = (t_env *)malloc(sizeof(t_env));
 	if (!new)
-		ft_error("malloc");
+		return(EXIT_FAILURE);
 	new = mk_env(str);
 	if (!check_name(new->name))
 	{
@@ -57,7 +57,7 @@ static int	export_one(t_list **env_list, char *str)
 		node = node->next;
 	}
 	ft_lstadd_back(env_list, ft_lstnew(new));
-	return (0);
+	return (EXIT_SUCCESS);
 }
 
 int	export_no_args(t_cmd *cmd, t_list **env_list, int *status)
@@ -68,7 +68,7 @@ int	export_no_args(t_cmd *cmd, t_list **env_list, int *status)
 	
 	pid = fork();
 	if (pid < 0)
-		ft_error("fork");
+		return (EXIT_FAILURE);
 	if (pid == 0)
 	{	
 		redirect(cmd);

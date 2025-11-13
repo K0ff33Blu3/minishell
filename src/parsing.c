@@ -6,7 +6,7 @@
 /*   By: miricci <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 13:03:04 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/13 13:37:26 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/13 15:33:54 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -181,17 +181,13 @@ t_cmd	*data_parsing(t_list **env_list, char **part_token, int *exit_status)
 	{
 		data->cmd = NULL;
 		data->cmd_path = NULL;
-		return (NULL);
+		return (data);
 	}
 	data->cmd = ft_strdup(data->cmd_args[0]);
 	if (is_builtin(data->cmd))
 		data->cmd_path = NULL;
 	else
-	{
 		data->cmd_path = find_cmd_path(env_list, data);
-		if (!data->cmd_path)
-			data->cmd = ft_strdup("cmd_not_found");
-	}
 	return (data);			
 }
 
@@ -252,7 +248,7 @@ t_list	**mk_cmdlist(t_list **env_list, char *cmd_str, int *exit_status)
 	free(cmd_str);
 	cmd_list = (t_list **)malloc(sizeof(t_list *));
 	if (!cmd_list)
-		ft_error("malloc");
+		return (NULL);
 	*cmd_list = NULL;
 	while (token[i])
 	{

@@ -6,7 +6,7 @@
 /*   By: miricci <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:52:47 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/13 13:02:26 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/13 16:31:37 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,14 @@
 # include <signal.h>
 # include <sys/wait.h>
 # include <sys/ioctl.h>
+# include <sys/stat.h>
 # include <stdlib.h>
 
 # define PROMPT "\033[36mMINISHELL@ \033[0m"
 
 // MACRO
 # define CMD_NOT_FOUND 127
+# define XPERM_DEN 126
 
 extern int	g_last_sig;
 
@@ -110,7 +112,6 @@ void	redirect(t_cmd *data);
 // utils.c
 void	print_cmd_struct(t_cmd cmd, int fd);
 int	is_emptystr(char *str);
-void	ft_error(char *str);
 t_list	**env_init(char **envp);
 char	*ft_getenv(t_list **env_list, char *name);
 t_env	*mk_env(char *str);
@@ -119,9 +120,10 @@ char	**envlst_to_envp(t_list **head);
 
 // find_cmd_path
 char	*find_cmd_path(t_list **env_list, t_cmd *data);
+int	check_cmd_path(char *path);
 
 // execution.c
-void	exec_command(t_cmd *data, t_list **env_list);
+void	exec_command(t_list **cmd_list, t_cmd *data, t_list **env_list);
 void	exec_simple_builtin(t_list **cmd_lst, t_cmd *data, t_list **env_list);
 int	exec_status_changing_builtin(t_cmd *data, t_list **env_list, int *exit_status);
 
@@ -129,6 +131,7 @@ int	exec_status_changing_builtin(t_cmd *data, t_list **env_list, int *exit_statu
 void	clean_data(void *ptr);
 void	close_pipe(int pip[2]);
 void	free_env(void *ptr);
-
+void	ft_error(t_list **env_lst, t_list **cmd_lst, char *str, int exit_code);
+void	ft_perror(char *str, int exit_code);
 
 #endif

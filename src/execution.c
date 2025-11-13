@@ -6,7 +6,7 @@
 /*   By: miricci <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 14:51:52 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/13 13:30:53 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/13 16:49:20 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,21 +52,12 @@ int	exec_status_changing_builtin(t_cmd *data, t_list **env_list, int *exit_statu
 	return (0);
 }
 
-void	exec_command(t_cmd *data, t_list **env_list)
+void	exec_command(t_list **cmd_list, t_cmd *data, t_list **env_list)
 {
 	char	**env;
-
+	
 	env = envlst_to_envp(env_list);
-	if (!data->cmd_path)
-		ft_error("cmd_not_found");
-	if (access(data->cmd_path, X_OK) != -1)
-	{
-		if (execve(data->cmd_path, data->cmd_args, env) < 0)
-		{
-			ft_free((void **)data->cmd_args, -1);
-			free(data->cmd);
-			free(data->cmd_path);
-			ft_error("execve");
-		}
-	}
+	
+	if (execve(data->cmd_path, data->cmd_args, env) < 0)
+		ft_error(env_list, cmd_list, "execve", EXIT_FAILURE);
 }

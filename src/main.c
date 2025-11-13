@@ -6,7 +6,7 @@
 /*   By: miricci <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:50:27 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/13 13:38:27 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/13 15:53:56 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ pid_t	creat_children(t_list **head, t_list *node, t_list **env_list, int *exit_s
 	if (node_index < 0)
 		return (-1);
 	if (pid < 0)
-		ft_error("fork");
+		ft_error(env_list, head, "fork", EXIT_FAILURE);
 	if (pid == 0)
 	{
 		reset_signals_default();
@@ -51,7 +51,7 @@ pid_t	creat_children(t_list **head, t_list *node, t_list **env_list, int *exit_s
 		redirect(data);
 		if (is_builtin(data->cmd) == 1)
 			exec_simple_builtin(head, data, env_list);
-		exec_command(data, env_list);
+		exec_command(head, data, env_list);
 	}
 	else
 	{
@@ -79,7 +79,7 @@ void	process(char *cmd_line, int *exit_status, t_list **env_list)
 		while (node)
 		{
 			if (node && pipe(((t_cmd *)(node->content))->pip) == -1)
-				ft_error("pipe");
+				ft_error(env_list, cmd_list, "pipe", EXIT_FAILURE);
 			node = node->next;
 		}
 		node = *cmd_list;

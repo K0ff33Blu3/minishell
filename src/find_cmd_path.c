@@ -6,7 +6,7 @@
 /*   By: miricci <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 15:15:11 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/13 13:27:03 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/13 17:11:52 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,23 @@ static char	*make_path(char *str, char *cmd)
 	return (path);
 }
 
+int	check_cmd_path(char *path)
+{
+	struct stat	st;
+	
+	if (!stat(path, &st))
+	{
+		if (!access(path, X_OK))
+		{
+			if (S_ISDIR(st.st_mode))
+				return (1);
+			else
+				return (0);
+		}
+	}
+	return (1);
+}
+
 char	*find_cmd_path(t_list **env_list, t_cmd *data)
 {
 	char	**array;
@@ -44,7 +61,7 @@ char	*find_cmd_path(t_list **env_list, t_cmd *data)
 	int		i;
 	char	*env_path;
 
-	if (!access(data->cmd, X_OK))
+	if (!check_cmd_path(data->cmd))
 		return (data->cmd);
 	i = 0;
 	env_path = ft_getenv(env_list, "PATH");
