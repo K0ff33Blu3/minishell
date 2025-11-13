@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleaning.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emondo <emondo@student.42firenze.it>       +#+  +:+       +#+        */
+/*   By: miricci <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 12:02:37 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/09 15:09:57 by emondo           ###   ########.fr       */
+/*   Updated: 2025/11/13 13:21:26 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,15 @@ void	clean_data(void *ptr)
 		ft_free((void **)data->cmd_args, -1);
 	if (data->infile)
 		free(data->infile);
+	if (data->in_fd > 2)
+		close(data->in_fd);
 	if (data->outfile)
 		free(data->outfile);
+	if (data->out_fd > 2)
+		close(data->out_fd);
 	if (data->limiter)
 		free(data->limiter);
+	close_pipe(data->pip);
 	free(data);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
+/*   By: miricci <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 20:27:17 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/24 17:32:32 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/13 12:54:47 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,5 +56,4 @@ void	echo(t_cmd *data)
 	}
 	if (flag == 1)
 		printf("\n");
-	exit(EXIT_SUCCESS);
 }

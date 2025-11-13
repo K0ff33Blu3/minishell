@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
+/*   By: miricci <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 20:28:39 by miricci           #+#    #+#             */
-/*   Updated: 2025/09/18 11:20:53 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/13 12:55:05 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,5 +24,4 @@ void	pwd(void)
 	}
 	printf("%s\n", cwd);
 	free(cwd);
-	exit(EXIT_SUCCESS);
 }

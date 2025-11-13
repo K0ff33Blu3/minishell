@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   find_cmd_path.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emondo <emondo@student.42firenze.it>       +#+  +:+       +#+        */
+/*   By: miricci <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 15:15:11 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/09 15:14:03 by emondo           ###   ########.fr       */
+/*   Updated: 2025/11/13 13:27:03 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ char	*find_cmd_path(t_list **env_list, t_cmd *data)
 	if (!env_path)
 		return (NULL);
 	array = ft_split(env_path, ':');
-	free(env_path);
 	i = 0;
 	while (array[i])
 	{

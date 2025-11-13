@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
+/*   By: miricci <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 20:27:52 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/24 16:32:25 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/13 12:54:55 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,5 +25,4 @@ void	env(t_list **env_list)
 			printf("%s=%s\n", env->name, env->value);
 		node = node->next;
 	}
-	exit(EXIT_SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: miricci <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:52:47 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/13 12:16:39 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/13 13:02:26 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,7 @@ char	*find_cmd_path(t_list **env_list, t_cmd *data);
 
 // execution.c
 void	exec_command(t_cmd *data, t_list **env_list);
-void	exec_simple_builtin(t_cmd *data, t_list **env_list);
+void	exec_simple_builtin(t_list **cmd_lst, t_cmd *data, t_list **env_list);
 int	exec_status_changing_builtin(t_cmd *data, t_list **env_list, int *exit_status);
 
 // cleaning.c

@@ -6,7 +6,7 @@
 /*   By: miricci <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 13:03:04 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/13 12:18:42 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/13 13:37:26 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -268,13 +268,9 @@ t_list	**mk_cmdlist(t_list **env_list, char *cmd_str, int *exit_status)
 
 int is_builtin(char *cmd)
 {
-    return (
-		!ft_strncmp(cmd, "echo", 5) ||
-		!ft_strncmp(cmd, "cd",   3) ||
-		!ft_strncmp(cmd, "exit", 5) ||
-		!ft_strncmp(cmd, "pwd", 4) ||
-		!ft_strncmp(cmd, "env", 4) ||
-		!ft_strncmp(cmd, "unset", 6) ||
-		!ft_strncmp(cmd, "export", 7)
-    );
+	if (!ft_strncmp(cmd, "echo", 5) || !ft_strncmp(cmd, "env", 4) || !ft_strncmp(cmd, "pwd", 4))
+		return (1);
+	else if (!ft_strncmp(cmd, "exit", 5) || !ft_strncmp(cmd, "cd", 3) || !ft_strncmp(cmd, "unset", 6) || !ft_strncmp(cmd, "export", 7))
+		return (2);
+	return (0);
 }
