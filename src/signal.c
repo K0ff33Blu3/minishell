@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emondo <emondo@student.42firenze.it>       +#+  +:+       +#+        */
+/*   By: miricci <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 11:11:36 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/09 15:51:09 by emondo           ###   ########.fr       */
+/*   Updated: 2025/11/13 10:47:16 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ void	setup_shell_signals(void)
 	sa.sa_flags   = 0;
 	sigaction(SIGINT,  &sa, NULL);
 }
+
 void	setup_shell_signals_father(void)
 {
 	struct sigaction ign;
@@ -73,6 +74,7 @@ void	apply_status_and_restore_prompt(int status, int *exit_status)
 		*exit_status = WEXITSTATUS(status);
 	setup_shell_signals();
 }
+
 void	apply_status_and_restore_prompt_due(int status, int *exit_status)
 {
 	int	sig;

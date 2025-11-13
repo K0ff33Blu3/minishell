@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
+/*   By: miricci <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:52:47 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/25 14:22:10 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/13 12:16:39 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int	find_pipe(char **token, int *start);
 t_cmd	*data_init(void);
 char	**parse_cmd_args(char **token);
 t_cmd	*data_parsing(t_list **env_list, char **part_token, int *exit_status);
-t_list	*mk_cmdlist(t_list **env_list, char *cmd_str, int *exit_status);
+t_list	**mk_cmdlist(t_list **env_list, char *cmd_str, int *exit_status);
 
 // expand.c
 char	*name_var(char *str);

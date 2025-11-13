@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emondo <emondo@student.42firenze.it>       +#+  +:+       +#+        */
+/*   By: miricci <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 13:03:04 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/09 15:01:59 by emondo           ###   ########.fr       */
+/*   Updated: 2025/11/13 12:18:42 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -237,12 +237,12 @@ t_cmd	*data_cpy(t_cmd *src)
 	return (dst);
 }
 
-t_list	*mk_cmdlist(t_list **env_list, char *cmd_str, int *exit_status)
+t_list	**mk_cmdlist(t_list **env_list, char *cmd_str, int *exit_status)
 {
 	char	**token;
 	char	**part_token;
 	t_cmd	*data;
-	t_list	*cmd_list;
+	t_list	**cmd_list;
 	int	end;
 	int	i;
 
@@ -250,14 +250,17 @@ t_list	*mk_cmdlist(t_list **env_list, char *cmd_str, int *exit_status)
 	cmd_list = NULL;
 	token = tokenize(cmd_str);
 	free(cmd_str);
+	cmd_list = (t_list **)malloc(sizeof(t_list *));
+	if (!cmd_list)
+		ft_error("malloc");
+	*cmd_list = NULL;
 	while (token[i])
 	{
 		end = find_pipe(token, &i);
 		part_token = get_cmd_token(token, i, end);
 		i = end;
 		data = data_parsing(env_list, part_token, exit_status);
-		ft_lstadd_back(&cmd_list, ft_lstnew(data_cpy(data)));
-		clean_data(data);
+		ft_lstadd_back(cmd_list, ft_lstnew(data));
 	}
 	ft_free((void **)token, -1);
 	return (cmd_list);

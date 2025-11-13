@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: emondo <emondo@student.42firenze.it>       +#+  +:+       +#+        */
+/*   By: miricci <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:50:27 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/09 15:51:09 by emondo           ###   ########.fr       */
+/*   Updated: 2025/11/13 12:17:10 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,27 +64,27 @@ pid_t	creat_children(t_list **head, t_list *node, t_list **env_list, int *exit_s
 
 void	process(char *cmd_line, int *exit_status, t_list **env_list)
 {
-	t_list	*cmd_list;
+	t_list	**cmd_list;
 	t_list	*node;
 	pid_t	pid;
 	int	status;
 
 	cmd_list = mk_cmdlist(env_list, cmd_line, exit_status);
-	if (ft_lstsize(cmd_list) == 1 && exec_status_changing_builtin((t_cmd *)cmd_list->content, env_list, exit_status))
+	if (ft_lstsize(*cmd_list) == 1 && exec_status_changing_builtin((t_cmd *)(*cmd_list)->content, env_list, exit_status))
 		return ;
 	else
 	{
-		node = cmd_list;
+		node = *cmd_list;
 		while (node)
 		{
 			if (node && pipe(((t_cmd *)(node->content))->pip) == -1)
 				ft_error("pipe");
 			node = node ->next;
 		}
-		node = cmd_list;
+		node = *cmd_list;
 		while (node)
 		{
-			pid = creat_children(&cmd_list, node, env_list, exit_status);
+			pid = creat_children(cmd_list, node, env_list, exit_status);
 			node = node->next;
 		}
 		waitpid(pid, &status, 0);
@@ -92,7 +92,7 @@ void	process(char *cmd_line, int *exit_status, t_list **env_list)
 	}
 	while (wait(NULL) != -1)
 		;
-	
+	ft_lstclear(cmd_list, clean_data);
 }
 
 int	main(int argc, char **argv, char **envp)
