@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   find_cmd_path.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miricci <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 15:15:11 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/17 12:23:39 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/17 18:32:46 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,21 +40,25 @@ static char	*make_path(char *str, char *cmd)
 int	check_cmd_path(char *path)
 {
 	struct stat	st;
-	
+
 	if (!path)
 		return (CMD_NOT_FOUND);
-	if (!stat(path, &st))
+	if (ft_strchr(path, '/'))
 	{
-		if (!access(path, X_OK))
+		if (!stat(path, &st))
 		{
-			if (S_ISDIR(st.st_mode))
-				return (IS_DIR);
-			else
-				return (0);
+			if (!access(path, X_OK))
+			{
+				if (S_ISDIR(st.st_mode))
+					return (IS_DIR);
+				else
+					return (0);
+			}
+			return (NO_PERM_X);
 		}
-		return (NO_PERM_X);
+		return (CMD_NOT_FOUND);
 	}
-	return (CMD_NOT_FOUND);
+	return (-1);
 }
 
 char	*find_cmd_path(t_list **env_list, t_cmd *data)
@@ -64,7 +68,7 @@ char	*find_cmd_path(t_list **env_list, t_cmd *data)
 	int		i;
 	char	*env_path;
 
-	if (check_cmd_path(data->cmd) != CMD_NOT_FOUND)
+	if (check_cmd_path(data->cmd) != -1)
 		return (ft_strdup(data->cmd));
 	i = 0;
 	env_path = ft_getenv(env_list, "PATH");

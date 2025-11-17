@@ -6,17 +6,11 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 11:16:05 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/25 14:23:00 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/17 19:11:50 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// void	close_pipe(t_cmd *cmd)
-// {
-// 	close(cmd->pipe[0]);
-// 	close(cmd->pipe[1]);
-// }
 
 char	**envlst_to_envp(t_list **head)
 {
