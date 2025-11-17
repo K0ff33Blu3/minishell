@@ -6,7 +6,7 @@
 /*   By: miricci <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:52:47 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/13 16:31:37 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/17 12:26:18 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@
 
 // MACRO
 # define CMD_NOT_FOUND 127
-# define XPERM_DEN 126
+# define NO_PERM_X 126
+# define IS_DIR 126
 
 extern int	g_last_sig;
 

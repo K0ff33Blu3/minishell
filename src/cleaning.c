@@ -6,7 +6,7 @@
 /*   By: miricci <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 12:02:37 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/13 16:09:13 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/17 12:26:14 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,9 +77,16 @@ void	ft_perror(char *str, int exit_code)
 		ft_putstr_fd(str, STDERR_FILENO);
 		ft_putendl_fd(": command not found", STDERR_FILENO);
 	}
-	if (exit_code == XPERM_DEN)
+	else if (exit_code == NO_PERM_X)
 	{
 		ft_putstr_fd(str, STDERR_FILENO);
 		ft_putendl_fd(": permission denied", STDERR_FILENO);
 	}
+	else if (exit_code == IS_DIR)
+	{
+		ft_putstr_fd(str, STDERR_FILENO);
+		ft_putendl_fd(": is a directory", STDERR_FILENO);
+	}
+	else
+		perror(str);
 }

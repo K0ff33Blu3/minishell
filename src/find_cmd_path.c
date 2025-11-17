@@ -6,7 +6,7 @@
 /*   By: miricci <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 15:15:11 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/13 17:11:52 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/17 12:23:39 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,17 +41,20 @@ int	check_cmd_path(char *path)
 {
 	struct stat	st;
 	
+	if (!path)
+		return (CMD_NOT_FOUND);
 	if (!stat(path, &st))
 	{
 		if (!access(path, X_OK))
 		{
 			if (S_ISDIR(st.st_mode))
-				return (1);
+				return (IS_DIR);
 			else
 				return (0);
 		}
+		return (NO_PERM_X);
 	}
-	return (1);
+	return (CMD_NOT_FOUND);
 }
 
 char	*find_cmd_path(t_list **env_list, t_cmd *data)
@@ -61,8 +64,8 @@ char	*find_cmd_path(t_list **env_list, t_cmd *data)
 	int		i;
 	char	*env_path;
 
-	if (!check_cmd_path(data->cmd))
-		return (data->cmd);
+	if (check_cmd_path(data->cmd) != CMD_NOT_FOUND)
+		return (ft_strdup(data->cmd));
 	i = 0;
 	env_path = ft_getenv(env_list, "PATH");
 	if (!env_path)
@@ -72,7 +75,7 @@ char	*find_cmd_path(t_list **env_list, t_cmd *data)
 	while (array[i])
 	{
 		path = make_path(array[i], data->cmd);
-		if (!access(path, X_OK))
+		if (check_cmd_path(path) != CMD_NOT_FOUND)
 			return (ft_free((void **)array, -1), path);
 		free(path);
 		i++;

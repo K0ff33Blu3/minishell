@@ -6,7 +6,7 @@
 /*   By: miricci <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 14:51:52 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/13 16:49:20 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/17 12:12:55 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,9 +55,21 @@ int	exec_status_changing_builtin(t_cmd *data, t_list **env_list, int *exit_statu
 void	exec_command(t_list **cmd_list, t_cmd *data, t_list **env_list)
 {
 	char	**env;
+	int	path_ctrl;
 	
 	env = envlst_to_envp(env_list);
-	
-	if (execve(data->cmd_path, data->cmd_args, env) < 0)
-		ft_error(env_list, cmd_list, "execve", EXIT_FAILURE);
+	path_ctrl = check_cmd_path(data->cmd_path);
+	if (path_ctrl == 0)
+	{
+		if (execve(data->cmd_path, data->cmd_args, env) < 0)
+		{
+			ft_free((void **)env, -1);
+			ft_error(env_list, cmd_list, "execve", EXIT_FAILURE);
+		}
+	}
+	else
+	{
+		ft_free((void **)env, -1);
+		ft_error(env_list, cmd_list, data->cmd, path_ctrl);
+	}
 }
