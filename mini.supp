@@ -2,7 +2,7 @@
    readline_reachable_allocations
    Memcheck:Leak
    match-leak-kinds: reachable
-   fun:readline
+   ...
    obj:/usr/lib/x86_64-linux-gnu/libreadline.so.*
 }
 
@@ -10,8 +10,6 @@
    readline_all_reachable_leaks
    Memcheck:Leak
    match-leak-kinds: reachable
+   ...
    fun:readline
-   fun:rl_initialize
-   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.*
-   fun:main
 }

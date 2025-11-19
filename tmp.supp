@@ -1,5 +1,5 @@
 {
-   name_leak
+   readline_keymap_alloc
    Memcheck:Leak
    match-leak-kinds: reachable
    fun:malloc
@@ -14,7 +14,7 @@
 }
 
 {
-   name_leak
+   readline_keymap_bind
    Memcheck:Leak
    match-leak-kinds: reachable
    fun:malloc
@@ -29,7 +29,7 @@
 }
 
 {
-   name_leak
+   readline_keymap_bind_terminal
    Memcheck:Leak
    match-leak-kinds: reachable
    fun:malloc

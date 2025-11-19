@@ -1,0 +1,6 @@
+ {
+	<libpango>
+	Memcheck:Leak
+	...
+	obj:/usr/*lib*/libpango*
+}

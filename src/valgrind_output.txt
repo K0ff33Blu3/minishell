@@ -1,0 +1,8 @@
+==648164== Memcheck, a memory error detector
+==648164== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==648164== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==648164== Command: /usr/bin/wc
+==648164== Parent PID: 645049
+==648164== 
+==648164== FATAL: can't open suppressions file "mini.supp"
+i.supp"

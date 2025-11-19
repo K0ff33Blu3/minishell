@@ -1,0 +1,28 @@
+==686742== Memcheck, a memory error detector
+==686742== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==686742== Using Valgrind-3.18.1 and LibVEX; rerun with -h for copyright info
+==686742== Command: ./minishell
+==686742== Parent PID: 521453
+==686742== 
+==686742== 
+==686742== FILE DESCRIPTORS: 4 open (3 std) at exit.
+==686742== Open file descriptor 3: /home/miricci/minishell/valgrind_output.txt
+==686742==    <inherited from parent>
+==686742== 
+==686742== 
+==686742== HEAP SUMMARY:
+==686742==     in use at exit: 204,180 bytes in 221 blocks
+==686742==   total heap usage: 652 allocs, 431 frees, 228,682 bytes allocated
+==686742== 
+==686742== LEAK SUMMARY:
+==686742==    definitely lost: 0 bytes in 0 blocks
+==686742==    indirectly lost: 0 bytes in 0 blocks
+==686742==      possibly lost: 0 bytes in 0 blocks
+==686742==    still reachable: 0 bytes in 0 blocks
+==686742==         suppressed: 204,180 bytes in 221 blocks
+==686742== 
+==686742== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+--686742-- 
+--686742-- used_suppression:     62 readline_all_reachable_leaks mini.supp:10 suppressed: 204,180 bytes in 221 blocks
+==686742== 
+==686742== ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
