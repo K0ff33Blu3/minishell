@@ -6,7 +6,7 @@
 /*   By: elmondo <elmondo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 11:11:36 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/20 11:19:46 by elmondo          ###   ########.fr       */
+/*   Updated: 2025/11/20 12:36:49 by elmondo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,11 @@ void simple_handler(int signum)
 {
 	if (signum == SIGINT)
 	{
+		g_last_sig = 128 + signum;
 		write(STDOUT_FILENO, "\n", 1);
 		rl_on_new_line();
 		rl_replace_line("", 0);
 		rl_redisplay();
-		g_last_sig = 128 + signum;
 	}
 }
 
@@ -38,14 +38,20 @@ void waiting_signals(void)
 	sigaction(SIGINT, &sa, NULL);
 }
 
+void ft_signum(int signum)
+{
+	g_last_sig = signum;
+}
+
 void setup_father(void)
 {
-	struct sigaction ign;
+	struct sigaction sa;
 
-	ft_bzero(&ign, sizeof(ign));
-	ign.sa_handler = SIG_IGN;
-	sigaction(SIGINT, &ign, NULL);
-	sigaction(SIGQUIT, &ign, NULL);
+	ft_bzero(&sa, sizeof(sa));
+	sa.sa_handler = ft_signum;
+	sa.sa_flags = 0;
+	sigaction(SIGINT, &sa, NULL);
+	sigaction(SIGQUIT, &sa, NULL);
 }
 
 void check_signals(int status, int *exit_status)

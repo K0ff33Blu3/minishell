@@ -6,7 +6,7 @@
 /*   By: elmondo <elmondo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:50:27 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/20 11:56:03 by elmondo          ###   ########.fr       */
+/*   Updated: 2025/11/20 12:26:44 by elmondo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ void process(char *cmd_line, int *exit_status, t_list **env_list)
 		return;
 	else
 	{
+		setup_father();
 		node = *cmd_list;
 		while (node)
 		{
@@ -119,7 +120,8 @@ int main(int argc, char **argv, char **envp)
 			add_history(cmd_line);
 			process(cmd_line, &exit_status, env_list);
 		}
-		free(cmd_line);
+		else
+			free(cmd_line);
 		if (g_last_sig != 0)
 		{
 			exit_status = g_last_sig;

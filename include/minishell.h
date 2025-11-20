@@ -6,7 +6,7 @@
 /*   By: elmondo <elmondo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:52:47 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/20 11:19:54 by elmondo          ###   ########.fr       */
+/*   Updated: 2025/11/20 12:36:47 by elmondo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ void reset_signals(void);
 void setup_father(void);
 void check_signals(int status, int *exit_status);
 void check_signals_two(int status, int *exit_status);
+void ft_signum(int signum);
 
 // redirections.c
 int handle_input_redir(t_cmd *cmd);
