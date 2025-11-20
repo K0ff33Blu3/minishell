@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   find_cmd_path.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
+/*   By: elmondo <elmondo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 15:15:11 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/17 18:32:46 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/20 11:38:38 by elmondo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,10 @@
 // 	exit(CMD_NOT_FOUND);
 // }
 
-static char	*make_path(char *str, char *cmd)
+static char *make_path(char *str, char *cmd)
 {
-	char	*part_path;
-	char	*path;
+	char *part_path;
+	char *path;
 
 	part_path = ft_strjoin(str, "/");
 	path = ft_strjoin(part_path, cmd);
@@ -37,9 +37,9 @@ static char	*make_path(char *str, char *cmd)
 	return (path);
 }
 
-int	check_cmd_path(char *path)
+int check_cmd_path(char *path)
 {
-	struct stat	st;
+	struct stat st;
 
 	if (!path)
 		return (CMD_NOT_FOUND);
@@ -61,12 +61,12 @@ int	check_cmd_path(char *path)
 	return (-1);
 }
 
-char	*find_cmd_path(t_list **env_list, t_cmd *data)
+char *find_cmd_path(t_list **env_list, t_cmd *data)
 {
-	char	**array;
-	char	*path;
-	int		i;
-	char	*env_path;
+	char **array;
+	char *path;
+	int i;
+	char *env_path;
 
 	if (check_cmd_path(data->cmd) != -1)
 		return (ft_strdup(data->cmd));
@@ -75,6 +75,7 @@ char	*find_cmd_path(t_list **env_list, t_cmd *data)
 	if (!env_path)
 		return (NULL);
 	array = ft_split(env_path, ':');
+	free(env_path);
 	i = 0;
 	while (array[i])
 	{

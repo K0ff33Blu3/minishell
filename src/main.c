@@ -3,23 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miricci <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: elmondo <elmondo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:50:27 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/13 15:53:56 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/20 11:19:52 by elmondo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	g_last_sig = 0;
+int g_last_sig = 0;
 
-pid_t	creat_children(t_list **head, t_list *node, t_list **env_list, int *exit_status)
+pid_t creat_children(t_list **head, t_list *node, t_list **env_list, int *exit_status)
 {
-	pid_t	pid;
-	int	node_index;
-	t_cmd	*data;
-	t_cmd	*data_nxt;
+	pid_t pid;
+	int node_index;
+	t_cmd *data;
+	t_cmd *data_nxt;
 
 	pid = fork();
 	node_index = ft_lstindex(*head, node);
@@ -34,7 +34,7 @@ pid_t	creat_children(t_list **head, t_list *node, t_list **env_list, int *exit_s
 		ft_error(env_list, head, "fork", EXIT_FAILURE);
 	if (pid == 0)
 	{
-		reset_signals_default();
+		reset_signals();
 		if (node_index > 0 && !data->has_infile)
 			dup2(data->pip[0], STDIN_FILENO);
 		if (node->next && !data->has_outfile)
@@ -60,19 +60,19 @@ pid_t	creat_children(t_list **head, t_list *node, t_list **env_list, int *exit_s
 		if (node_index < ft_lstsize(*head) - 1)
 			close(data_nxt->pip[1]);
 	}
-	return (pid);		
+	return (pid);
 }
 
-void	process(char *cmd_line, int *exit_status, t_list **env_list)
+void process(char *cmd_line, int *exit_status, t_list **env_list)
 {
-	t_list	**cmd_list;
-	t_list	*node;
-	pid_t	pid;
-	int	status;
+	t_list **cmd_list;
+	t_list *node;
+	pid_t pid;
+	int status;
 
 	cmd_list = mk_cmdlist(env_list, cmd_line, exit_status);
 	if (ft_lstsize(*cmd_list) == 1 && exec_status_changing_builtin((t_cmd *)(*cmd_list)->content, env_list, exit_status))
-		return ;
+		return;
 	else
 	{
 		node = *cmd_list;
@@ -89,22 +89,22 @@ void	process(char *cmd_line, int *exit_status, t_list **env_list)
 			node = node->next;
 		}
 		waitpid(pid, &status, 0);
-		apply_status_and_restore_prompt(status, exit_status);
+		check_signals(status, exit_status);
 	}
 	while (wait(NULL) != -1)
 		;
 	ft_lstclear(cmd_list, clean_data);
 }
 
-int	main(int argc, char **argv, char **envp)
+int main(int argc, char **argv, char **envp)
 {
-	char	*cmd_line;
-	int	exit_status;
-	static t_list		**env_list;
+	char *cmd_line;
+	int exit_status;
+	static t_list **env_list;
 
 	(void)argc;
 	(void)argv;
-	setup_shell_signals();
+	waiting_signals();
 	env_list = env_init(envp);
 	while (1)
 	{
@@ -112,7 +112,7 @@ int	main(int argc, char **argv, char **envp)
 		if (!cmd_line)
 		{
 			printf("exit\n");
-			break ;
+			break;
 		}
 		if (*cmd_line && !is_emptystr(cmd_line))
 		{

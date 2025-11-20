@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miricci <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: elmondo <elmondo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 11:11:36 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/13 10:47:16 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/20 11:19:46 by elmondo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	handle_sigint_prompt(int signum)
+void simple_handler(int signum)
 {
 	if (signum == SIGINT)
 	{
@@ -24,91 +24,78 @@ void	handle_sigint_prompt(int signum)
 	}
 }
 
-void	setup_shell_signals(void)
+void waiting_signals(void)
 {
-	struct sigaction	sa;
+	struct sigaction sa;
 
 	ft_bzero(&sa, sizeof(sa));
 	sa.sa_handler = SIG_IGN;
-	sa.sa_flags   = 0;
+	sa.sa_flags = 0;
 	sigaction(SIGQUIT, &sa, NULL);
 	sigaction(SIGTSTP, &sa, NULL);
-	sa.sa_handler = handle_sigint_prompt;
-	sa.sa_flags   = 0;
-	sigaction(SIGINT,  &sa, NULL);
+	sa.sa_handler = simple_handler;
+	sa.sa_flags = 0;
+	sigaction(SIGINT, &sa, NULL);
 }
 
-void	setup_shell_signals_father(void)
+void setup_father(void)
 {
 	struct sigaction ign;
 
 	ft_bzero(&ign, sizeof(ign));
 	ign.sa_handler = SIG_IGN;
-	sigaction(SIGINT,  &ign, NULL);
+	sigaction(SIGINT, &ign, NULL);
 	sigaction(SIGQUIT, &ign, NULL);
 }
 
-void	apply_status_and_restore_prompt(int status, int *exit_status)
+void check_signals(int status, int *exit_status)
 {
-	int	sig;
-
 	if (exit_status == NULL)
-		return ;
-	if (WIFSIGNALED(status))
+		return;
+	if (g_last_sig == SIGINT)
 	{
-		sig = WTERMSIG(status);
-		if (sig == SIGINT)
-		{
-			write(STDOUT_FILENO, "\n", 1);
-			*exit_status = 130;
-		}
-		else if (sig == SIGQUIT)
-		{
-			write(STDERR_FILENO, "Quit (core dumped)\n", 19);
-			*exit_status = 131;
-		}
-		else
-			*exit_status = 128 + sig;
+		write(STDOUT_FILENO, "\n", 1);
+		*exit_status = 130;
+		g_last_sig = 0;
 	}
-	else if (WIFEXITED(status))
-		*exit_status = WEXITSTATUS(status);
-	setup_shell_signals();
+	else if (g_last_sig == SIGQUIT)
+	{
+		write(STDERR_FILENO, "Quit (core dumped)\n", 19);
+		*exit_status = 131;
+		g_last_sig = 0;
+	}
+	else
+		*exit_status = status;
+	waiting_signals();
 }
 
-void	apply_status_and_restore_prompt_due(int status, int *exit_status)
+void check_signals_two(int status, int *exit_status)
 {
-	int	sig;
-
 	if (exit_status == NULL)
-		return ;
-	if (WIFSIGNALED(status))
+		return;
+	if (g_last_sig == SIGINT)
 	{
-		sig = WTERMSIG(status);
-		if (sig == SIGINT)
-		{
-			write(STDOUT_FILENO, "\n", 1);
-			*exit_status = 130;
-		}
-		else if (sig == SIGQUIT)
-		{
-			write(STDERR_FILENO, "Quit (core dumped)\n", 19);
-			*exit_status = 131;
-		}
-		else
-			*exit_status = 128 + sig;
+		write(STDOUT_FILENO, "\n", 1);
+		*exit_status = 130;
+		g_last_sig = 0;
 	}
-	else if (WIFEXITED(status))
-		*exit_status = WEXITSTATUS(status);
+	else if (g_last_sig == SIGQUIT)
+	{
+		write(STDERR_FILENO, "Quit (core dumped)\n", 19);
+		*exit_status = 131;
+		g_last_sig = 0;
+	}
+	else
+		*exit_status = status;
 }
 
-void	reset_signals_default(void)
+void reset_signals(void)
 {
 	struct sigaction sa;
 
 	memset(&sa, 0, sizeof(sa));
 	sa.sa_handler = SIG_DFL;
-	sigaction(SIGINT,  &sa, NULL);
+	sigaction(SIGINT, &sa, NULL);
 	sigaction(SIGQUIT, &sa, NULL);
 	sigaction(SIGTSTP, &sa, NULL);
 }
-
