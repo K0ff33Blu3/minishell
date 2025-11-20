@@ -6,7 +6,7 @@
 /*   By: elmondo <elmondo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:50:27 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/20 11:19:52 by elmondo          ###   ########.fr       */
+/*   Updated: 2025/11/20 11:56:03 by elmondo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,13 +119,13 @@ int main(int argc, char **argv, char **envp)
 			add_history(cmd_line);
 			process(cmd_line, &exit_status, env_list);
 		}
+		free(cmd_line);
 		if (g_last_sig != 0)
 		{
 			exit_status = g_last_sig;
 			g_last_sig = 0;
 		}
 	}
-	free(cmd_line);
 	ft_lstclear(env_list, free_env);
 	rl_clear_history();
 	return (g_last_sig);
