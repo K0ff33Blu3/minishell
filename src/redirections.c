@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 08:22:00 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/21 17:58:29 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/21 18:03:20 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,7 +189,6 @@ int	handle_output_redir(t_cmd *cmd)
 	{
 		if((!ft_strncmp(cmd->token[i], ">", 2) || !ft_strncmp(cmd->token[i], ">>", 3)) && cmd->token[i + 1])
 			flag = open_outfile(cmd, i, &outfile);
-		if (flag = )
 	}
 	if (flag)
 		cmd->outfile = ft_strdup(outfile);

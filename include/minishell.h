@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:52:47 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/21 17:31:35 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/21 18:02:56 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ void ft_signum(int signum);
 // redirections.c
 int handle_input_redir(t_cmd *cmd);
 int handle_output_redir(t_cmd *cmd);
-void redirect(t_cmd *data);
+void	redirect(t_list **env_list, t_list **cmd_list, t_cmd *data);
 
 // utils.c
 void print_cmd_struct(t_cmd cmd, int fd);
@@ -135,5 +135,6 @@ void close_pipe(int pip[2]);
 void free_env(void *ptr);
 void ft_error(t_list **env_lst, t_list **cmd_lst, char *str, int exit_code);
 void ft_perror(char *str, int exit_code);
+void	clean_all(t_list **env_list, t_list **cmd_list);
 
 #endif
