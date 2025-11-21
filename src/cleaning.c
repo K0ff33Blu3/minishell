@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 12:02:37 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/17 18:31:17 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/21 17:31:50 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,12 @@ void	free_env(void *ptr)
 	}
 }
 
+void	clean_all(t_list **env_list, t_list **cmd_list)
+{
+	ft_lstclear(env_list, free_env);
+	ft_lstclear(cmd_list, clean_data);
+}
+
 void	close_pipe(int pip[2])
 {
 	close(pip[0]);
@@ -67,8 +73,7 @@ void	ft_error(t_list **env_lst, t_list **cmd_lst, char *str, int exit_code)
 	ft_perror(str, exit_code);
 	if (exit_code == IS_DIR)
 		exit_code++;
-	ft_lstclear(env_lst, free_env);
-	ft_lstclear(cmd_lst, clean_data);
+	clean_all(env_lst, cmd_lst);
 	exit(exit_code);
 }
 
@@ -84,7 +89,7 @@ void	ft_perror(char *str, int exit_code)
 		ft_putstr_fd(str, STDERR_FILENO);
 		ft_putendl_fd(": is a directory", STDERR_FILENO);
 	}
-	else if (exit_code == NO_PERM_X)
+	else if (exit_code == NO_PERM)
 	{
 		ft_putstr_fd(str, STDERR_FILENO);
 		ft_putendl_fd(": permission denied", STDERR_FILENO);

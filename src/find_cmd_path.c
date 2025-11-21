@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   find_cmd_path.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elmondo <elmondo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 15:15:11 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/20 11:38:38 by elmondo          ###   ########.fr       */
+/*   Updated: 2025/11/21 17:37:41 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 // 	exit(CMD_NOT_FOUND);
 // }
 
-static char *make_path(char *str, char *cmd)
+static char	*make_path(char *str, char *cmd)
 {
 	char *part_path;
 	char *path;
@@ -37,7 +37,7 @@ static char *make_path(char *str, char *cmd)
 	return (path);
 }
 
-int check_cmd_path(char *path)
+int	check_cmd_path(char *path)
 {
 	struct stat st;
 
@@ -54,7 +54,7 @@ int check_cmd_path(char *path)
 				else
 					return (0);
 			}
-			return (NO_PERM_X);
+			return (NO_PERM);
 		}
 		return (CMD_NOT_FOUND);
 	}

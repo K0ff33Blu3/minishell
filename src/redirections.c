@@ -3,36 +3,67 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miricci <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 08:22:00 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/13 15:10:05 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/21 17:58:29 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	redirect(t_cmd *data)
+int	check_redir_path(char *path, int perm)
 {
+	struct stat st;
+
+	if (!stat(path, &st))
+	{
+		if (!access(path, perm))
+		{
+			if (S_ISDIR(st.st_mode))
+				return (IS_DIR);
+			else
+				return (0);
+		}
+		else
+			return (NO_PERM);
+	}
+	return (EXIT_FAILURE);
+}
+
+void	redirect(t_list **env_list, t_list **cmd_list, t_cmd *data)
+{
+	int	file_ctrl;
+
 	if (data->outfile)
 	{
-		if (access(data->outfile, W_OK) != -1)
+		file_ctrl = check_redir_path(data->outfile, W_OK);
+		if (!file_ctrl)
 		{
 			dup2(data->out_fd, STDOUT_FILENO);
 			close(data->out_fd);
 		}
 		else
+		{
+			ft_perror(data->outfile, file_ctrl);
+			clean_all(env_list, cmd_list);
 			exit(EXIT_FAILURE);
+		}
 	}
 	if (data->infile)
 	{
-		if (access(data->infile, R_OK) != -1)
+		file_ctrl = check_redir_path(data->outfile, R_OK);
+		if (!file_ctrl)
 		{
 			dup2(data->in_fd, STDIN_FILENO);
 			close(data->in_fd);
 		}
 		else
-			exit(EXIT_FAILURE);
+		{
+			ft_perror(data->infile, file_ctrl);
+			clean_all(env_list, cmd_list);
+			exit(EXIT_FAILURE);			
+		}
 	}
 	if (data->limiter)
 	{
@@ -89,11 +120,6 @@ int	get_type_of_input(t_cmd *cmd)
 void	open_infile(t_cmd *cmd)
 {
 	cmd->in_fd = open(cmd->infile, O_RDONLY);
-	if (cmd->in_fd == -1)
-	{
-		cmd->in_fd = open("/dev/null", O_RDONLY);
-		perror(cmd->infile);
-	}
 }
 
 void	handle_heredoc(t_cmd *cmd)
@@ -124,7 +150,7 @@ int	handle_input_redir(t_cmd *cmd)
 	if (type_of_redir == 0)
 		cmd->infile = NULL;
 	else if (type_of_redir == 1)
-		open_infile(cmd);
+		cmd->in_fd = open(cmd->infile, O_RDONLY);
 	else if (type_of_redir == 2)
 		handle_heredoc(cmd);
 	return (type_of_redir);
@@ -140,8 +166,6 @@ int	open_outfile(t_cmd *cmd, int i, char **outfile)
 	if (!ft_strncmp(cmd->token[i], ">", 2))
 	{
 		cmd->out_fd = open(*outfile, O_WRONLY | O_CREAT | O_TRUNC, 0664);
-		if (cmd->out_fd == -1)
-			perror(*outfile);
 		flag = 1;
 	}
 	else if (!ft_strncmp(cmd->token[i], ">>", 3))
@@ -165,6 +189,7 @@ int	handle_output_redir(t_cmd *cmd)
 	{
 		if((!ft_strncmp(cmd->token[i], ">", 2) || !ft_strncmp(cmd->token[i], ">>", 3)) && cmd->token[i + 1])
 			flag = open_outfile(cmd, i, &outfile);
+		if (flag = )
 	}
 	if (flag)
 		cmd->outfile = ft_strdup(outfile);
