@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleaning.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miricci <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: elmondo <elmondo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 12:02:37 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/23 12:07:42 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/23 14:22:06 by elmondo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,12 @@ void	free_env(void *ptr)
 	}
 }
 
-void	close_pipe(int pip[2])
+void close_pipe(int pip[2])
 {
-	close(pip[0]);
-	close(pip[1]);
+	if (pip[0] > 2)
+		close(pip[0]);
+	if (pip[1] > 2)
+		close(pip[1]);
 }
 
 void	ft_error_redir(t_list **env_lst, t_list **cmd_lst, char *str, int err_code)

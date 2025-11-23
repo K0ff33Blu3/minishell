@@ -6,7 +6,7 @@
 /*   By: elmondo <elmondo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 11:11:36 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/20 12:36:49 by elmondo          ###   ########.fr       */
+/*   Updated: 2025/11/23 14:20:14 by elmondo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void check_signals(int status, int *exit_status)
 		g_last_sig = 0;
 	}
 	else
-		*exit_status = status;
+		*exit_status = status >> 8;
 	waiting_signals();
 }
 
@@ -92,7 +92,7 @@ void check_signals_two(int status, int *exit_status)
 		g_last_sig = 0;
 	}
 	else
-		*exit_status = status;
+		*exit_status = status >> 8;
 }
 
 void reset_signals(void)
