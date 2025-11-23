@@ -6,7 +6,7 @@
 /*   By: miricci <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 13:03:04 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/13 15:33:54 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/23 13:28:50 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,7 +174,7 @@ t_cmd	*data_parsing(t_list **env_list, char **part_token, int *exit_status)
 	
 	data = data_init();
 	data->token = token_parsing(env_list, part_token, exit_status);
-	data->has_infile = handle_input_redir(data);
+	data->has_infile = handle_input_redir2(data);
 	data->has_outfile = handle_output_redir(data);
 	data->cmd_args = parse_cmd_args(data->token);
 	if (!data->cmd_args || !data->cmd_args[0])

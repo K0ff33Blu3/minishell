@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elmondo <elmondo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: miricci <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:52:47 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/20 12:36:47 by elmondo          ###   ########.fr       */
+/*   Updated: 2025/11/23 13:28:31 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@
 #define PROMPT "\033[36mMINISHELL@ \033[0m"
 
 // MACRO
-#define CMD_NOT_FOUND 127
-#define NO_PERM_X 126
+#define NOT_FOUND 127
+#define NO_PERM 126
 #define IS_DIR 125
 
 extern int g_last_sig;
@@ -58,10 +58,10 @@ typedef struct s_cmd
 void pwd(void);
 void env(t_list **env_list);
 void echo(t_cmd *data);
-int exit_cmd(t_cmd *data);
+int	exit_cmd(t_list **env_list, t_list **cmd_list, t_cmd *data);
 int ft_cd(t_list **env_list, t_cmd *data);
 int unset(t_list **env_list, char **var);
-int export(t_list **env_list, t_cmd *data);
+int	export(t_list **cmd_list, t_list **env_list, t_cmd *data);
 
 // parsing.c
 int is_builtin(char *cmd);
@@ -108,9 +108,11 @@ void check_signals_two(int status, int *exit_status);
 void ft_signum(int signum);
 
 // redirections.c
-int handle_input_redir(t_cmd *cmd);
-int handle_output_redir(t_cmd *cmd);
-void redirect(t_cmd *data);
+int	handle_input_redir(t_cmd *cmd);
+int	handle_input_redir2(t_cmd *cmd);
+int	handle_output_redir(t_cmd *cmd);
+void	redirect(t_list **cmd_list, t_list **env_list, t_cmd *data);
+int	check_file_path(char *path, int perm_code);
 
 // utils.c
 void print_cmd_struct(t_cmd cmd, int fd);
@@ -127,7 +129,7 @@ int check_cmd_path(char *path);
 // execution.c
 void exec_command(t_list **cmd_list, t_cmd *data, t_list **env_list);
 void exec_simple_builtin(t_list **cmd_lst, t_cmd *data, t_list **env_list);
-int exec_status_changing_builtin(t_cmd *data, t_list **env_list, int *exit_status);
+int	exec_status_changing_builtin(t_list **cmd_list, t_cmd *data, t_list **env_list, int *exit_status);
 
 // cleaning.c
 void clean_data(void *ptr);
@@ -135,5 +137,6 @@ void close_pipe(int pip[2]);
 void free_env(void *ptr);
 void ft_error(t_list **env_lst, t_list **cmd_lst, char *str, int exit_code);
 void ft_perror(char *str, int exit_code);
+void	ft_error_redir(t_list **env_lst, t_list **cmd_lst, char *str, int err_code);
 
 #endif

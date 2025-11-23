@@ -6,7 +6,7 @@
 /*   By: miricci <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/10 13:36:15 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/13 14:10:20 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/23 11:38:03 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,11 +28,12 @@ int	check_name(char	*name)
 	return (1);
 }
 
-static int	export_one(t_list **env_list, char *str)
+static int	export_one(t_list **cmd_list, t_list **env_list, char *str)
 {
 	t_env	*new;
 	t_list	*node;
 	t_env	*env;
+	(void)cmd_list;
 
 	new = (t_env *)malloc(sizeof(t_env));
 	if (!new)
@@ -40,7 +41,7 @@ static int	export_one(t_list **env_list, char *str)
 	new = mk_env(str);
 	if (!check_name(new->name))
 	{
-		ft_putstr_fd("errore nome variabile\n", 2);	//gestire errore
+		ft_putstr_fd("export: name not valid\n", 2);	//gestire errore
 		return (free_env(new), 1);
 	}
 	node = *env_list;
@@ -60,7 +61,7 @@ static int	export_one(t_list **env_list, char *str)
 	return (EXIT_SUCCESS);
 }
 
-int	export_no_args(t_cmd *cmd, t_list **env_list, int *status)
+int	export_no_args(t_list **cmd_list, t_cmd *cmd, t_list **env_list, int *status)
 {
 	t_list	*node;
 	t_env	*env;
@@ -71,7 +72,7 @@ int	export_no_args(t_cmd *cmd, t_list **env_list, int *status)
 		return (EXIT_FAILURE);
 	if (pid == 0)
 	{	
-		redirect(cmd);
+		redirect(cmd_list, env_list, cmd);
 		node = *env_list;
 		while (node)
 		{
@@ -89,7 +90,7 @@ int	export_no_args(t_cmd *cmd, t_list **env_list, int *status)
 	return (*status);
 }
 
-int	export(t_list **env_list, t_cmd *data)
+int	export(t_list **cmd_list, t_list **env_list, t_cmd *data)
 {
 	int	i;
 	int	status;
@@ -97,8 +98,8 @@ int	export(t_list **env_list, t_cmd *data)
 	status = 0;
 	i = 0;
 	if (array_size((void **)data->cmd_args) == 1)
-		return (export_no_args(data, env_list, &status));	
+		return (export_no_args(cmd_list, data, env_list, &status));	
 	while (data->cmd_args[++i])
-		status = export_one(env_list, data->cmd_args[i]);
+		status = export_one(cmd_list, env_list, data->cmd_args[i]);
 	return (status);
 }

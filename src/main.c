@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elmondo <elmondo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: miricci <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:50:27 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/20 12:26:44 by elmondo          ###   ########.fr       */
+/*   Updated: 2025/11/23 11:40:37 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,12 @@ pid_t creat_children(t_list **head, t_list *node, t_list **env_list, int *exit_s
 			close(data->pip[0]);
 		if (node->next)
 			close(data_nxt->pip[1]);
-		if (exec_status_changing_builtin(data, env_list, exit_status))
+		if (exec_status_changing_builtin(head, data, env_list, exit_status))
 		{
 			clean_data(data);
 			exit(*exit_status);
 		}
-		redirect(data);
+		redirect(head, env_list, data);
 		if (is_builtin(data->cmd) == 1)
 			exec_simple_builtin(head, data, env_list);
 		exec_command(head, data, env_list);
@@ -71,8 +71,8 @@ void process(char *cmd_line, int *exit_status, t_list **env_list)
 	int status;
 
 	cmd_list = mk_cmdlist(env_list, cmd_line, exit_status);
-	if (ft_lstsize(*cmd_list) == 1 && exec_status_changing_builtin((t_cmd *)(*cmd_list)->content, env_list, exit_status))
-		return;
+	if (ft_lstsize(*cmd_list) == 1 && exec_status_changing_builtin(cmd_list, (t_cmd *)(*cmd_list)->content, env_list, exit_status))
+		return ;
 	else
 	{
 		setup_father();

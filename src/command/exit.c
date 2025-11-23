@@ -3,23 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
+/*   By: miricci <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 20:30:11 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/24 19:22:38 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/23 11:35:43 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	exit_cmd(t_cmd *data)
+int	exit_cmd(t_list **env_list, t_list **cmd_list, t_cmd *data)
 {
 	int	code;
 
 	code = 0;
 	if (data && data->cmd_args && data->cmd_args[1])
 		code = ft_atoi(data->cmd_args[1]);
-	if (data)
-		clean_data(data);
+	ft_lstclear(env_list, free_env);
+	ft_lstclear(cmd_list, clean_data);
 	return(exit(code), code);
 }

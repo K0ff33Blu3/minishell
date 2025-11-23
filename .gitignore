@@ -1,2 +1,8 @@
 *.o
 out*
+en.subject.pdf
+a.out
+*.txt
+prova/*
+w_only*
+r_only*

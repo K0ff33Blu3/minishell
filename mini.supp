@@ -1,5 +1,5 @@
 {
-   readline_reachable_allocations
+   readline_global_reachable
    Memcheck:Leak
    match-leak-kinds: reachable
    ...
@@ -7,9 +7,17 @@
 }
 
 {
-   readline_all_reachable_leaks
+   readline_main_call_reachable
    Memcheck:Leak
    match-leak-kinds: reachable
    ...
    fun:readline
+}
+
+{
+   below_main
+   Memcheck:Leak
+   match-leak-kinds: all
+   ...
+   fun:(below main)
 }

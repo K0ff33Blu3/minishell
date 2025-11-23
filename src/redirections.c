@@ -6,33 +6,51 @@
 /*   By: miricci <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 08:22:00 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/13 15:10:05 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/23 13:55:28 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	redirect(t_cmd *data)
+int	check_file_path(char *path, int perm_code)
 {
-	if (data->outfile)
+	struct stat	st;
+
+	if (!stat(path, &st))
 	{
-		if (access(data->outfile, W_OK) != -1)
+		if (!access(path, perm_code))
 		{
+			if (S_ISDIR(st.st_mode))
+				return(IS_DIR);
+			else
+				return(EXIT_SUCCESS);
+		}
+		return (NO_PERM);
+	}
+	return(EXIT_FAILURE); 
+}
+
+void	redirect(t_list **cmd_list, t_list **env_list, t_cmd *data)
+{
+	if (data->has_outfile && data->outfile)
+	{
+		if (!check_file_path(data->outfile, W_OK))
+		{	
 			dup2(data->out_fd, STDOUT_FILENO);
 			close(data->out_fd);
 		}
 		else
-			exit(EXIT_FAILURE);
+			ft_error_redir(env_list, cmd_list, data->outfile, check_file_path(data->outfile, W_OK));
 	}
-	if (data->infile)
+	if (data->has_infile && data->infile)
 	{
-		if (access(data->infile, R_OK) != -1)
+		if (!check_file_path(data->infile, R_OK))
 		{
 			dup2(data->in_fd, STDIN_FILENO);
 			close(data->in_fd);
 		}
 		else
-			exit(EXIT_FAILURE);
+			ft_error_redir(env_list, cmd_list, data->infile, check_file_path(data->infile, R_OK));
 	}
 	if (data->limiter)
 	{
@@ -90,13 +108,10 @@ void	open_infile(t_cmd *cmd)
 {
 	cmd->in_fd = open(cmd->infile, O_RDONLY);
 	if (cmd->in_fd == -1)
-	{
 		cmd->in_fd = open("/dev/null", O_RDONLY);
-		perror(cmd->infile);
-	}
 }
 
-void	handle_heredoc(t_cmd *cmd)
+int	handle_heredoc(t_cmd *cmd)
 {
 	char	*line;
 	
@@ -114,6 +129,7 @@ void	handle_heredoc(t_cmd *cmd)
 		free(line);
 	}
 	close(cmd->tmp_pipe[1]);
+	return (cmd->tmp_pipe[0]);
 }
 
 int	handle_input_redir(t_cmd *cmd)
@@ -124,55 +140,61 @@ int	handle_input_redir(t_cmd *cmd)
 	if (type_of_redir == 0)
 		cmd->infile = NULL;
 	else if (type_of_redir == 1)
-		open_infile(cmd);
+		cmd->in_fd = open(cmd->infile, O_RDONLY);
 	else if (type_of_redir == 2)
 		handle_heredoc(cmd);
 	return (type_of_redir);
 }
 
-int	open_outfile(t_cmd *cmd, int i, char **outfile)
+int	open_infile2(t_cmd *cmd, int i, char **infile, int *last_fd)
 {
 	int	flag;
 	
 	flag = 0;
-	free(*outfile);
-	*outfile = ft_strdup(cmd->token[i + 1]);
-	if (!ft_strncmp(cmd->token[i], ">", 2))
+	free(*infile);
+	*infile = ft_strdup(cmd->token[i + 1]);
+	if (*last_fd != -1)
+		close(*last_fd);
+	if (!ft_strncmp(cmd->token[i], "<", 2))
 	{
-		cmd->out_fd = open(*outfile, O_WRONLY | O_CREAT | O_TRUNC, 0664);
-		if (cmd->out_fd == -1)
-			perror(*outfile);
+		*last_fd = open(*infile, O_RDONLY);
 		flag = 1;
+		if (*last_fd == -1)
+			return (-1);
 	}
-	else if (!ft_strncmp(cmd->token[i], ">>", 3))
+	else if (!ft_strncmp(cmd->token[i], "<<", 3))
 	{
-		cmd->out_fd = open(*outfile, O_WRONLY | O_CREAT | O_APPEND, 0664);
-		flag = 2;	
+		*last_fd = handle_heredoc(cmd);
+		flag = 2;
 	}
 	return (flag);
 }
 
-int	handle_output_redir(t_cmd *cmd)
+int	handle_input_redir2(t_cmd *cmd)
 {
 	int	i;
-	char	*outfile;
+	char	*infile;
 	int	flag;
+	int	last_fd;
 
 	i = -1;
 	flag = 0;
-	outfile = NULL;
+	last_fd = -1;
+	infile = NULL;
 	while (cmd->token[++i])
 	{
-		if((!ft_strncmp(cmd->token[i], ">", 2) || !ft_strncmp(cmd->token[i], ">>", 3)) && cmd->token[i + 1])
-			flag = open_outfile(cmd, i, &outfile);
+		if((!ft_strncmp(cmd->token[i], "<", 2) || !ft_strncmp(cmd->token[i], "<<", 3)) && cmd->token[i + 1])
+			flag = open_infile2(cmd, i, &infile, &last_fd);
 	}
 	if (flag)
-		cmd->outfile = ft_strdup(outfile);
-	else
 	{
-		cmd->out_fd = STDOUT_FILENO;
-		cmd->outfile = NULL;
+		cmd->infile = ft_strdup(infile);
+		cmd->in_fd = last_fd;
 	}
-	free(outfile);
+	else
+		cmd->infile = NULL;
+	free(infile);
 	return (flag);
 }
+
+

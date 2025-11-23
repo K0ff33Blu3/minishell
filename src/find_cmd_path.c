@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   find_cmd_path.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elmondo <elmondo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: miricci <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 15:15:11 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/20 11:38:38 by elmondo          ###   ########.fr       */
+/*   Updated: 2025/11/23 12:09:54 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int check_cmd_path(char *path)
 	struct stat st;
 
 	if (!path)
-		return (CMD_NOT_FOUND);
+		return (NOT_FOUND);
 	if (ft_strchr(path, '/'))
 	{
 		if (!stat(path, &st))
@@ -54,9 +54,9 @@ int check_cmd_path(char *path)
 				else
 					return (0);
 			}
-			return (NO_PERM_X);
+			return (NO_PERM);
 		}
-		return (CMD_NOT_FOUND);
+		return (NOT_FOUND);
 	}
 	return (-1);
 }
@@ -80,7 +80,7 @@ char *find_cmd_path(t_list **env_list, t_cmd *data)
 	while (array[i])
 	{
 		path = make_path(array[i], data->cmd);
-		if (check_cmd_path(path) != CMD_NOT_FOUND)
+		if (check_cmd_path(path) != NOT_FOUND)
 			return (ft_free((void **)array, -1), path);
 		free(path);
 		i++;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
+/*   By: miricci <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 14:51:52 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/17 18:49:17 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/23 11:37:12 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,11 @@ void	exec_simple_builtin(t_list **cmd_lst, t_cmd *data, t_list **env_list)
 	exit(EXIT_SUCCESS);
 }
 
-int	exec_status_changing_builtin(t_cmd *data, t_list **env_list, int *exit_status)
+int	exec_status_changing_builtin(t_list **cmd_list, t_cmd *data, t_list **env_list, int *exit_status)
 {
 	if (ft_strncmp(data->cmd, "exit", 5) == 0)
 	{
-		exit_cmd(data);
+		exit_cmd(env_list, cmd_list, data);
 		return (1);
 	}
 	else if (ft_strncmp(data->cmd, "cd", 3) == 0)
@@ -46,7 +46,7 @@ int	exec_status_changing_builtin(t_cmd *data, t_list **env_list, int *exit_statu
 	}
 	else if (ft_strncmp(data->cmd, "export", 7) == 0)
 	{
-		*exit_status = export(env_list, data);
+		*exit_status = export(cmd_list, env_list, data);
 		return (1);
 	}
 	return (0);

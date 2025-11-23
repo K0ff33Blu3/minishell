@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleaning.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
+/*   By: miricci <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 12:02:37 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/17 18:31:17 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/23 12:07:42 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,14 @@ void	close_pipe(int pip[2])
 	close(pip[1]);
 }
 
+void	ft_error_redir(t_list **env_lst, t_list **cmd_lst, char *str, int err_code)
+{
+	ft_perror(str, err_code);
+	ft_lstclear(env_lst, free_env);
+	ft_lstclear(cmd_lst, clean_data);
+	exit(EXIT_FAILURE);
+}
+
 void	ft_error(t_list **env_lst, t_list **cmd_lst, char *str, int exit_code)
 {
 	ft_perror(str, exit_code);
@@ -74,7 +82,7 @@ void	ft_error(t_list **env_lst, t_list **cmd_lst, char *str, int exit_code)
 
 void	ft_perror(char *str, int exit_code)
 {
-	if (exit_code == CMD_NOT_FOUND)
+	if (exit_code == NOT_FOUND)
 	{
 		ft_putstr_fd(str, STDERR_FILENO);
 		ft_putendl_fd(": command not found", STDERR_FILENO);
@@ -84,7 +92,7 @@ void	ft_perror(char *str, int exit_code)
 		ft_putstr_fd(str, STDERR_FILENO);
 		ft_putendl_fd(": is a directory", STDERR_FILENO);
 	}
-	else if (exit_code == NO_PERM_X)
+	else if (exit_code == NO_PERM)
 	{
 		ft_putstr_fd(str, STDERR_FILENO);
 		ft_putendl_fd(": permission denied", STDERR_FILENO);
