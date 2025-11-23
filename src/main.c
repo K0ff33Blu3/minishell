@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miricci <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: elmondo <elmondo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:50:27 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/23 11:40:37 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/23 14:23:32 by elmondo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void process(char *cmd_line, int *exit_status, t_list **env_list)
 
 	cmd_list = mk_cmdlist(env_list, cmd_line, exit_status);
 	if (ft_lstsize(*cmd_list) == 1 && exec_status_changing_builtin(cmd_list, (t_cmd *)(*cmd_list)->content, env_list, exit_status))
-		return ;
+		return (free(*cmd_list), free(cmd_list));
 	else
 	{
 		setup_father();
