@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miricci <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 11:40:06 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/23 14:37:51 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/24 14:27:11 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	*expand_var(t_list **env_list, char *var, int exit_status)
 		return (ft_itoa(exit_status));
 	value = ft_getenv(env_list, var);
 	if (value)
-		return (ft_strdup(value));
+		return (value);
 	return (NULL);
 }
 

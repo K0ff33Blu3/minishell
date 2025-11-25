@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elmondo <elmondo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:50:27 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/23 14:23:32 by elmondo          ###   ########.fr       */
+/*   Updated: 2025/11/24 12:17:47 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,15 @@ pid_t creat_children(t_list **head, t_list *node, t_list **env_list, int *exit_s
 	{
 		reset_signals();
 		if (node_index > 0 && !data->has_infile)
+		{
 			dup2(data->pip[0], STDIN_FILENO);
+			close(data->pip[0]);
+		}
 		if (node->next && !data->has_outfile)
+		{
 			dup2(data_nxt->pip[1], STDOUT_FILENO);
+			close(data_nxt->pip[1]);
+		}
 		if (node_index > 0)
 			close(data->pip[0]);
 		if (node->next)
@@ -59,6 +65,10 @@ pid_t creat_children(t_list **head, t_list *node, t_list **env_list, int *exit_s
 			close(data->pip[0]);
 		if (node_index < ft_lstsize(*head) - 1)
 			close(data_nxt->pip[1]);
+		if (data->has_infile && data->in_fd > 2)
+			close(data->in_fd);
+		if (data->has_outfile && data->out_fd > 2)
+			close(data->out_fd);
 	}
 	return (pid);
 }
@@ -89,6 +99,7 @@ void process(char *cmd_line, int *exit_status, t_list **env_list)
 			pid = creat_children(cmd_list, node, env_list, exit_status);
 			node = node->next;
 		}
+		node = *cmd_list;
 		waitpid(pid, &status, 0);
 		check_signals(status, exit_status);
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miricci <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 13:03:04 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/23 13:28:50 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/24 17:06:11 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ static int	count_redir(char **token)
 	count = 0;
 	while (token[i])
 	{
-		if (*token[i] == '<' || *token[i] == '>')
+		if ((!ft_strncmp(token[i], "<", 2) || !ft_strncmp(token[i], ">", 2) || !ft_strncmp(token[i], "<<", 3) || !ft_strncmp(token[i], ">>", 3)) && !is_metachar(token[i]))
 			count++;
 		i++;
 	}
@@ -105,17 +105,23 @@ char	**parse_cmd_args(char **token)
 
 	nbr_redir = count_redir(token);
 	arg_size = array_size((void **)token) - (nbr_redir * 2);
-	arg = malloc(sizeof(char * ) * (arg_size + 1));
+	arg = malloc(sizeof(char *) * (arg_size + 1));
 	if (!arg)
 		return (NULL);
 	i = 0;
 	j = 0;
 	while (token[i])
 	{
-		if (*token[i] == '>' || *token[i] == '<')
-			i++;
-		else if (i > 0 && (*token[i - 1] == '>' || *token[i - 1] == '<'))
-			i++;
+		if (!ft_strncmp(token[i], "<", 2) || !ft_strncmp(token[i], ">", 2) || !ft_strncmp(token[i], "<<", 3) || !ft_strncmp(token[i], ">>", 3))
+		{
+			if (token[i + 1] && !is_metachar(token[i + 1]))
+				i += 2;
+			else
+			{
+				ft_perror(token[i + 1], SYNT_ERR);
+				break ;
+			}
+		}
 		else
 			arg[j++] = ft_strdup(token[i++]);
 	}
@@ -210,28 +216,28 @@ char	**array_cpy(char **src)
 	return (dst);
 }
 
-t_cmd	*data_cpy(t_cmd *src)
-{
-	t_cmd	*dst;
+// t_cmd	*data_cpy(t_cmd *src)
+// {
+// 	t_cmd	*dst;
 
-	dst = data_init();
-	dst->token = array_cpy(src->token);
-	dst->cmd = ft_strdup(src->cmd);
-	dst->cmd_path = ft_strdup(src->cmd_path);
-	dst->cmd_args = array_cpy(src->cmd_args);
-	dst->in_fd = src->in_fd;
-	dst->out_fd = src->out_fd;
-	dst->infile = ft_strdup(src->infile);
-	dst->outfile = ft_strdup(src->outfile);
-	dst->limiter = ft_strdup(src->limiter);
-	dst->has_infile = src->has_infile;
-	dst->has_outfile = dst->has_outfile;
-	dst->tmp_pipe[0] = src->tmp_pipe[0];
-	dst->tmp_pipe[1] = src->tmp_pipe[1];
-	dst->pip[0] = src->pip[0];
-	dst->pip[1] = src->pip[1];
-	return (dst);
-}
+// 	dst = data_init();
+// 	dst->token = array_cpy(src->token);
+// 	dst->cmd = ft_strdup(src->cmd);
+// 	dst->cmd_path = ft_strdup(src->cmd_path);
+// 	dst->cmd_args = array_cpy(src->cmd_args);
+// 	dst->in_fd = src->in_fd;
+// 	dst->out_fd = src->out_fd;
+// 	dst->infile = ft_strdup(src->infile);
+// 	dst->outfile = ft_strdup(src->outfile);
+// 	dst->limiter = ft_strdup(src->limiter);
+// 	dst->has_infile = src->has_infile;
+// 	dst->has_outfile = dst->has_outfile;
+// 	dst->tmp_pipe[0] = src->tmp_pipe[0];
+// 	dst->tmp_pipe[1] = src->tmp_pipe[1];
+// 	dst->pip[0] = src->pip[0];
+// 	dst->pip[1] = src->pip[1];
+// 	return (dst);
+// }
 
 t_list	**mk_cmdlist(t_list **env_list, char *cmd_str, int *exit_status)
 {
@@ -245,6 +251,7 @@ t_list	**mk_cmdlist(t_list **env_list, char *cmd_str, int *exit_status)
 	i = 0;
 	cmd_list = NULL;
 	token = tokenize(cmd_str);
+	i = 0;
 	free(cmd_str);
 	cmd_list = (t_list **)malloc(sizeof(t_list *));
 	if (!cmd_list)
@@ -264,6 +271,8 @@ t_list	**mk_cmdlist(t_list **env_list, char *cmd_str, int *exit_status)
 
 int is_builtin(char *cmd)
 {
+	if (!cmd)
+		return (0);
 	if (!ft_strncmp(cmd, "echo", 5) || !ft_strncmp(cmd, "env", 4) || !ft_strncmp(cmd, "pwd", 4))
 		return (1);
 	else if (!ft_strncmp(cmd, "exit", 5) || !ft_strncmp(cmd, "cd", 3) || !ft_strncmp(cmd, "unset", 6) || !ft_strncmp(cmd, "export", 7))

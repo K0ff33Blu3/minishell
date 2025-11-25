@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleaning.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elmondo <elmondo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 12:02:37 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/23 14:22:06 by elmondo          ###   ########.fr       */
+/*   Updated: 2025/11/24 16:54:58 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,6 @@ void	clean_data(void *ptr)
 		free(data->outfile);
 	if (data->out_fd > 2)
 		close(data->out_fd);
-	if (data->limiter)
-		free(data->limiter);
 	close_pipe(data->pip);
 	free(data);
 }
@@ -98,6 +96,12 @@ void	ft_perror(char *str, int exit_code)
 	{
 		ft_putstr_fd(str, STDERR_FILENO);
 		ft_putendl_fd(": permission denied", STDERR_FILENO);
+	}
+	else if (exit_code == SYNT_ERR)
+	{
+		ft_putstr_fd("minishell: syntax error near unexpected token \"", STDERR_FILENO);
+		ft_putstr_fd(str, STDERR_FILENO);
+		ft_putendl_fd("\"", STDERR_FILENO);
 	}
 	else
 		perror(str);

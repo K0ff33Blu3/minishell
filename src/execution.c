@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miricci <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 14:51:52 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/23 11:37:12 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/24 17:04:19 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void	exec_simple_builtin(t_list **cmd_lst, t_cmd *data, t_list **env_list)
 		env(env_list);
 	else if (ft_strncmp(data->cmd, "pwd", 4) == 0)
 		pwd();
-	close_pipe(data->pip);
 	ft_lstclear(cmd_lst, clean_data);
 	ft_lstclear(env_list, free_env);
 	exit(EXIT_SUCCESS);
@@ -29,6 +28,8 @@ void	exec_simple_builtin(t_list **cmd_lst, t_cmd *data, t_list **env_list)
 
 int	exec_status_changing_builtin(t_list **cmd_list, t_cmd *data, t_list **env_list, int *exit_status)
 {
+	if (!data->cmd)
+		return (0);
 	if (ft_strncmp(data->cmd, "exit", 5) == 0)
 	{
 		exit_cmd(env_list, cmd_list, data);

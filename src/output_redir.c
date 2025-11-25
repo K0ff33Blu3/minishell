@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   output_redir.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miricci <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/23 13:16:48 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/23 13:17:38 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/24 12:10:36 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	open_outfile(t_cmd *cmd, int i, char **outfile, int *last_fd)
 	flag = 0;
 	free(*outfile);
 	*outfile = ft_strdup(cmd->token[i + 1]);
-	if (*last_fd != -1)
+	if (*last_fd > 1)
 		close(*last_fd);
 	if (!ft_strncmp(cmd->token[i], ">", 2))
 	{
@@ -47,7 +47,7 @@ int	handle_output_redir(t_cmd *cmd)
 
 	i = -1;
 	flag = 0;
-	last_fd = -1;
+	last_fd = 1;
 	outfile = NULL;
 	while (cmd->token[++i])
 	{
@@ -55,12 +55,10 @@ int	handle_output_redir(t_cmd *cmd)
 			flag = open_outfile(cmd, i, &outfile, &last_fd);
 	}
 	if (flag)
-	{
 		cmd->outfile = ft_strdup(outfile);
-		cmd->out_fd = last_fd;
-	}
 	else
 		cmd->outfile = NULL;
+	cmd->out_fd = last_fd;
 	free(outfile);
 	return (flag);
 }

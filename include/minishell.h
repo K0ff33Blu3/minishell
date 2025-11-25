@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miricci <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:52:47 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/23 13:28:31 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/24 16:53:40 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 #define NOT_FOUND 127
 #define NO_PERM 126
 #define IS_DIR 125
+#define SYNT_ERR 2
 
 extern int g_last_sig;
 
@@ -47,7 +48,7 @@ typedef struct s_cmd
 	int out_fd;
 	char *infile;
 	char *outfile;
-	char *limiter;
+	// char *limiter;
 	int has_infile;
 	int has_outfile;
 	int tmp_pipe[2];

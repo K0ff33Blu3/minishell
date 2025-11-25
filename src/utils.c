@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 11:16:05 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/17 19:11:50 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/24 14:14:46 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 char	**envlst_to_envp(t_list **head)
 {
 	t_list	*node;
-	t_env	*env;
 	char	*tmp;
 	char	**array;
 	int	i;
@@ -27,13 +26,14 @@ char	**envlst_to_envp(t_list **head)
 		return (NULL);
 	while (node)
 	{
-		env = (t_env *)node->content;
-		if (env->value)
+		if (((t_env *)node->content)->value)
 		{
-			tmp = ft_strjoin(env->name, "=");
-			array[i] = ft_strjoin(tmp, env->value);
+			tmp = ft_strjoin(((t_env *)node->content)->name, "=");
+			array[i] = ft_strjoin(tmp, ((t_env *)node->content)->value);
 			free(tmp);
 		}
+		else
+			array[i] = ft_strdup(((t_env *)node->content)->name);
 		node = node->next;
 		i++;
 	}
@@ -52,49 +52,49 @@ int	is_emptystr(char *str)
 	return (1);
 }
 
-void	print_cmd_struct(t_cmd cmd, int fd)
-{
-	int	i;
+// void	print_cmd_struct(t_cmd cmd, int fd)
+// {
+// 	int	i;
 
-	i = -1;
-	ft_putendl_fd("\nTOKEN", fd);
-	while (cmd.token[++i])
-	{
-		ft_putstr_fd("token[", fd);
-		ft_putnbr_fd(i, fd);
-		ft_putstr_fd("]: ", fd);
-		ft_putendl_fd(cmd.token[i], fd);
-	}
-	ft_putstr_fd("cmd: ", fd);
-	ft_putendl_fd(cmd.cmd, fd);
-	if (!is_builtin(cmd.cmd))
-	{
-		ft_putstr_fd("cmd_path: ", fd);
-		ft_putendl_fd(cmd.cmd_path, fd);
-	}
-	i = -1;
-	ft_putendl_fd("\nCMD_ARG", fd);
-	while (cmd.cmd_args[++i])
-	{
-		ft_putstr_fd("cmd_arg[", fd);
-		ft_putnbr_fd(i, fd);
-		ft_putstr_fd("]: ", fd);
-		ft_putendl_fd(cmd.cmd_args[i], fd);
-	}
-	ft_putstr_fd("in_fd: ", fd);
-	ft_putnbr_fd(cmd.in_fd, fd);
-	ft_putstr_fd("\n", fd);
-	ft_putstr_fd("out_fd: ", fd);
-	ft_putnbr_fd(cmd.out_fd, fd);
-	ft_putstr_fd("\n", fd);
-	ft_putstr_fd("infile: ", fd);
-	ft_putstr_fd(cmd.infile, fd);
-	ft_putstr_fd("\n", fd);
-	ft_putstr_fd("outfile: ", fd);
-	ft_putstr_fd(cmd.outfile, fd);
-	ft_putstr_fd("\n", fd);
-	ft_putstr_fd("\n", fd);
-}
+// 	i = -1;
+// 	ft_putendl_fd("\nTOKEN", fd);
+// 	while (cmd.token[++i])
+// 	{
+// 		ft_putstr_fd("token[", fd);
+// 		ft_putnbr_fd(i, fd);
+// 		ft_putstr_fd("]: ", fd);
+// 		ft_putendl_fd(cmd.token[i], fd);
+// 	}
+// 	ft_putstr_fd("cmd: ", fd);
+// 	ft_putendl_fd(cmd.cmd, fd);
+// 	if (!is_builtin(cmd.cmd))
+// 	{
+// 		ft_putstr_fd("cmd_path: ", fd);
+// 		ft_putendl_fd(cmd.cmd_path, fd);
+// 	}
+// 	i = -1;
+// 	ft_putendl_fd("\nCMD_ARG", fd);
+// 	while (cmd.cmd_args[++i])
+// 	{
+// 		ft_putstr_fd("cmd_arg[", fd);
+// 		ft_putnbr_fd(i, fd);
+// 		ft_putstr_fd("]: ", fd);
+// 		ft_putendl_fd(cmd.cmd_args[i], fd);
+// 	}
+// 	ft_putstr_fd("in_fd: ", fd);
+// 	ft_putnbr_fd(cmd.in_fd, fd);
+// 	ft_putstr_fd("\n", fd);
+// 	ft_putstr_fd("out_fd: ", fd);
+// 	ft_putnbr_fd(cmd.out_fd, fd);
+// 	ft_putstr_fd("\n", fd);
+// 	ft_putstr_fd("infile: ", fd);
+// 	ft_putstr_fd(cmd.infile, fd);
+// 	ft_putstr_fd("\n", fd);
+// 	ft_putstr_fd("outfile: ", fd);
+// 	ft_putstr_fd(cmd.outfile, fd);
+// 	ft_putstr_fd("\n", fd);
+// 	ft_putstr_fd("\n", fd);
+// }
 
 t_env	*mk_env(char *str)
 {

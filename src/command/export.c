@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miricci <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/10 13:36:15 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/23 11:38:03 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/24 14:58:01 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,11 +37,13 @@ static int	export_one(t_list **cmd_list, t_list **env_list, char *str)
 
 	new = (t_env *)malloc(sizeof(t_env));
 	if (!new)
-		return(EXIT_FAILURE);
+		return (EXIT_FAILURE);
 	new = mk_env(str);
 	if (!check_name(new->name))
 	{
-		ft_putstr_fd("export: name not valid\n", 2);	//gestire errore
+		ft_putstr_fd("export: \"", STDERR_FILENO);	
+		ft_putstr_fd(str, STDERR_FILENO);
+		ft_putendl_fd("\": not a valid identifier", STDERR_FILENO);
 		return (free_env(new), 1);
 	}
 	node = *env_list;
@@ -87,7 +89,7 @@ int	export_no_args(t_list **cmd_list, t_cmd *cmd, t_list **env_list, int *status
 	}
 	if (pid > 0)
 		waitpid(pid, status, 0);
-	return (*status);
+	return (*status >> 8);
 }
 
 int	export(t_list **cmd_list, t_list **env_list, t_cmd *data)

@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:36:23 by emondo            #+#    #+#             */
-/*   Updated: 2025/10/12 14:44:30 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/24 15:22:45 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,15 +25,14 @@ char	**get_metachar(void)
 	metachar[6] = ">>";
 	metachar[7] = ">";
 	metachar[8] = "*";
-	//metachar[9] = "?";
-	metachar[10] = "[";
-	metachar[11] = "]";
-	metachar[12] = "(";
-	metachar[13] = ")";
-	metachar[14] = "{";
-	metachar[15] = "}";
-	metachar[16] = "\\";
-	metachar[17] = NULL;
+	metachar[9] = "[";
+	metachar[10] = "]";
+	metachar[11] = "(";
+	metachar[12] = ")";
+	metachar[13] = "{";
+	metachar[14] = "}";
+	metachar[15] = "\\";
+	metachar[16] = NULL;
 	return (metachar);
 }
 
