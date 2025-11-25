@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:52:47 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/24 16:53:40 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/25 16:54:11 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ char **get_cmd_token(char **all_token, int start, int end);
 char **token_parsing(t_list **env_list, char **token, int *exit_code);
 int find_pipe(char **token, int *start);
 t_cmd *data_init(void);
-char **parse_cmd_args(char **token);
+char	**parse_cmd_args(char **token, int *exit_status);
 t_cmd *data_parsing(t_list **env_list, char **part_token, int *exit_status);
 t_list **mk_cmdlist(t_list **env_list, char *cmd_str, int *exit_status);
 
@@ -109,19 +109,22 @@ void check_signals_two(int status, int *exit_status);
 void ft_signum(int signum);
 
 // redirections.c
-int	handle_input_redir(t_cmd *cmd);
+// int	handle_input_redir(t_cmd *cmd);
 int	handle_input_redir2(t_cmd *cmd);
 int	handle_output_redir(t_cmd *cmd);
 void	redirect(t_list **cmd_list, t_list **env_list, t_cmd *data);
 int	check_file_path(char *path, int perm_code);
 
 // utils.c
-void print_cmd_struct(t_cmd cmd, int fd);
-int is_emptystr(char *str);
-t_list **env_init(char **envp);
-char *ft_getenv(t_list **env_list, char *name);
-t_env *mk_env(char *str);
-char **envlst_to_envp(t_list **head);
+// void print_cmd_struct(t_cmd cmd, int fd);
+int	is_emptystr(char *str);
+t_list	**env_init(char **envp);
+char	*ft_getenv(t_list **env_list, char *name);
+t_env	*mk_env2(char *name, char *value);
+char	**envlst_to_envp(t_list **head);
+int	update_env(t_list **env_list, t_env *new);
+char	*find_env_name(char *str);
+char	*find_env_value(char *str);
 
 // find_cmd_path
 char *find_cmd_path(t_list **env_list, t_cmd *data);

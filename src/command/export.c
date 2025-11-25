@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/10 13:36:15 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/24 14:58:01 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/25 17:25:33 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,38 +28,28 @@ int	check_name(char	*name)
 	return (1);
 }
 
-static int	export_one(t_list **cmd_list, t_list **env_list, char *str)
+void	export_error(t_env *env_node, char *str)
+{
+	ft_putstr_fd("export: \"", STDERR_FILENO);	
+	ft_putstr_fd(str, STDERR_FILENO);
+	ft_putendl_fd("\": not a valid identifier", STDERR_FILENO);
+	free_env(env_node);
+}
+
+static int	export_one(t_list **env_list, char *str)
 {
 	t_env	*new;
-	t_list	*node;
-	t_env	*env;
-	(void)cmd_list;
-
+	
+	// (void)cmd_list;
 	new = (t_env *)malloc(sizeof(t_env));
 	if (!new)
 		return (EXIT_FAILURE);
-	new = mk_env(str);
+	new = mk_env2(find_env_name(str), find_env_value(str));
+	printf("%s\n%s\n", new->name, new->value);
 	if (!check_name(new->name))
-	{
-		ft_putstr_fd("export: \"", STDERR_FILENO);	
-		ft_putstr_fd(str, STDERR_FILENO);
-		ft_putendl_fd("\": not a valid identifier", STDERR_FILENO);
-		return (free_env(new), 1);
-	}
-	node = *env_list;
-	while (node)
-	{
-		env = (t_env *)node->content;
-		if (!ft_strncmp(new->name, env->name, ft_strlen(new->name) + 1))
-		{
-			free(env->value);
-			env->value = ft_strdup(new->value);
-			free(new);
-			return (0);
-		}
-		node = node->next;
-	}
-	ft_lstadd_back(env_list, ft_lstnew(new));
+		return (export_error(new, str), EXIT_FAILURE);
+	if(update_env(env_list, new))
+		ft_lstadd_back(env_list, ft_lstnew(new));
 	return (EXIT_SUCCESS);
 }
 
@@ -102,6 +92,6 @@ int	export(t_list **cmd_list, t_list **env_list, t_cmd *data)
 	if (array_size((void **)data->cmd_args) == 1)
 		return (export_no_args(cmd_list, data, env_list, &status));	
 	while (data->cmd_args[++i])
-		status = export_one(cmd_list, env_list, data->cmd_args[i]);
+		status = export_one(env_list, data->cmd_args[i]);
 	return (status);
 }

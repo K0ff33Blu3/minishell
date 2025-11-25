@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 13:24:24 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/12 15:09:37 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/25 14:25:46 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,6 +118,7 @@ char	**tokenize(char	*str)
 		i++;
 	}
 	token[i] = NULL;
+	free(str);
 	return (token);
 }
 

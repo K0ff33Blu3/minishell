@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:50:27 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/24 12:17:47 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/25 14:20:49 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,12 +75,14 @@ pid_t creat_children(t_list **head, t_list *node, t_list **env_list, int *exit_s
 
 void process(char *cmd_line, int *exit_status, t_list **env_list)
 {
-	t_list **cmd_list;
-	t_list *node;
-	pid_t pid;
-	int status;
+	t_list	**cmd_list;
+	t_list	*node;
+	pid_t	pid;
+	int	status;
 
 	cmd_list = mk_cmdlist(env_list, cmd_line, exit_status);
+	if (!cmd_list)
+		return ;
 	if (ft_lstsize(*cmd_list) == 1 && exec_status_changing_builtin(cmd_list, (t_cmd *)(*cmd_list)->content, env_list, exit_status))
 		return (free(*cmd_list), free(cmd_list));
 	else
@@ -110,14 +112,15 @@ void process(char *cmd_line, int *exit_status, t_list **env_list)
 
 int main(int argc, char **argv, char **envp)
 {
-	char *cmd_line;
-	int exit_status;
-	static t_list **env_list;
+	char	*cmd_line;
+	int	exit_status;
+	static t_list	**env_list;
 
 	(void)argc;
 	(void)argv;
 	waiting_signals();
 	env_list = env_init(envp);
+	exit_status = 0;
 	while (1)
 	{
 		cmd_line = readline(PROMPT);

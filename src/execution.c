@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 14:51:52 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/24 17:04:19 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/25 14:31:02 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,12 @@ void	exec_command(t_list **cmd_list, t_cmd *data, t_list **env_list)
 	char	**env;
 	int	path_ctrl;
 	
+	if (!data->cmd)
+	{
+		ft_lstclear(env_list, free_env);
+		ft_lstclear(cmd_list, clean_data);
+		exit(EXIT_SUCCESS);
+	} 
 	env = envlst_to_envp(env_list);
 	path_ctrl = check_cmd_path(data->cmd_path);
 	if (path_ctrl == 0)

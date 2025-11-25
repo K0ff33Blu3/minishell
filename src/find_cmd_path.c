@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   find_cmd_path.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miricci <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 15:15:11 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/23 12:09:54 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/25 14:23:46 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static char *make_path(char *str, char *cmd)
 	return (path);
 }
 
-int check_cmd_path(char *path)
+int	check_cmd_path(char *path)
 {
 	struct stat st;
 
@@ -61,7 +61,7 @@ int check_cmd_path(char *path)
 	return (-1);
 }
 
-char *find_cmd_path(t_list **env_list, t_cmd *data)
+char	*find_cmd_path(t_list **env_list, t_cmd *data)
 {
 	char **array;
 	char *path;

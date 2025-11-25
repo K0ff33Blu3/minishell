@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 13:03:04 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/24 17:06:11 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/25 14:37:13 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,16 +95,14 @@ static int	count_redir(char **token)
 	return (count);
 }
 
-char	**parse_cmd_args(char **token)
+char	**parse_cmd_args(char **token, int *exit_status)
 {
 	int	i;
 	int	j;
 	char		**arg;
-	int	nbr_redir;
 	int	arg_size;
 
-	nbr_redir = count_redir(token);
-	arg_size = array_size((void **)token) - (nbr_redir * 2);
+	arg_size = array_size((void **)token) - (count_redir(token) * 2);
 	arg = malloc(sizeof(char *) * (arg_size + 1));
 	if (!arg)
 		return (NULL);
@@ -118,8 +116,10 @@ char	**parse_cmd_args(char **token)
 				i += 2;
 			else
 			{
-				ft_perror(token[i + 1], SYNT_ERR);
-				break ;
+				*exit_status = SYNT_ERR;
+				ft_perror(token[i + 1], *exit_status);
+				ft_free((void **)arg, j);
+				return (NULL);
 			}
 		}
 		else
@@ -180,15 +180,16 @@ t_cmd	*data_parsing(t_list **env_list, char **part_token, int *exit_status)
 	
 	data = data_init();
 	data->token = token_parsing(env_list, part_token, exit_status);
-	data->has_infile = handle_input_redir2(data);
-	data->has_outfile = handle_output_redir(data);
-	data->cmd_args = parse_cmd_args(data->token);
+	data->cmd_args = parse_cmd_args(data->token, exit_status);
 	if (!data->cmd_args || !data->cmd_args[0])
 	{
 		data->cmd = NULL;
 		data->cmd_path = NULL;
-		return (data);
+		if (*exit_status == 2)
+			return (NULL);
 	}
+	data->has_infile = handle_input_redir2(data);
+	data->has_outfile = handle_output_redir(data);
 	data->cmd = ft_strdup(data->cmd_args[0]);
 	if (is_builtin(data->cmd))
 		data->cmd_path = NULL;
@@ -249,10 +250,7 @@ t_list	**mk_cmdlist(t_list **env_list, char *cmd_str, int *exit_status)
 	int	i;
 
 	i = 0;
-	cmd_list = NULL;
 	token = tokenize(cmd_str);
-	i = 0;
-	free(cmd_str);
 	cmd_list = (t_list **)malloc(sizeof(t_list *));
 	if (!cmd_list)
 		return (NULL);
@@ -263,6 +261,8 @@ t_list	**mk_cmdlist(t_list **env_list, char *cmd_str, int *exit_status)
 		part_token = get_cmd_token(token, i, end);
 		i = end;
 		data = data_parsing(env_list, part_token, exit_status);
+		if (!data)
+			return(ft_lstclear(cmd_list, clean_data), NULL);
 		ft_lstadd_back(cmd_list, ft_lstnew(data));
 	}
 	ft_free((void **)token, -1);
