@@ -17,7 +17,9 @@ int	check_name(char	*name)
 	int	i;
 
 	i = 0;
-	if (!ft_isalpha(name[0]))
+	if (!name || name[0] == '\0')
+		return (0);
+	if (!ft_isalpha(name[0]) && name[0] != '_')
 		return (0);
 	while (name[i])
 	{
@@ -45,7 +47,7 @@ static int	export_one(t_list **env_list, char *str)
 	if (!new)
 		return (EXIT_FAILURE);
 	new = mk_env2(find_env_name(str), find_env_value(str));
-	printf("%s\n%s\n", new->name, new->value);
+	//printf("%s\n%s\n", new->name, new->value);
 	if (!check_name(new->name))
 		return (export_error(new, str), EXIT_FAILURE);
 	if(update_env(env_list, new))
@@ -59,11 +61,13 @@ int	export_no_args(t_list **cmd_list, t_cmd *cmd, t_list **env_list, int *status
 	t_env	*env;
 	int	pid;
 	
+	setup_father();
 	pid = fork();
 	if (pid < 0)
 		return (EXIT_FAILURE);
 	if (pid == 0)
-	{	
+	{
+		reset_signals();
 		redirect(cmd_list, env_list, cmd);
 		node = *env_list;
 		while (node)
@@ -77,9 +81,9 @@ int	export_no_args(t_list **cmd_list, t_cmd *cmd, t_list **env_list, int *status
 		}
 		exit(EXIT_SUCCESS);
 	}
-	if (pid > 0)
-		waitpid(pid, status, 0);
-	return (*status >> 8);
+	waitpid(pid, status, 0);
+	check_signals(*status, status);
+	return (*status);
 }
 
 int	export(t_list **cmd_list, t_list **env_list, t_cmd *data)
