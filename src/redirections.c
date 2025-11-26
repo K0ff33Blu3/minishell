@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 08:22:00 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/24 12:10:21 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/26 10:53:48 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,11 @@ int	handle_heredoc(t_cmd *cmd, char *limiter)
 	while (1)
 	{
 		line = readline("> ");
+		if (!line)
+		{
+			printf("warning: %s requested\n", limiter);
+			break;
+		}
 		if (!ft_strncmp(line, limiter, ft_strlen(limiter) + 1))
 		{
 			free(line);
