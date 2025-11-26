@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 13:03:04 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/25 14:37:13 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/26 09:32:16 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,7 +186,10 @@ t_cmd	*data_parsing(t_list **env_list, char **part_token, int *exit_status)
 		data->cmd = NULL;
 		data->cmd_path = NULL;
 		if (*exit_status == 2)
+		{
+			ft_free((void **)part_token, -1);
 			return (NULL);
+		}
 	}
 	data->has_infile = handle_input_redir2(data);
 	data->has_outfile = handle_output_redir(data);

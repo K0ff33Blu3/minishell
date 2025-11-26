@@ -6,13 +6,26 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:50:27 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/25 14:20:49 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/26 10:31:04 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 int g_last_sig = 0;
+
+void	close_pipeline(t_list **cmd_list, t_list* cmd_node)
+{
+	t_list*	node;
+	
+	node = *cmd_list;	
+	while (node)
+	{
+		if (node != cmd_node)
+			close_pipe(((t_cmd *)(node->content))->pip);
+		node = node->next;
+	}
+}
 
 pid_t creat_children(t_list **head, t_list *node, t_list **env_list, int *exit_status)
 {
@@ -45,6 +58,7 @@ pid_t creat_children(t_list **head, t_list *node, t_list **env_list, int *exit_s
 			dup2(data_nxt->pip[1], STDOUT_FILENO);
 			close(data_nxt->pip[1]);
 		}
+		close_pipeline(head, node);
 		if (node_index > 0)
 			close(data->pip[0]);
 		if (node->next)

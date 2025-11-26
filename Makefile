@@ -1,3 +1,4 @@
+
 # Nome degli eseguibili
 NAME		:= minishell
 
