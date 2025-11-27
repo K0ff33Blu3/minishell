@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:52:47 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/26 15:34:13 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/27 12:53:27 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@ int unset(t_list **env_list, char **var);
 int	export(t_list **cmd_list, t_list **env_list, t_cmd *data);
 
 // parsing.c
-int is_builtin(char *cmd);
 char *rm_quotes(char *str);
 char **remove_quotes(char **str);
 char **get_cmd_token(char **all_token, int start, int end);
@@ -94,7 +93,7 @@ char *make_word(char *s, int *j);
 void make_quote(char **word, char *s, int *j, int *i);
 char *make_metachar(char *s, int *j);
 char **tokenize(char *str);
-char **re_tokenize(char **arr, int size);
+// char **re_tokenize(char **arr, int size);
 
 // token_utils.c
 char **get_metachar(void);
@@ -114,17 +113,19 @@ void ft_signum(int signum);
 
 // redirections.c
 // int	handle_input_redir(t_cmd *cmd);
-int	handle_input_redir2(t_cmd *cmd);
+int	handle_input_redir(t_cmd *cmd);
 int	handle_output_redir(t_cmd *cmd);
 void	redirect(t_list **cmd_list, t_list **env_list, t_cmd *data);
 int	check_file_path(char *path, int perm_code);
+void	ft_dup2(int dst_fd, int src_fd);
+int	is_redir(char **token, int i);
 
 // utils.c
 // void print_cmd_struct(t_cmd cmd, int fd);
 int	is_emptystr(char *str);
 t_list	**env_init(char **envp);
 char	*ft_getenv(t_list **env_list, char *name);
-t_env	*mk_env2(char *name, char *value);
+t_env	*mk_env(char *name, char *value);
 char	**envlst_to_envp(t_list **head);
 int	update_env(t_list **env_list, t_env *new);
 char	*find_env_name(char *str);
@@ -137,7 +138,8 @@ int check_cmd_path(char *path);
 // execution.c
 void exec_command(t_list **cmd_list, t_cmd *data, t_list **env_list);
 void exec_simple_builtin(t_list **cmd_lst, t_cmd *data, t_list **env_list);
-int	exec_status_builtin(t_list **cmd_list, t_cmd *data, t_list **env_list, int *exit_status);
+void	exec_status_builtin(t_list **cmd_list, t_cmd *data, t_list **env, int *status);
+int	is_builtin(char *cmd);
 
 // cleaning.c
 void clean_data(void *ptr);

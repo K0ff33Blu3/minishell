@@ -6,11 +6,23 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 13:24:24 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/25 14:25:46 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/27 11:45:15 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static int	skip_token(char *s, int i)
+{
+	while (s[i] && !ft_isspace(s[i]) && !is_metachar(&s[i]))
+	{
+		if (s[i] == '\'' || s[i] == '\"')
+			i = skip_quote(s, i);
+		else
+			i++;
+	}
+	return (i);
+}
 
 int	count_token(char *s)
 {
@@ -31,13 +43,7 @@ int	count_token(char *s)
 		else
 		{
 			count++;
-			while (s[i] && !ft_isspace(s[i]) && !is_metachar(&s[i]))
-			{
-				if (s[i] == '\'' || s[i] == '\"')
-					i = skip_quote(s, i);
-				else
-					i++;
-			}	
+			i = skip_token(s, i);
 		}
 	}
 	return (count);
@@ -121,31 +127,3 @@ char	**tokenize(char	*str)
 	free(str);
 	return (token);
 }
-
-char	**re_tokenize(char **arr, int size)
-{
-	char	*joined;
-	char	**token;
-
-	joined = array_to_str(arr, " ", size);
-	// ft_free((void **)arr, -1);
-	if (!joined)
-		return (NULL);
-	token = tokenize(joined);
-	free(joined);
-	return (token);
-}
-
-// int	main()
-// {
-// 	// char	*array[4] = {
-// 	// 	"ciao", "$$", "\"come\" ciao", "stai$"
-// 	// };
-// 	char *test = "ls -l";
-// 	char	**res = tokenize(test);
-// 	int	i = 0;
-// 	while (res[i])
-// 		printf("res: %s\n", res[i++]);
-// 	ft_free((void **)res, -1);
-// 	return (0);
-// }

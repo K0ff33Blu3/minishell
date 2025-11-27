@@ -1,0 +1,1 @@
+minival="valgrind -s --gen-suppressions=all --suppressions=mini.supp --leak-check=full --track-origins=yes --show-leak-kinds=all --trace-children=yes --track-fds=yes"

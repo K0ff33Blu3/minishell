@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 20:29:23 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/26 15:11:28 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/27 13:55:50 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,12 @@ int	ft_cd(t_list **env_list, t_cmd *data)
 			ft_putendl_fd("minishell: cd: HOME not set", 2), 1);
 	if (chdir(target) == -1)
 		return (clean_data(data), free(target), perror("cd"), 1);
-	oldpwd = mk_env2("OLDPWD", ft_getenv(env_list, "PWD"));
-	pwd = mk_env2("PWD", getcwd(NULL, 0));
-	if (!update_env(env_list, pwd))
+	oldpwd = mk_env(ft_strdup("OLDPWD"), ft_getenv(env_list, "PWD"));
+	pwd = mk_env(ft_strdup("PWD"), getcwd(NULL, 0));
+	if (update_env(env_list, pwd))
 		ft_lstadd_back(env_list, ft_lstnew(pwd));
-	if (!update_env(env_list, oldpwd))
+	if (update_env(env_list, oldpwd))
 		ft_lstadd_back(env_list, ft_lstnew(oldpwd));
 	free(target);
-	return (clean_data(data), 0);
+	return (0);
 }

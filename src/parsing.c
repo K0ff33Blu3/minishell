@@ -6,27 +6,11 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 13:03:04 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/26 15:40:55 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/27 14:03:14 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-
-int	is_redir(char **token, int i)
-{
-	if (token[i])
-	{
-		if (!ft_strncmp(token[i], "<", 2) || !ft_strncmp(token[i], "<<", 3)
-				|| !ft_strncmp(token[i], "<", 2) || !ft_strncmp(token[i], "<<", 3))
-			if (token[i + 1] && !is_metachar(token[i + 1]))
-				return (EXIT_SUCCESS);
-			else
-				return (SYNT_ERR);
-		else
-			return (EXIT_FAILURE);
-	}
-}
 
 char	*rm_quotes(char *str)
 {
@@ -75,17 +59,6 @@ char	**remove_quotes(char **str)
 	return (ft_free((void **)str, -1), no_quotes);
 }
 
-t_cmd	*data_init(void)
-{
-	t_cmd	*data;
-
-	data = (t_cmd *)malloc(sizeof(t_cmd));
-	ft_memset(data, 0, sizeof(*data));
-	if (!data)
-		return (NULL);
-	return (data);
-}
-
 static int	count_redir(char **token)
 {
 	int	i;
@@ -111,8 +84,6 @@ char	**parse_cmd_args(char **token, int *exit_status)
 
 	arg_size = array_size((void **)token) - (count_redir(token) * 2);
 	arg = malloc(sizeof(char *) * (arg_size + 1));
-	if (!arg)
-		return (NULL);
 	i = 0;
 	j = 0;
 	while (token[i])
@@ -135,8 +106,8 @@ char	**parse_cmd_args(char **token, int *exit_status)
 char	**get_cmd_token(char **all_token, int start, int end)
 {
 	char	**result;
-	int	i;
-	
+	int		i;
+
 	result = (char **)malloc(sizeof(char *) * (end - start + 1));
 	if (!result)
 		return (NULL);
@@ -154,7 +125,7 @@ char	**get_cmd_token(char **all_token, int start, int end)
 int	find_pipe(char **token, int *start)
 {
 	int	end;
-	
+
 	if (!ft_strncmp(token[*start], "|", 2))
 		(*start)++;
 	end = *start;
@@ -180,7 +151,7 @@ char	**token_parsing(t_list **env_list, char **token, int *exit_code)
 t_cmd	*data_parsing(t_list **env_list, char **part_token, int *exit_status)
 {
 	t_cmd	*data;
-	
+
 	data = data_init();
 	data->token = token_parsing(env_list, part_token, exit_status);
 	data->cmd_args = parse_cmd_args(data->token, exit_status);
@@ -191,43 +162,23 @@ t_cmd	*data_parsing(t_list **env_list, char **part_token, int *exit_status)
 		if (*exit_status == 2)
 			return (ft_free((void **)part_token, -1), NULL);
 	}
-	data->has_infile = handle_input_redir2(data);
+	data->has_infile = handle_input_redir(data);
 	data->has_outfile = handle_output_redir(data);
 	data->cmd = ft_strdup(data->cmd_args[0]);
 	if (is_builtin(data->cmd))
 		data->cmd_path = NULL;
 	else
 		data->cmd_path = find_cmd_path(env_list, data);
-	return (data);			
+	return (data);
 }
 
-char	**array_cpy(char **src)
-{
-	char	**dst;
-	int	i;
-
-	dst = (char **)malloc(sizeof(char *) * (array_size((void **)src) + 1));
-	if (!dst)
-		return (NULL);
-	i = -1;
-	while (src[++i])
-	{
-		dst[i] = ft_strdup(src[i]);
-		if (!dst[i])
-			return (ft_free((void **)dst[i], i), NULL);
-	}
-	dst[i] = NULL;
-	return (dst);
-}
-
-t_list	**mk_cmdlist(t_list **env_list, char *cmd_str, int *exit_status)
+t_list	**mk_cmdlist(t_list **env_list, char *cmd_str, int *status)
 {
 	char	**token;
-	char	**part_token;
 	t_cmd	*data;
 	t_list	**cmd_list;
-	int	end;
-	int	i;
+	int		end;
+	int		i;
 
 	i = 0;
 	token = tokenize(cmd_str);
@@ -238,24 +189,12 @@ t_list	**mk_cmdlist(t_list **env_list, char *cmd_str, int *exit_status)
 	while (token[i])
 	{
 		end = find_pipe(token, &i);
-		part_token = get_cmd_token(token, i, end);
-		i = end;
-		data = data_parsing(env_list, part_token, exit_status);
+		data = data_parsing(env_list, get_cmd_token(token, i, end), status);
 		if (!data)
-			return(ft_lstclear(cmd_list, clean_data), NULL);
+			return (ft_lstclear(cmd_list, clean_data), NULL);
 		ft_lstadd_back(cmd_list, ft_lstnew(data));
+		i = end;
 	}
 	ft_free((void **)token, -1);
 	return (cmd_list);
-}
-
-int is_builtin(char *cmd)
-{
-	if (!cmd)
-		return (0);
-	if (!ft_strncmp(cmd, "echo", 5) || !ft_strncmp(cmd, "env", 4) || !ft_strncmp(cmd, "pwd", 4))
-		return (1);
-	else if (!ft_strncmp(cmd, "exit", 5) || !ft_strncmp(cmd, "cd", 3) || !ft_strncmp(cmd, "unset", 6) || !ft_strncmp(cmd, "export", 7))
-		return (2);
-	return (0);
 }

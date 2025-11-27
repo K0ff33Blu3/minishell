@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/10 13:36:15 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/26 13:07:53 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/27 12:54:31 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static int	export_one(t_list **env_list, char *str)
 	new = (t_env *)malloc(sizeof(t_env));
 	if (!new)
 		return (EXIT_FAILURE);
-	new = mk_env2(find_env_name(str), find_env_value(str));
+	new = mk_env(find_env_name(str), find_env_value(str));
 	if (!check_name(new->name))
 		return (export_error(new, str), EXIT_FAILURE);
 	if (update_env(env_list, new))
