@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 20:27:52 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/24 12:53:04 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/26 13:21:35 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 void	env(t_list **env_list)
 {
-	t_list		*node;
+	t_list	*node;
 	t_env	*env;
-	
+
 	node = *env_list;
 	while (node)
 	{

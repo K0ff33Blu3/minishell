@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 19:40:43 by miricci           #+#    #+#             */
-/*   Updated: 2025/05/28 09:54:22 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/26 12:53:03 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,9 @@
 
 char	*array_to_str(char **arr, char *sep, int size)
 {
-	int	tot_len;
-	int	word_len;
-	int	i;
+	int		tot_len;
+	int		word_len;
+	int		i;
 	char	*str;
 
 	word_len = 0;
@@ -38,15 +38,3 @@ char	*array_to_str(char **arr, char *sep, int size)
 	str[tot_len] = 0;
 	return (str);
 }
-
-// int	main()
-// {
-// 	char	*array[4] = {
-// 		"ciao", "$$", "\"come\"ciao", "stai"
-// 	};
-// 	char *str = array_to_str(array, " ", 4);
-	
-// 	printf("%s\n", str);
-// 	free(str);
-// 	return (0);
-// }

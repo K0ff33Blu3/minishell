@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 18:55:16 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/22 13:02:36 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/26 12:41:37 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,13 @@ void	ft_putchar_fd(char c, int fd);
 void	ft_putstr_fd(char *s, int fd);
 void	ft_putendl_fd(char *s, int fd);
 void	ft_putnbr_fd(int n, int fd);
+void	ft_lstadd_front(t_list **lst, t_list *new);
+void	ft_lstadd_back(t_list **lst, t_list *new);
+void	ft_lstdelone(t_list *lst, void (*del)(void *));
+void	print_list(t_list **head, char *list_name);
+void	ft_lstclear(t_list **lst, void (*del)(void *));
+void	ft_lstiter(t_list *lst, void (*f)(void *));
+void	ft_free(void **s, int i);
 int		ft_isalpha(int c);
 int		ft_isdigit(int c);
 int		ft_isalnum(int c);
@@ -55,6 +62,8 @@ int		ft_memcmp(const void *s1, const void *s2, size_t n);
 int		ft_atoi(const char *nptr);
 int		ft_indchr(const char *s, int c);
 int		ft_lstindex(t_list *head, t_list *target);
+int		is_number(char *str);
+int		ft_lstsize(t_list *lst);
 long	ft_atol(const char *nptr);
 size_t	array_size(void **tab);
 size_t	ft_strlcat(char *dst, const char *src, size_t size);
@@ -69,23 +78,14 @@ char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strjoin(char const *s1, char const *s2);
 char	*ft_strtrim(char const *s1, char const *set);
 char	*ft_itoa(int n);
+char	**fill_str_split(char **dest, const char *s, char c, int words);
+char	**str_split(char *s, char c);
+char	**lst_to_array(t_list **head);
 char	*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 char	*get_next_line(int fd);
 char	**ft_split(char const *s, char c);
-void	ft_lstadd_front(t_list **lst, t_list *new);
-void	ft_lstadd_back(t_list **lst, t_list *new);
-void	ft_lstdelone(t_list *lst, void (*del)(void *));
-void	print_list(t_list **head, char *list_name);
-int		ft_lstsize(t_list *lst);
 t_list	*ft_lstnew(void *content);
 t_list	*ft_lstlast(t_list *lst);
 t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
-void	ft_lstclear(t_list **lst, void (*del)(void *));
-void	ft_lstiter(t_list *lst, void (*f)(void *));
-void	ft_free(void **s, int i);
-char	**fill_str_split(char **dest, const char *s, char c, int words);
-char	**str_split(char *s, char c);
-int	is_number(char *str);
-char	**lst_to_array(t_list **head);
 
 #endif

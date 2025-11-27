@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miricci <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/16 20:27:17 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/13 12:54:47 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/26 13:21:10 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static int	check_flag(char **cmd_args)
 		if (!ft_strncmp(cmd_args[i], "-n", 2))
 		{
 			j = 1;
-			while(cmd_args[i][j])
+			while (cmd_args[i][j])
 			{
 				if (cmd_args[i][j] != 'n')
 					return (i);
@@ -41,10 +41,10 @@ void	echo(t_cmd *data)
 {
 	int	i;
 	int	flag;
-	
+
 	flag = check_flag(data->cmd_args);
 	i = flag;
-	while(data->cmd_args[i])
+	while (data->cmd_args[i])
 	{
 		if (*(data->cmd_args[i]))
 		{

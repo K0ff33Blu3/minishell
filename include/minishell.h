@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:52:47 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/25 16:54:11 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/26 15:34:13 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,10 @@
 #define NO_PERM 126
 #define IS_DIR 125
 #define SYNT_ERR 2
+#define IS_OUTPUT 100
+#define IS_INPUT 101
+#define BOTH 102
+
 
 extern int g_last_sig;
 
@@ -133,7 +137,7 @@ int check_cmd_path(char *path);
 // execution.c
 void exec_command(t_list **cmd_list, t_cmd *data, t_list **env_list);
 void exec_simple_builtin(t_list **cmd_lst, t_cmd *data, t_list **env_list);
-int	exec_status_changing_builtin(t_list **cmd_list, t_cmd *data, t_list **env_list, int *exit_status);
+int	exec_status_builtin(t_list **cmd_list, t_cmd *data, t_list **env_list, int *exit_status);
 
 // cleaning.c
 void clean_data(void *ptr);
@@ -141,6 +145,6 @@ void close_pipe(int pip[2]);
 void free_env(void *ptr);
 void ft_error(t_list **env_lst, t_list **cmd_lst, char *str, int exit_code);
 void ft_perror(char *str, int exit_code);
-void	ft_error_redir(t_list **env_lst, t_list **cmd_lst, char *str, int err_code);
+void	ft_redir_err(t_list **env_lst, t_list **cmd_lst, char *str, int err_code);
 
 #endif

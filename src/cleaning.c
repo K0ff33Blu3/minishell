@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 12:02:37 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/24 16:54:58 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/26 14:21:35 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	free_env(void *ptr)
 	}
 }
 
-void close_pipe(int pip[2])
+void	close_pipe(int pip[2])
 {
 	if (pip[0] > 2)
 		close(pip[0]);
@@ -62,9 +62,9 @@ void close_pipe(int pip[2])
 		close(pip[1]);
 }
 
-void	ft_error_redir(t_list **env_lst, t_list **cmd_lst, char *str, int err_code)
+void	ft_redir_err(t_list **env_lst, t_list **cmd_lst, char *str, int code)
 {
-	ft_perror(str, err_code);
+	ft_perror(str, code);
 	ft_lstclear(env_lst, free_env);
 	ft_lstclear(cmd_lst, clean_data);
 	exit(EXIT_FAILURE);
@@ -82,6 +82,7 @@ void	ft_error(t_list **env_lst, t_list **cmd_lst, char *str, int exit_code)
 
 void	ft_perror(char *str, int exit_code)
 {
+	ft_putstr_fd("minishell: ", STDERR_FILENO);
 	if (exit_code == NOT_FOUND)
 	{
 		ft_putstr_fd(str, STDERR_FILENO);
@@ -99,7 +100,7 @@ void	ft_perror(char *str, int exit_code)
 	}
 	else if (exit_code == SYNT_ERR)
 	{
-		ft_putstr_fd("minishell: syntax error near unexpected token \"", STDERR_FILENO);
+		ft_putstr_fd("syntax error near unexpected token \"", STDERR_FILENO);
 		ft_putstr_fd(str, STDERR_FILENO);
 		ft_putendl_fd("\"", STDERR_FILENO);
 	}

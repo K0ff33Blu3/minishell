@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:50:27 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/26 10:31:04 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/26 15:14:23 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ pid_t creat_children(t_list **head, t_list *node, t_list **env_list, int *exit_s
 			close(data->pip[0]);
 		if (node->next)
 			close(data_nxt->pip[1]);
-		if (exec_status_changing_builtin(head, data, env_list, exit_status))
+		if (exec_status_builtin(head, data, env_list, exit_status))
 		{
 			clean_data(data);
 			exit(*exit_status);
@@ -97,7 +97,7 @@ void process(char *cmd_line, int *exit_status, t_list **env_list)
 	cmd_list = mk_cmdlist(env_list, cmd_line, exit_status);
 	if (!cmd_list)
 		return ;
-	if (ft_lstsize(*cmd_list) == 1 && exec_status_changing_builtin(cmd_list, (t_cmd *)(*cmd_list)->content, env_list, exit_status))
+	if (ft_lstsize(*cmd_list) == 1 && exec_status_builtin(cmd_list, (t_cmd *)(*cmd_list)->content, env_list, exit_status))
 		return (free(*cmd_list), free(cmd_list));
 	else
 	{

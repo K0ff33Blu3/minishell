@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/04 15:28:50 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/07 19:12:07 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/26 12:51:02 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	print_list(t_list **head, char *list_name)
 {
 	t_list	*node;
-	char		*value;
+	char	*value;
 	int		i;
 
 	i = 1;

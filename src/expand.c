@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 11:40:06 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/24 14:27:11 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/26 13:59:56 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ char	*expand_str(t_list **env_list, char *str, int exit_status, int *i)
 
 	fix = ft_substr(str, 0, *i);
 	var = name_var(str + *i + 1);
-	exp_var =  expand_var(env_list, var, exit_status);
+	exp_var = expand_var(env_list, var, exit_status);
 	part_str = ft_strjoin(fix, exp_var);
 	result = ft_strjoin(part_str, str + *i + 1 + ft_strlen(var));
 	*i += ft_strlen(var) + 1;
@@ -64,8 +64,8 @@ char	*expand_str_recursive(t_list **env_list, char *in_str, int exit_status)
 {
 	char	*result;
 	char	*tmp;
-	int	i;
-	
+	int		i;
+
 	i = find_dollar(in_str);
 	if (in_str[i] == '$')
 		result = expand_str(env_list, in_str, exit_status, &i);
@@ -85,20 +85,20 @@ char	get_kind_of_quote(char *str)
 	while (*str)
 	{
 		if (*str == '\'' || *str == '\"')
-			return(*str);
+			return (*str);
 		str++;
 	}
-	return (0);	
+	return (0);
 }
 
 char	*name_var(char *str)
 {
 	char	*name;
-	int	name_len;
+	int		name_len;
 
 	name_len = 0;
 	if (str[name_len] == '?')
-		return(ft_strdup("?"));
+		return (ft_strdup("?"));
 	while (ft_isalnum(str[name_len]) || str[name_len] == '_')
 		name_len++;
 	name = (char *)malloc(sizeof(char) * (name_len + 1));
@@ -108,7 +108,7 @@ char	*name_var(char *str)
 	return (name);
 }
 
-char	**expand_env_var(t_list **env_list, char **token, int exit_status)
+char	**expand_env_var(t_list **env_list, char **token, int status)
 {
 	int		i;
 	char	**expanded_token;
@@ -119,7 +119,7 @@ char	**expand_env_var(t_list **env_list, char **token, int exit_status)
 		return (NULL);
 	while (token[i])
 	{
-		expanded_token[i] = expand_str_recursive(env_list, token[i], exit_status);
+		expanded_token[i] = expand_str_recursive(env_list, token[i], status);
 		i++;
 	}
 	expanded_token[i] = NULL;

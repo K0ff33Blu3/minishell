@@ -6,16 +6,32 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 13:03:04 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/26 09:32:16 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/26 15:40:55 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+
+int	is_redir(char **token, int i)
+{
+	if (token[i])
+	{
+		if (!ft_strncmp(token[i], "<", 2) || !ft_strncmp(token[i], "<<", 3)
+				|| !ft_strncmp(token[i], "<", 2) || !ft_strncmp(token[i], "<<", 3))
+			if (token[i + 1] && !is_metachar(token[i + 1]))
+				return (EXIT_SUCCESS);
+			else
+				return (SYNT_ERR);
+		else
+			return (EXIT_FAILURE);
+	}
+}
+
 char	*rm_quotes(char *str)
 {
-	int	i;
-	int	j;
+	int		i;
+	int		j;
 	char	quote;
 	char	*no_quote;
 
@@ -28,23 +44,14 @@ char	*rm_quotes(char *str)
 	{
 		if (str[i] == '\'' || str[i] == '\"')
 		{
-			quote = str[i];
-			i++;
+			quote = str[i++];
 			while (str[i] && str[i] != quote)
-			{
-				no_quote[j] = str[i];
-				j++;
-				i++;
-			}
+				no_quote[j++] = str[i++];
 			if (str[i] == quote)
 				i++;
 		}
 		else
-		{
-			no_quote[j] = str[i];
-			j++;
-			i++;
-		}
+			no_quote[j++] = str[i++];
 	}
 	no_quote[j] = 0;
 	return (no_quote);
@@ -88,7 +95,7 @@ static int	count_redir(char **token)
 	count = 0;
 	while (token[i])
 	{
-		if ((!ft_strncmp(token[i], "<", 2) || !ft_strncmp(token[i], ">", 2) || !ft_strncmp(token[i], "<<", 3) || !ft_strncmp(token[i], ">>", 3)) && !is_metachar(token[i]))
+		if (!is_redir(token, i))
 			count++;
 		i++;
 	}
@@ -97,10 +104,10 @@ static int	count_redir(char **token)
 
 char	**parse_cmd_args(char **token, int *exit_status)
 {
-	int	i;
-	int	j;
-	char		**arg;
-	int	arg_size;
+	int		i;
+	int		j;
+	int		arg_size;
+	char	**arg;
 
 	arg_size = array_size((void **)token) - (count_redir(token) * 2);
 	arg = malloc(sizeof(char *) * (arg_size + 1));
@@ -110,17 +117,13 @@ char	**parse_cmd_args(char **token, int *exit_status)
 	j = 0;
 	while (token[i])
 	{
-		if (!ft_strncmp(token[i], "<", 2) || !ft_strncmp(token[i], ">", 2) || !ft_strncmp(token[i], "<<", 3) || !ft_strncmp(token[i], ">>", 3))
+		if (!is_redir(token, i))
+			i += 2;
+		else if (is_redir(token, i) == SYNT_ERR)
 		{
-			if (token[i + 1] && !is_metachar(token[i + 1]))
-				i += 2;
-			else
-			{
-				*exit_status = SYNT_ERR;
-				ft_perror(token[i + 1], *exit_status);
-				ft_free((void **)arg, j);
-				return (NULL);
-			}
+			*exit_status = SYNT_ERR;
+			ft_perror(token[i + 1], *exit_status);
+			return (ft_free((void **)arg, j), NULL);
 		}
 		else
 			arg[j++] = ft_strdup(token[i++]);
@@ -186,10 +189,7 @@ t_cmd	*data_parsing(t_list **env_list, char **part_token, int *exit_status)
 		data->cmd = NULL;
 		data->cmd_path = NULL;
 		if (*exit_status == 2)
-		{
-			ft_free((void **)part_token, -1);
-			return (NULL);
-		}
+			return (ft_free((void **)part_token, -1), NULL);
 	}
 	data->has_infile = handle_input_redir2(data);
 	data->has_outfile = handle_output_redir(data);
@@ -219,29 +219,6 @@ char	**array_cpy(char **src)
 	dst[i] = NULL;
 	return (dst);
 }
-
-// t_cmd	*data_cpy(t_cmd *src)
-// {
-// 	t_cmd	*dst;
-
-// 	dst = data_init();
-// 	dst->token = array_cpy(src->token);
-// 	dst->cmd = ft_strdup(src->cmd);
-// 	dst->cmd_path = ft_strdup(src->cmd_path);
-// 	dst->cmd_args = array_cpy(src->cmd_args);
-// 	dst->in_fd = src->in_fd;
-// 	dst->out_fd = src->out_fd;
-// 	dst->infile = ft_strdup(src->infile);
-// 	dst->outfile = ft_strdup(src->outfile);
-// 	dst->limiter = ft_strdup(src->limiter);
-// 	dst->has_infile = src->has_infile;
-// 	dst->has_outfile = dst->has_outfile;
-// 	dst->tmp_pipe[0] = src->tmp_pipe[0];
-// 	dst->tmp_pipe[1] = src->tmp_pipe[1];
-// 	dst->pip[0] = src->pip[0];
-// 	dst->pip[1] = src->pip[1];
-// 	return (dst);
-// }
 
 t_list	**mk_cmdlist(t_list **env_list, char *cmd_str, int *exit_status)
 {

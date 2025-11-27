@@ -6,30 +6,16 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 15:15:11 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/25 14:23:46 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/26 14:01:43 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// int	cmd_not_found(t_cmd *data)
-// {
-// 	ft_putstr_fd(data->cmd, STDERR_FILENO);
-// 	ft_putstr_fd(": command not found\n", STDERR_FILENO);
-// 	ft_free((void **)data->cmd_args, -1);
-// 	close(data->out_fd);
-// 	close_pipe(data->pip);
-// 	free(data->cmd_path);
-// 	free(data->cmd);
-// 	// if (array_size((void **)data->all_cmd_lines) == 1)
-// 	// 	return ;
-// 	exit(CMD_NOT_FOUND);
-// }
-
-static char *make_path(char *str, char *cmd)
+static char	*make_path(char *str, char *cmd)
 {
-	char *part_path;
-	char *path;
+	char	*part_path;
+	char	*path;
 
 	part_path = ft_strjoin(str, "/");
 	path = ft_strjoin(part_path, cmd);
@@ -39,7 +25,7 @@ static char *make_path(char *str, char *cmd)
 
 int	check_cmd_path(char *path)
 {
-	struct stat st;
+	struct stat	st;
 
 	if (!path)
 		return (NOT_FOUND);
@@ -63,10 +49,10 @@ int	check_cmd_path(char *path)
 
 char	*find_cmd_path(t_list **env_list, t_cmd *data)
 {
-	char **array;
-	char *path;
-	int i;
-	char *env_path;
+	char	**array;
+	char	*path;
+	char	*env_path;
+	int		i;
 
 	if (check_cmd_path(data->cmd) != -1)
 		return (ft_strdup(data->cmd));

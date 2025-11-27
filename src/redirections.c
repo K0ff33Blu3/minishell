@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 08:22:00 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/26 10:53:48 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/26 15:16:11 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	redirect(t_list **cmd_list, t_list **env_list, t_cmd *data)
 			close(data->out_fd);
 		}
 		else
-			ft_error_redir(env_list, cmd_list, data->outfile, check_file_path(data->outfile, W_OK));
+			ft_redir_err(env_list, cmd_list, data->outfile, check_file_path(data->outfile, W_OK));
 	}
 	if (data->has_infile && data->infile)
 	{
@@ -50,7 +50,7 @@ void	redirect(t_list **cmd_list, t_list **env_list, t_cmd *data)
 			close(data->in_fd);
 		}
 		else
-			ft_error_redir(env_list, cmd_list, data->infile, check_file_path(data->infile, R_OK));
+			ft_redir_err(env_list, cmd_list, data->infile, check_file_path(data->infile, R_OK));
 	}
 	else if (data->has_infile == 2)
 	{
@@ -58,51 +58,6 @@ void	redirect(t_list **cmd_list, t_list **env_list, t_cmd *data)
 		close(data->tmp_pipe[0]);
 	}
 }
-
-// static void	pop_input(t_cmd *cmd, int type, char *infile)
-// {
-// 	if (type == 1)
-// 	{
-// 		cmd->infile = ft_strdup(infile);
-// 		cmd->limiter = NULL;	
-// 	}
-// 	else if (type == 2)
-// 	{
-// 		cmd->infile = NULL;	
-// 		cmd->limiter = ft_strdup(infile);
-// 	}
-// 	else if (type == 0)
-// 	{
-// 		cmd->infile = NULL;
-// 		cmd->limiter = NULL;	
-// 	}
-// }
-
-// int	get_type_of_input(t_cmd *cmd)
-// {
-// 	int	type;
-// 	int	i;
-// 	char	*infile;
-// 	char	*limiter;
-
-// 	type = 0;
-// 	i = -1;
-// 	while (cmd->token[++i])
-// 	{
-// 		if(!ft_strncmp(cmd->token[i], "<", 2) && cmd->token[i + 1])
-// 		{
-// 			infile = cmd->token[i + 1];
-// 			type = 1;
-// 		}
-// 		if(!ft_strncmp(cmd->token[i], "<<", 3) && cmd->token[i + 1])
-// 		{
-// 			limiter = cmd->token[i + 1];
-// 			type = 2;
-// 		}
-// 	}
-// 	pop_input(cmd, type, infile, limiter);
-// 	return (type);
-// }
 
 void	open_infile(t_cmd *cmd)
 {
@@ -191,7 +146,8 @@ int	handle_input_redir2(t_cmd *cmd)
 	infile = NULL;
 	while (cmd->token[++i])
 	{
-		if((!ft_strncmp(cmd->token[i], "<", 2) || !ft_strncmp(cmd->token[i], "<<", 3)) && cmd->token[i + 1])
+		if((!ft_strncmp(cmd->token[i], "<", 2) || !ft_strncmp(cmd->token[i], "<<", 3))
+			&& cmd->token[i + 1])
 			flag = open_infile2(cmd, i, &infile, &last_fd);
 	}
 	if (flag != 2)

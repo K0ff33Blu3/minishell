@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/23 13:16:48 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/24 12:10:36 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/26 15:17:45 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	open_outfile(t_cmd *cmd, int i, char **outfile, int *last_fd)
 {
 	int	flag;
-	
+
 	flag = 0;
 	free(*outfile);
 	*outfile = ft_strdup(cmd->token[i + 1]);
@@ -40,10 +40,10 @@ int	open_outfile(t_cmd *cmd, int i, char **outfile, int *last_fd)
 
 int	handle_output_redir(t_cmd *cmd)
 {
-	int	i;
 	char	*outfile;
-	int	flag;
-	int	last_fd;
+	int		i;
+	int		flag;
+	int		last_fd;
 
 	i = -1;
 	flag = 0;
@@ -51,7 +51,8 @@ int	handle_output_redir(t_cmd *cmd)
 	outfile = NULL;
 	while (cmd->token[++i])
 	{
-		if((!ft_strncmp(cmd->token[i], ">", 2) || !ft_strncmp(cmd->token[i], ">>", 3)) && cmd->token[i + 1])
+		if ((!ft_strncmp(cmd->token[i], ">", 2)
+				|| !ft_strncmp(cmd->token[i], ">>", 3)) && cmd->token[i + 1])
 			flag = open_outfile(cmd, i, &outfile, &last_fd);
 	}
 	if (flag)
