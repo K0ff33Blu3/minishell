@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
+/*   By: elmondo <elmondo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 08:22:00 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/27 15:01:36 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/27 16:03:38 by elmondo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ int	handle_heredoc(t_cmd *cmd, char *limiter)
 	pid = fork();
 	if (pid == 0)
 	{
+		reset_signals();
 		while (1)
 		{
 			line = readline("> ");
@@ -110,12 +111,15 @@ int	handle_heredoc(t_cmd *cmd, char *limiter)
 	}
 	else
 	{
+		signal(SIGINT, SIG_IGN);
 		close(cmd->tmp_pipe[1]);
 		waitpid(pid, &status, 0);
+		waiting_signals();
 		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
 		{
 			g_last_sig = SIGINT;
 			close(cmd->tmp_pipe[0]);
+			write(STDOUT_FILENO, "\n", 1);
 			return (-1);
 		}
 	}

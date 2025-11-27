@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
+/*   By: elmondo <elmondo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:50:27 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/27 15:11:56 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/27 16:01:08 by elmondo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,9 +127,10 @@ int	creat_children(t_list **cmd_list, t_list **env, int status)
 	node = *cmd_list;
 	while (node)
 	{
-		pid = creat_child(cmd_list, node, env, status);
+		pid = creat_child(cmd_list, node, env, &status);
 		node = node->next;
 	}
+	return (pid);
 }
 
 void	process(char *cmd_line, int *exit_status, t_list **env_list)
@@ -141,8 +142,15 @@ void	process(char *cmd_line, int *exit_status, t_list **env_list)
 	int		status;
 
 	cmd_list = mk_cmdlist(env_list, cmd_line, exit_status);
-	if (!cmd_list)
-		return ;
+    if (!cmd_list)
+    {
+        if (g_last_sig == SIGINT)
+        {
+            *exit_status = 130;
+            g_last_sig = 0;
+        }
+        return ;
+    }
 	node = *cmd_list;
 	data = (t_cmd *)node->content;
 	if (ft_lstsize(node) == 1 && is_builtin(data->cmd) == 2)
@@ -153,9 +161,9 @@ void	process(char *cmd_line, int *exit_status, t_list **env_list)
 	else
 	{
 		setup_father();
-		open_pipeline(cmd_line);
+		open_pipeline(cmd_list);
 		node = *cmd_list;
-		pid = creat_children(cmd_list, env_list, status);
+		pid = creat_children(cmd_list, env_list, *exit_status);
 		waitpid(pid, &status, 0);
 		check_signals(status, exit_status);
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
+/*   By: elmondo <elmondo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 13:03:04 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/27 14:03:14 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/27 15:48:39 by elmondo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,6 +163,8 @@ t_cmd	*data_parsing(t_list **env_list, char **part_token, int *exit_status)
 			return (ft_free((void **)part_token, -1), NULL);
 	}
 	data->has_infile = handle_input_redir(data);
+	if (g_last_sig == SIGINT)
+		return (NULL);
 	data->has_outfile = handle_output_redir(data);
 	data->cmd = ft_strdup(data->cmd_args[0]);
 	if (is_builtin(data->cmd))
@@ -190,8 +192,11 @@ t_list	**mk_cmdlist(t_list **env_list, char *cmd_str, int *status)
 	{
 		end = find_pipe(token, &i);
 		data = data_parsing(env_list, get_cmd_token(token, i, end), status);
-		if (!data)
-			return (ft_lstclear(cmd_list, clean_data), NULL);
+        if (g_last_sig == SIGINT || !data)
+        {
+            ft_free((void **)token, -1);
+            return (ft_lstclear(cmd_list, clean_data), NULL);
+        }
 		ft_lstadd_back(cmd_list, ft_lstnew(data));
 		i = end;
 	}
