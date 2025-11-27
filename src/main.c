@@ -6,19 +6,19 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:50:27 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/27 14:36:31 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/27 15:11:56 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int g_last_sig = 0;
+int	g_last_sig = 0;
 
-void	close_pipeline(t_list **cmd_list, t_list* cmd_node)
+void	close_pipeline(t_list **cmd_list, t_list *cmd_node)
 {
-	t_list*	node;
-	
-	node = *cmd_list;	
+	t_list	*node;
+
+	node = *cmd_list;
 	while (node)
 	{
 		if (node != cmd_node)
@@ -55,7 +55,7 @@ void	handle_pipe(t_list **head, t_list *node)
 {
 	t_cmd	*data;
 	t_cmd	*data_nxt;
-	int	node_i;
+	int		node_i;
 
 	node_i = ft_lstindex(*head, node);
 	data = (t_cmd *)node->content;
@@ -76,7 +76,7 @@ void	handle_pipe(t_list **head, t_list *node)
 	close_pipeline(head, node);
 }
 
-pid_t	creat_children(t_list **head, t_list *node, t_list **env_list, int *st)
+pid_t	creat_child(t_list **head, t_list *node, t_list **env_list, int *st)
 {
 	pid_t	pid;
 	t_cmd	*data;
@@ -119,7 +119,20 @@ void	open_pipeline(t_list **head)
 	}
 }
 
-void 	process(char *cmd_line, int *exit_status, t_list **env_list)
+int	creat_children(t_list **cmd_list, t_list **env, int status)
+{
+	t_list	*node;
+	pid_t	pid;
+	
+	node = *cmd_list;
+	while (node)
+	{
+		pid = creat_child(cmd_list, node, env, status);
+		node = node->next;
+	}
+}
+
+void	process(char *cmd_line, int *exit_status, t_list **env_list)
 {
 	t_list	**cmd_list;
 	t_list	*node;
@@ -133,22 +146,16 @@ void 	process(char *cmd_line, int *exit_status, t_list **env_list)
 	node = *cmd_list;
 	data = (t_cmd *)node->content;
 	if (ft_lstsize(node) == 1 && is_builtin(data->cmd) == 2)
-		return (exec_status_builtin(cmd_list, data, env_list, exit_status), free(*cmd_list), free(cmd_list));
+	{
+		exec_status_builtin(cmd_list, data, env_list, exit_status);
+		return (free(*cmd_list), free(cmd_list));
+	}
 	else
 	{
 		setup_father();
-		while (node)
-		{
-			if (node && pipe(data->pip) == -1)
-				ft_error(env_list, cmd_list, "pipe", EXIT_FAILURE);
-			node = node->next;
-		}
+		open_pipeline(cmd_line);
 		node = *cmd_list;
-		while (node)
-		{
-			pid = creat_children(cmd_list, node, env_list, exit_status);
-			node = node->next;
-		}
+		pid = creat_children(cmd_list, env_list, status);
 		waitpid(pid, &status, 0);
 		check_signals(status, exit_status);
 	}
@@ -157,11 +164,11 @@ void 	process(char *cmd_line, int *exit_status, t_list **env_list)
 	ft_lstclear(cmd_list, clean_data);
 }
 
-int main(int argc, char **argv, char **envp)
+int	main(int argc, char **argv, char **envp)
 {
 	char	*cmd_line;
-	int	exit_status;
 	static t_list	**env_list;
+	int		exit_status;
 
 	(void)argc;
 	(void)argv;
@@ -174,7 +181,7 @@ int main(int argc, char **argv, char **envp)
 		if (!cmd_line)
 		{
 			printf("exit\n");
-			break;
+			break ;
 		}
 		if (*cmd_line && !is_emptystr(cmd_line))
 		{

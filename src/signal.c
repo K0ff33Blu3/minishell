@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elmondo <elmondo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 11:11:36 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/23 14:20:14 by elmondo          ###   ########.fr       */
+/*   Updated: 2025/11/27 15:12:30 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void setup_father(void)
 void check_signals(int status, int *exit_status)
 {
 	if (exit_status == NULL)
-		return;
+		return ;
 	if (g_last_sig == SIGINT)
 	{
 		write(STDOUT_FILENO, "\n", 1);

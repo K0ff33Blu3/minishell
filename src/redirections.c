@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 08:22:00 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/27 14:38:41 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/27 15:01:36 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,8 @@ int	handle_heredoc(t_cmd *cmd, char *limiter)
 			ft_putendl_fd(line, cmd->tmp_pipe[1]);
 			free(line);
 		}
+		close(cmd->tmp_pipe[1]);
+		exit(EXIT_SUCCESS);
 	}
 	else
 	{
