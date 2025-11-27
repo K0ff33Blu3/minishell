@@ -6,7 +6,7 @@
 /*   By: elmondo <elmondo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 08:22:00 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/27 16:03:38 by elmondo          ###   ########.fr       */
+/*   Updated: 2025/11/27 17:18:07 by elmondo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,8 @@ int	handle_heredoc(t_cmd *cmd, char *limiter)
 {
 	char	*line;
 	pid_t	pid;
-	int	status;
-	
+	int		status;
+
 	if (pipe(cmd->tmp_pipe) == -1)
 		perror("pipe");
 	pid = fork();
