@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
+/*   By: elmondo <elmondo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 13:24:24 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/27 11:45:15 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/27 17:28:13 by elmondo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,32 +98,4 @@ char	*make_metachar(char *s, int *j)
 		word[i++] = s[(*j)++];
 	word[len] = 0;
 	return (word);
-}
-
-char	**tokenize(char	*str)
-{
-	int		i;
-	int		j;
-	char	**token;
-
-	token = malloc(sizeof(char *) * (count_token(str) + 1));
-	if (!token)
-		return (NULL);
-	i = 0;
-	j = 0;
-	while (i < count_token(str))
-	{
-		while (ft_isspace(str[j]))
-			j++;
-		if (is_metachar(&str[j]))
-			token[i] = make_metachar(str, &j);
-		else
-			token[i] = make_word(str, &j);
-		if (!token[i])
-			return (ft_free((void **)token, i), NULL);
-		i++;
-	}
-	token[i] = NULL;
-	free(str);
-	return (token);
 }
