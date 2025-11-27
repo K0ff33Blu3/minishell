@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
+/*   By: elmondo <elmondo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:52:47 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/27 12:53:27 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/27 16:13:36 by elmondo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,8 @@ void waiting_signals(void);
 void reset_signals(void);
 void setup_father(void);
 void check_signals(int status, int *exit_status);
+
+//signaltwo.c
 void check_signals_two(int status, int *exit_status);
 void ft_signum(int signum);
 

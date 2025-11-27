@@ -6,7 +6,7 @@
 /*   By: elmondo <elmondo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:50:27 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/27 16:01:08 by elmondo          ###   ########.fr       */
+/*   Updated: 2025/11/27 16:28:42 by elmondo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,16 +132,40 @@ int	creat_children(t_list **cmd_list, t_list **env, int status)
 	}
 	return (pid);
 }
+static int	ft_single_builtin(t_list **cmd_list, t_list **env_list, int *exit_status)
+{
+    t_cmd	*data;
+
+    data = (t_cmd *)(*cmd_list)->content;
+    if (ft_lstsize(*cmd_list) == 1 && is_builtin(data->cmd) == 2)
+    {
+        exec_status_builtin(cmd_list, data, env_list, exit_status);
+        free(*cmd_list);
+        free(cmd_list);
+        return (1);
+    }
+    return (0);
+}
+static void	ft_pipeline(t_list **cmd_list, t_list **env_list, int *exit_status)
+{
+    pid_t	pid;
+    int		status;
+
+    setup_father();
+    open_pipeline(cmd_list);
+    pid = creat_children(cmd_list, env_list, *exit_status);
+    waitpid(pid, &status, 0);
+    check_signals(status, exit_status);
+    while (wait(NULL) != -1)
+        ;
+    ft_lstclear(cmd_list, clean_data);
+}
 
 void	process(char *cmd_line, int *exit_status, t_list **env_list)
 {
-	t_list	**cmd_list;
-	t_list	*node;
-	pid_t	pid;
-	t_cmd	*data;
-	int		status;
+    t_list	**cmd_list;
 
-	cmd_list = mk_cmdlist(env_list, cmd_line, exit_status);
+    cmd_list = mk_cmdlist(env_list, cmd_line, exit_status);
     if (!cmd_list)
     {
         if (g_last_sig == SIGINT)
@@ -151,60 +175,49 @@ void	process(char *cmd_line, int *exit_status, t_list **env_list)
         }
         return ;
     }
-	node = *cmd_list;
-	data = (t_cmd *)node->content;
-	if (ft_lstsize(node) == 1 && is_builtin(data->cmd) == 2)
-	{
-		exec_status_builtin(cmd_list, data, env_list, exit_status);
-		return (free(*cmd_list), free(cmd_list));
-	}
-	else
-	{
-		setup_father();
-		open_pipeline(cmd_list);
-		node = *cmd_list;
-		pid = creat_children(cmd_list, env_list, *exit_status);
-		waitpid(pid, &status, 0);
-		check_signals(status, exit_status);
-	}
-	while (wait(NULL) != -1)
-		;
-	ft_lstclear(cmd_list, clean_data);
+    if (ft_single_builtin(cmd_list, env_list, exit_status))
+        return ;
+    ft_pipeline(cmd_list, env_list, exit_status);
+}
+static void	ft_read_command(t_list **env_list, int *exit_status)
+{
+    char	*cmd_line;
+
+    while (1)
+    {
+        cmd_line = readline(PROMPT);
+        if (!cmd_line)
+        {
+            printf("exit\n");
+            break ;
+        }
+        if (*cmd_line && !is_emptystr(cmd_line))
+        {
+            add_history(cmd_line);
+            process(cmd_line, exit_status, env_list);
+        }
+        else
+            free(cmd_line);
+        if (g_last_sig != 0)
+        {
+            *exit_status = g_last_sig;
+            g_last_sig = 0;
+        }
+    }
 }
 
 int	main(int argc, char **argv, char **envp)
 {
-	char	*cmd_line;
-	static t_list	**env_list;
-	int		exit_status;
+    static t_list	**env_list;
+    int				exit_status;
 
-	(void)argc;
-	(void)argv;
-	waiting_signals();
-	env_list = env_init(envp);
-	exit_status = 0;
-	while (1)
-	{
-		cmd_line = readline(PROMPT);
-		if (!cmd_line)
-		{
-			printf("exit\n");
-			break ;
-		}
-		if (*cmd_line && !is_emptystr(cmd_line))
-		{
-			add_history(cmd_line);
-			process(cmd_line, &exit_status, env_list);
-		}
-		else
-			free(cmd_line);
-		if (g_last_sig != 0)
-		{
-			exit_status = g_last_sig;
-			g_last_sig = 0;
-		}
-	}
-	ft_lstclear(env_list, free_env);
-	rl_clear_history();
-	return (g_last_sig);
+    (void)argc;
+    (void)argv;
+    waiting_signals();
+    env_list = env_init(envp);
+    exit_status = 0;
+    ft_read_command(env_list, &exit_status);
+    ft_lstclear(env_list, free_env);
+    rl_clear_history();
+    return (exit_status);
 }
