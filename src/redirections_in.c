@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 17:40:26 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/27 18:58:59 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/27 19:00:26 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	get_line_heredoc_loop(t_cmd *cmd, char *limiter)
 {
 	char	*line;
+	
 	while (1)
 	{
 		line = readline("> ");

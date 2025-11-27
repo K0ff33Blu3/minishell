@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:52:47 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/27 18:59:25 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/27 19:01:36 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,7 +162,7 @@ void	close_pipe(int pip[2]);
 void	handle_pipe(t_list **head, t_list *node);
 pid_t	creat_child(t_list **head, t_list *node, t_list **env_list, int *st);
 void	open_pipeline(t_list **head);
-int	creat_children(t_list **cmd_list, t_list **env, int status);
+int		creat_children(t_list **cmd_list, t_list **env, int status);
 
 // execution.c
 void	exec_command(t_list **cmd_list, t_cmd *data, t_list **env_list);

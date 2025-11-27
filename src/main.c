@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:50:27 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/27 18:53:34 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/27 19:00:38 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static void	process(char *cmd_line, int *exit_status, t_list **env_list)
 static void	read_command_loop(t_list **env_list, int *exit_status)
 {
 	char	*cmd_line;
-	
+
 	while (1)
 	{
 		cmd_line = readline(PROMPT);
