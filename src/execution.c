@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/12 14:51:52 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/27 14:01:42 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/27 18:45:39 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,21 @@ void	exec_status_builtin(t_list **cmd, t_cmd *data, t_list **env, int *st)
 	else if (ft_strncmp(data->cmd, "export", 7) == 0)
 		*st = export(cmd, env, data);
 	clean_data(data);
+}
+
+int	ft_single_builtin(t_list **cmd, t_list **env, int *status)
+{
+	t_cmd	*data;
+
+	data = (t_cmd *)(*cmd)->content;
+	if (ft_lstsize(*cmd) == 1 && is_builtin(data->cmd) == 2)
+	{
+		exec_status_builtin(cmd, data, env, status);
+		free(*cmd);
+		free(cmd);
+		return (1);
+	}
+	return (0);
 }
 
 void	exec_command(t_list **cmd_list, t_cmd *data, t_list **env_list)

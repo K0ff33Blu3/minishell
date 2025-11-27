@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 12:02:37 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/27 17:12:09 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/27 18:13:52 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,14 +52,6 @@ void	free_env(void *ptr)
 			free(env->value);
 		free(env);
 	}
-}
-
-void	close_pipe(int pip[2])
-{
-	if (pip[0] > 2)
-		close(pip[0]);
-	if (pip[1] > 2)
-		close(pip[1]);
 }
 
 void	ft_redir_err(t_list **env, t_list **cmd, char *str, int code)

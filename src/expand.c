@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elmondo <elmondo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 11:40:06 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/27 17:26:47 by elmondo          ###   ########.fr       */
+/*   Updated: 2025/11/27 18:01:31 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,21 +22,6 @@ char	*expand_var(t_list **env_list, char *var, int exit_status)
 	if (value)
 		return (value);
 	return (NULL);
-}
-
-int	find_dollar(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i] && str[i] != '$')
-	{
-		if (str[i] == '\'')
-			i = skip_quote(str, i);
-		else
-			i++;
-	}
-	return (i);
 }
 
 char	*expand_str(t_list **env_list, char *str, int exit_status, int *i)
@@ -80,13 +65,37 @@ char	*expand_str_recursive(t_list **env_list, char *in_str, int exit_status)
 	return (result);
 }
 
-char	get_kind_of_quote(char *str)
+char	*name_var(char *str)
 {
-	while (*str)
+	char	*name;
+	int		name_len;
+
+	name_len = 0;
+	if (str[name_len] == '?')
+		return (ft_strdup("?"));
+	while (ft_isalnum(str[name_len]) || str[name_len] == '_')
+		name_len++;
+	name = (char *)malloc(sizeof(char) * (name_len + 1));
+	if (!name)
+		return (NULL);
+	ft_strlcpy(name, str, name_len + 1);
+	return (name);
+}
+
+char	**expand_env_var(t_list **env_list, char **token, int status)
+{
+	int		i;
+	char	**expanded_token;
+
+	i = 0;
+	expanded_token = malloc(sizeof(char *) * (array_size((void **)token) + 1));
+	if (!expanded_token)
+		return (NULL);
+	while (token[i])
 	{
-		if (*str == '\'' || *str == '\"')
-			return (*str);
-		str++;
+		expanded_token[i] = expand_str_recursive(env_list, token[i], status);
+		i++;
 	}
-	return (0);
+	expanded_token[i] = NULL;
+	return (ft_free((void **)token, -1), expanded_token);
 }

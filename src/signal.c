@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elmondo <elmondo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/18 11:11:36 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/27 16:12:58 by elmondo          ###   ########.fr       */
+/*   Updated: 2025/11/27 18:00:16 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,6 @@ void	waiting_signals(void)
 	sa.sa_handler = simple_handler;
 	sa.sa_flags = 0;
 	sigaction(SIGINT, &sa, NULL);
-}
-
-void	ft_signum(int signum)
-{
-	g_last_sig = signum;
 }
 
 void	setup_father(void)

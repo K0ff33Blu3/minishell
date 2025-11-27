@@ -6,35 +6,11 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/27 17:36:23 by emondo            #+#    #+#             */
-/*   Updated: 2025/11/24 15:22:45 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/27 18:27:02 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-char	**get_metachar(void)
-{
-	static char	*metachar[18];
-
-	metachar[0] = "||";
-	metachar[1] = "&&";
-	metachar[2] = "|";
-	metachar[3] = "&";
-	metachar[4] = "<<";
-	metachar[5] = "<";
-	metachar[6] = ">>";
-	metachar[7] = ">";
-	metachar[8] = "*";
-	metachar[9] = "[";
-	metachar[10] = "]";
-	metachar[11] = "(";
-	metachar[12] = ")";
-	metachar[13] = "{";
-	metachar[14] = "}";
-	metachar[15] = "\\";
-	metachar[16] = NULL;
-	return (metachar);
-}
 
 int	is_metachar(char *c)
 {
@@ -52,6 +28,18 @@ int	is_metachar(char *c)
 		i++;
 	}
 	return (0);
+}
+
+int	skip_token(char *s, int i)
+{
+	while (s[i] && !ft_isspace(s[i]) && !is_metachar(&s[i]))
+	{
+		if (s[i] == '\'' || s[i] == '\"')
+			i = skip_quote(s, i);
+		else
+			i++;
+	}
+	return (i);
 }
 
 int	skip_quote(char *s, int start)
