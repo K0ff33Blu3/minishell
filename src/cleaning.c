@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 12:02:37 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/26 14:21:35 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/27 17:12:09 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,11 +62,11 @@ void	close_pipe(int pip[2])
 		close(pip[1]);
 }
 
-void	ft_redir_err(t_list **env_lst, t_list **cmd_lst, char *str, int code)
+void	ft_redir_err(t_list **env, t_list **cmd, char *str, int code)
 {
 	ft_perror(str, code);
-	ft_lstclear(env_lst, free_env);
-	ft_lstclear(cmd_lst, clean_data);
+	ft_lstclear(env, free_env);
+	ft_lstclear(cmd, clean_data);
 	exit(EXIT_FAILURE);
 }
 
