@@ -6,7 +6,7 @@
 /*   By: elmondo <elmondo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:50:27 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/27 16:28:42 by elmondo          ###   ########.fr       */
+/*   Updated: 2025/11/27 17:00:26 by elmondo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,7 @@ int	creat_children(t_list **cmd_list, t_list **env, int status)
 {
 	t_list	*node;
 	pid_t	pid;
-	
+
 	node = *cmd_list;
 	while (node)
 	{

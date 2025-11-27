@@ -6,7 +6,7 @@
 /*   By: elmondo <elmondo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 13:03:04 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/27 15:48:39 by elmondo          ###   ########.fr       */
+/*   Updated: 2025/11/27 17:00:21 by elmondo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,11 +192,9 @@ t_list	**mk_cmdlist(t_list **env_list, char *cmd_str, int *status)
 	{
 		end = find_pipe(token, &i);
 		data = data_parsing(env_list, get_cmd_token(token, i, end), status);
-        if (g_last_sig == SIGINT || !data)
-        {
-            ft_free((void **)token, -1);
-            return (ft_lstclear(cmd_list, clean_data), NULL);
-        }
+		if (g_last_sig == SIGINT || !data)
+			return (ft_free((void **)token, -1),
+				ft_lstclear(cmd_list, clean_data), NULL);
 		ft_lstadd_back(cmd_list, ft_lstnew(data));
 		i = end;
 	}
