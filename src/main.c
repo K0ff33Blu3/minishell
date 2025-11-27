@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:50:27 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/27 18:38:47 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/27 18:53:34 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,27 +42,30 @@ static void	process(char *cmd_line, int *exit_status, t_list **env_list)
 	ft_lstclear(cmd_list, clean_data);
 }
 
-static void	read_command(t_list **env_list, int *exit_status)
+static void	read_command_loop(t_list **env_list, int *exit_status)
 {
 	char	*cmd_line;
-
-	cmd_line = readline(PROMPT);
-	if (!cmd_line)
+	
+	while (1)
 	{
-		printf("exit\n");
-		break ;
-	}
-	if (*cmd_line && !is_emptystr(cmd_line))
-	{
-		add_history(cmd_line);
-		process(cmd_line, exit_status, env_list);
-	}
-	else
-		free(cmd_line);
-	if (g_last_sig != 0)
-	{
-		*exit_status = g_last_sig;
-		g_last_sig = 0;
+		cmd_line = readline(PROMPT);
+		if (!cmd_line)
+		{
+			printf("exit\n");
+			return ;
+		}
+		if (*cmd_line && !is_emptystr(cmd_line))
+		{
+			add_history(cmd_line);
+			process(cmd_line, exit_status, env_list);
+		}
+		else
+			free(cmd_line);
+		if (g_last_sig != 0)
+		{
+			*exit_status = g_last_sig;
+			g_last_sig = 0;
+		}
 	}
 }
 
@@ -76,8 +79,7 @@ int	main(int argc, char **argv, char **envp)
 	waiting_signals();
 	env_list = env_init(envp);
 	exit_status = 0;
-	while (1)
-		read_command(env_list, &exit_status);
+	read_command_loop(env_list, &exit_status);
 	ft_lstclear(env_list, free_env);
 	rl_clear_history();
 	return (exit_status);

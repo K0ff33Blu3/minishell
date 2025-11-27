@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:52:47 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/27 18:44:53 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/27 18:59:25 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,11 @@ int		skip_quote(char *s, int start);
 int		word_len(char *s, unsigned int start);
 int		quote_len(char *s, unsigned int start, char quote);
 
+// init.c
+t_list	**mk_cmdlist(t_list **env_list, char *cmd_str, int *status);
+t_list	**env_init(char **envp);
+t_cmd	*data_init(void);
+
 // signal.c
 void	simple_handler(int signum);
 void	waiting_signals(void);
@@ -127,7 +132,7 @@ void	ft_signum(int signum);
 void	clean_sigint(t_cmd *cmd);
 
 // redirections_in.c
-void	get_line_heredoc(char *limiter);
+void	get_line_heredoc_loop(t_cmd *cmd, char *limiter);
 int		handle_heredoc(t_cmd *cmd, char *limiter);
 int		open_infile(t_cmd *cmd, int i, char **infile, int *last_fd);
 int		handle_input_redir(t_cmd *cmd);
@@ -155,6 +160,9 @@ int		check_cmd_path(char *path);
 // pipe.c
 void	close_pipe(int pip[2]);
 void	handle_pipe(t_list **head, t_list *node);
+pid_t	creat_child(t_list **head, t_list *node, t_list **env_list, int *st);
+void	open_pipeline(t_list **head);
+int	creat_children(t_list **cmd_list, t_list **env, int status);
 
 // execution.c
 void	exec_command(t_list **cmd_list, t_cmd *data, t_list **env_list);

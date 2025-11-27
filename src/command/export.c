@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/10 13:36:15 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/27 18:43:58 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/27 18:49:31 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,9 @@ static int	exp_no_args(t_list **cmd_list, t_cmd *cmd, t_list **env, int *st)
 		}
 		exit(EXIT_SUCCESS);
 	}
-	waitpid(pid, status, 0);
-	check_signals(*status, st);
-	return (*status);
+	waitpid(pid, &status, 0);
+	check_signals(status, st);
+	return (status);
 }
 
 int	export(t_list **cmd_list, t_list **env_list, t_cmd *data)

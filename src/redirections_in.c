@@ -6,29 +6,31 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 17:40:26 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/27 18:00:29 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/27 18:58:59 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	get_line_heredoc(char *limiter)
+void	get_line_heredoc_loop(t_cmd *cmd, char *limiter)
 {
 	char	*line;
-
-	line = readline("> ");
-	if (!line)
+	while (1)
 	{
-		printf("warning: %s requested\n", limiter);
-		break ;
-	}
-	if (!ft_strncmp(line, limiter, ft_strlen(limiter) + 1))
-	{
+		line = readline("> ");
+		if (!line)
+		{
+			printf("warning: %s requested\n", limiter);
+			break ;
+		}
+		if (!ft_strncmp(line, limiter, ft_strlen(limiter) + 1))
+		{
+			free(line);
+			break ;
+		}
+		ft_putendl_fd(line, cmd->tmp_pipe[1]);
 		free(line);
-		break ;
 	}
-	ft_putendl_fd(line, cmd->tmp_pipe[1]);
-	free(line);
 }
 
 int	handle_heredoc(t_cmd *cmd, char *limiter)
@@ -42,8 +44,7 @@ int	handle_heredoc(t_cmd *cmd, char *limiter)
 	if (pid == 0)
 	{
 		reset_signals();
-		while (1)
-			get_line_heredoc(limiter);
+		get_line_heredoc_loop(cmd, limiter);
 		close(cmd->tmp_pipe[1]);
 		exit(EXIT_SUCCESS);
 	}
