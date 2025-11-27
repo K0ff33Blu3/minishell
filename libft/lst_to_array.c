@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lst_to_array.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
+/*   By: elmondo <elmondo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/05 13:16:55 by miricci           #+#    #+#             */
-/*   Updated: 2025/10/25 11:31:04 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/27 16:34:55 by elmondo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ char	**lst_to_array(t_list **head)
 {
 	t_list	*node;
 	char	**array;
-	int	i;
+	int		i;
 
 	i = 0;
 	node = *head;
