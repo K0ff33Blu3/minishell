@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:52:47 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/27 19:01:36 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/28 22:24:39 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,6 @@
 # define NO_PERM 126
 # define IS_DIR 125
 # define SYNT_ERR 2
-# define IS_OUTPUT 100
-# define IS_INPUT 101
-# define BOTH 102
 
 extern int	g_last_sig;
 

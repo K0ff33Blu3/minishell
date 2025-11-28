@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 18:12:25 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/27 18:13:59 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/28 22:41:11 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,9 +79,9 @@ void	open_pipeline(t_list **head)
 	t_cmd	*data;
 
 	node = *head;
-	data = (t_cmd *)node->content;
 	while (node)
 	{
+		data = (t_cmd *)node->content;
 		if (node && pipe(data->pip) == -1)
 			return (perror("pipe"));
 		node = node->next;

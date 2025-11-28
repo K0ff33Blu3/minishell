@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 11:40:06 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/27 18:01:31 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/28 23:37:22 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,34 @@ char	*expand_var(t_list **env_list, char *var, int exit_status)
 {
 	char	*value;
 
-	if (ft_strncmp(var, "?", 1) == 0)
+	if (ft_strncmp(var, "?", 2) == 0)
 		return (ft_itoa(exit_status));
 	value = ft_getenv(env_list, var);
 	if (value)
 		return (value);
-	return (NULL);
+	return (ft_strdup(""));
+}
+
+char	*expand_backslash(char *str, int *i)
+{
+	char	*result;
+	char	*fix;
+	char	*tmp;
+	char	*exp;
+
+	exp = (char *)malloc(sizeof(char) * 2);
+	if (!exp)
+		return (NULL);
+	exp[0] = str[*i + 1];
+	exp[1] = 0;
+	fix = ft_substr(str, 0, *i);
+	tmp = ft_strjoin(fix, exp);
+	printf("%s\n", exp);
+	result = ft_strjoin(tmp, str + ft_strlen(exp));
+	*i += 2;
+	free(fix);
+	free(tmp);
+	return (result);
 }
 
 char	*expand_str(t_list **env_list, char *str, int exit_status, int *i)
@@ -52,17 +74,15 @@ char	*expand_str_recursive(t_list **env_list, char *in_str, int exit_status)
 	int		i;
 
 	i = find_dollar(in_str);
-	if (in_str[i] == '$')
+	if (in_str[i] == '\\')
+		result = expand_backslash(in_str, &i);
+	else if (in_str[i] == '$')
 		result = expand_str(env_list, in_str, exit_status, &i);
 	else
-		result = ft_strdup(in_str);
-	if (in_str[i])
-	{
-		tmp = expand_str_recursive(env_list, result, exit_status);
-		free(result);
-		result = tmp;
-	}
-	return (result);
+		return (ft_strdup(in_str));
+	tmp = expand_str_recursive(env_list, result, exit_status);
+	free(result);
+	return (tmp);
 }
 
 char	*name_var(char *str)
