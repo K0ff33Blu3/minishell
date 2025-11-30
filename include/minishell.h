@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
+/*   By: elmondo <elmondo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:52:47 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/30 17:30:51 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/30 19:13:04 by elmondo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,7 @@ int		unset(t_list **env_list, char **var);
 
 // export.c
 int		export(t_list **cmd_list, t_list **env_list, t_cmd *data);
+
 // export_helper.c
 int		check_name(char	*name);
 void	print_exp(t_list *node);
