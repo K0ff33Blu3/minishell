@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
+/*   By: elmondo <elmondo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 18:12:25 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/30 15:48:45 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/30 18:22:43 by elmondo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ pid_t	creat_child(t_list **head, t_list *node, t_list **env_list, int *st)
 		exec_command(head, data, env_list);
 	}
 	else
-		close_fd_parent(head, node); 
+		close_fd_parent(head, node);
 	return (pid);
 }
 
