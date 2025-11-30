@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elmondo <elmondo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 18:12:25 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/30 18:22:43 by elmondo          ###   ########.fr       */
+/*   Updated: 2025/11/30 19:30:56 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,9 +81,12 @@ void	open_pipeline(t_list **head)
 	node = *head;
 	while (node)
 	{
-		data = (t_cmd *)node->content;
-		if (node && pipe(data->pip) == -1)
-			return (perror("pipe"));
+		if (node->next)
+		{
+			data = (t_cmd *)node->next->content;
+			if (node && pipe(data->pip) == -1)
+				return (perror("pipe"));
+		}
 		node = node->next;
 	}
 }
