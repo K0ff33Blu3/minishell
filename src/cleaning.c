@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cleaning.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
+/*   By: elmondo <elmondo@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/15 12:02:37 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/27 18:13:52 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/30 18:50:39 by elmondo          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void	ft_perror(char *str, int exit_code)
 	else if (exit_code == IS_DIR)
 	{
 		ft_putstr_fd(str, STDERR_FILENO);
-		ft_putendl_fd(": is a directory", STDERR_FILENO);
+		ft_putendl_fd(": Is a directory", STDERR_FILENO);
 	}
 	else if (exit_code == NO_PERM)
 	{
