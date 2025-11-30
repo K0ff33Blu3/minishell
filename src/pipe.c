@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 18:12:25 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/28 22:41:11 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/30 15:48:45 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ pid_t	creat_child(t_list **head, t_list *node, t_list **env_list, int *st)
 		exec_command(head, data, env_list);
 	}
 	else
-		close_fd_parent(head, node);
+		close_fd_parent(head, node); 
 	return (pid);
 }
 
