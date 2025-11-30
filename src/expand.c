@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 11:40:06 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/30 17:16:32 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/30 17:31:14 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ char	*expand_str_recursive(t_list **env_list, char *in_str, int exit_status)
 	int		i;
 
 	i = find_dollar(in_str);
-	else if (in_str[i] == '$')
+	if (in_str[i] == '$')
 		result = expand_str(env_list, in_str, exit_status, &i);
 	else
 		return (ft_strdup(in_str));

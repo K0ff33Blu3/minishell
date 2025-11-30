@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 17:37:32 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/30 16:57:42 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/30 17:34:28 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static char	*rm_quotes(char *str)
 		return (NULL);
 	while (str[i])
 	{
-		if ((str[i] == '\'' || str[i] == '\"') && str[i - 1] != '\\')
+		if (str[i] == '\'' || str[i] == '\"')
 		{
 			quote = str[i++];
 			while (str[i] && str[i] != quote)

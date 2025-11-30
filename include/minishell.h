@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:52:47 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/30 17:14:32 by miricci          ###   ########.fr       */
+/*   Updated: 2025/11/30 17:30:51 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	echo(t_cmd *data);
 // exit.c
 int		exit_cmd(t_list **env_list, t_list **cmd_list, t_cmd *data);
 
-// cd.cfind_dollar
+// cd.c
 int		ft_cd(t_list **env_list, t_cmd *data);
 
 // unset.c
@@ -99,7 +99,7 @@ char	**expand_env_var(t_list **env_list, char **token, int status);
 // expand_helper.c
 char	get_kind_of_quote(char *str);
 int		find_dollar(char *str);
-find_dollar
+
 // token.c
 int		count_token(char *s);
 char	*make_word(char *s, int *j);
@@ -115,7 +115,7 @@ int		quote_len(char *s, unsigned int start, char quote);
 
 // init.c
 t_list	**mk_cmdlist(t_list **env_list, char *cmd_str, int *status);
-t_list	**env_init(char **envp);find_dollar
+t_list	**env_init(char **envp);
 t_cmd	*data_init(void);
 
 // signal.c
@@ -170,12 +170,12 @@ int		ft_single_builtin(t_list **cmd_list, t_list **env_list, int *status);
 
 // cleaning.c
 void	clean_data(void *ptr);
-void	free_env(void *ptr);find_dollar
+void	free_env(void *ptr);
 void	ft_error(t_list **env_lst, t_list **cmd_lst, char *str, int exit_code);
 void	ft_perror(char *str, int exit_code);
 void	ft_redir_err(t_list **env, t_list **cmd, char *str, int code);
 
-// closing.cfind_dollar
+// closing.c
 void	close_pipe(int pip[2]);
 void	close_pipeline(t_list **cmd_list, t_list *cmd_node);
 void	close_fd_parent(t_list **cmd, t_list *node);
