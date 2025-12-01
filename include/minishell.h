@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: elmondo <elmondo@student.42.fr>            +#+  +:+       +#+        */
+/*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/16 11:52:47 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/30 19:13:04 by elmondo          ###   ########.fr       */
+/*   Updated: 2025/12/01 14:19:45 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,6 +128,7 @@ void	check_signals(int status, int *exit_status);
 void	reset_signals(void);
 void	ft_signum(int signum);
 void	clean_sigint(t_cmd *cmd);
+void	here_doc_signals(void);
 
 // redirections_in.c
 void	get_line_heredoc_loop(t_cmd *cmd, char *limiter);

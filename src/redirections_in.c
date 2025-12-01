@@ -6,7 +6,7 @@
 /*   By: miricci <miricci@student.42firenze.it>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 17:40:26 by miricci           #+#    #+#             */
-/*   Updated: 2025/11/27 19:02:06 by miricci          ###   ########.fr       */
+/*   Updated: 2025/12/01 16:04:03 by miricci          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,22 @@ void	get_line_heredoc_loop(t_cmd *cmd, char *limiter)
 	while (1)
 	{
 		line = readline("> ");
-		if (!line)
+		if (g_last_sig == SIGINT)
+		{
+			close_pipe(cmd->tmp_pipe);
+			exit(130);
+		}
+		if (!line && g_last_sig != SIGINT)
 		{
 			printf("warning: %s requested\n", limiter);
-			break ;
+			close_pipe(cmd->tmp_pipe);
+			exit(EXIT_SUCCESS);
 		}
 		if (!ft_strncmp(line, limiter, ft_strlen(limiter) + 1))
 		{
 			free(line);
-			break ;
+			close_pipe(cmd->tmp_pipe);
+			exit(EXIT_SUCCESS);
 		}
 		ft_putendl_fd(line, cmd->tmp_pipe[1]);
 		free(line);
@@ -44,10 +51,8 @@ int	handle_heredoc(t_cmd *cmd, char *limiter)
 	pid = fork();
 	if (pid == 0)
 	{
-		reset_signals();
+		here_doc_signals();
 		get_line_heredoc_loop(cmd, limiter);
-		close(cmd->tmp_pipe[1]);
-		exit(EXIT_SUCCESS);
 	}
 	else
 	{
@@ -55,7 +60,7 @@ int	handle_heredoc(t_cmd *cmd, char *limiter)
 		close(cmd->tmp_pipe[1]);
 		waitpid(pid, &status, 0);
 		waiting_signals();
-		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
+		if (WIFEXITED(status) && WEXITSTATUS(status) == 130)
 			return (clean_sigint(cmd), -1);
 	}
 	return (cmd->tmp_pipe[0]);

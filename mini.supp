@@ -1,23 +1,39 @@
 {
-   readline_global_reachable
-   Memcheck:Leak
-   match-leak-kinds: reachable
-   ...
-   obj:/usr/lib/x86_64-linux-gnu/libreadline.so.*
+	readline_global_reachable
+	Memcheck:Leak
+	match-leak-kinds: reachable
+	...
+	obj:/usr/lib/x86_64-linux-gnu/libreadline.so.*
 }
 
 {
-   readline_main_call_reachable
-   Memcheck:Leak
-   match-leak-kinds: reachable
-   ...
-   fun:readline
+	readline_main_call_reachable
+	Memcheck:Leak
+	match-leak-kinds: reachable
+	...
+	fun:readline
 }
 
 {
-   below_main
-   Memcheck:Leak
-   match-leak-kinds: all
-   ...
-   fun:(below main)
+	below_main
+	Memcheck:Leak
+	match-leak-kinds: all
+	...
+	fun:(below main)
 }
+
+{
+	bin/dash
+	Memcheck:Leak
+	match-leak-kinds: reachable
+	...
+	obj:/usr/bin/dash
+}
+
+{
+	below_main - BadAlign
+	Memcheck:BadAlign
+	...
+	fun:(below main)
+}
+
